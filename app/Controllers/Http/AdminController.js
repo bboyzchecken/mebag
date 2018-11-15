@@ -13,7 +13,6 @@ class AdminController {
         }
     }
 
-
     //ระบบสมาชิก
     async register_page({ view, response, session }) {
         const users = await Database.from('users').where({
