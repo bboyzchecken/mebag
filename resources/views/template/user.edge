@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>MEBAG.COM | ระบบฝากหิ้วสินค้า</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="../../assets/css/bootstrap.min.css"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" href="../../assets/css/slick.css"/>
+    <link type="text/css" rel="stylesheet" href="../../assets/css/slick-theme.css"/>
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" href="../../assets/css/nouislider.min.css"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="../../assets/css/font-awesome.min.css">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="../../assets/css/style.css"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+<!-- HEADER -->
+<header>
+    <!-- TOP HEADER -->
+    <div id="top-header">
+        <div class="container">
+            <ul class="header-links pull-left">
+                <li><a href="/dealer"><i class="fa fa-shopping-bag"></i>คนรับหิ้ว</a></li>
+                <li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
+                <li><span class="text-light">ติมตามเราบน</span> <a href="#"><i class="fa fa-facebook"></i> </a> <a
+                        href="#"><i class="fa fa-youtube"></i> </a> <a href="#"><i class="fa fa-twitter"></i> </a></li>
+            </ul>
+            <ul class="header-links pull-right">
+               
+
+              @if(users[0].User_Email)
+              <li><a href="/account"><img
+                src="https://storage.googleapis.com/fastwork-static/95d5413a-6a74-4507-9137-ccf6196ff4ff.jpg"
+                class="avatar" alt=""> {{users[0].User_Email}}</a></li>
+              <li><a href="/history"><i class="fa fa-list-ol"></i> การซื้อของฉัน</a></li>
+              <li><a href="/logout"><i class="fa fa-user-o"></i> ออกจากระบบ</a></li>
+              @else
+              <li><a href="/login"><i class="fa fa-user"></i> เข้าสู่ระบบ</a></li>
+              <li><a href="/register"><i class="fa fa-user-plus"></i> สมัครสมาชิก</a></li>
+              @endif                
+        
+            </ul>
+        </div>
+    </div>
+    <!-- /TOP HEADER -->
+
+    <!-- MAIN HEADER -->
+    <div id="header">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- LOGO -->
+                <div class="col-md-3">
+                    <div class="header-logo">
+                        <a href="index.html" class="logo">
+                            <img src="./img/head.PNG" class="img-responsive" alt="">
+                        </a>
+                    </div>
+                </div>
+                <!-- /LOGO -->
+
+                <!-- SEARCH BAR -->
+                <div class="col-md-6">
+                    <div class="header-search">
+                        <form>
+                            <select class="input-select">
+                                <option value="keyword">ค้นหาทั้งหมด</option>
+                                <option value="product">ค้นหาสินค้า</option>
+                                <option value="place">ค้นหาสถานที่</option>
+
+                            </select>
+                            <input class="input" placeholder="Search here">
+                            <button class="search-btn">ค้นหา</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- /SEARCH BAR -->
+
+                <!-- ACCOUNT -->
+                <div class="col-md-3 clearfix">
+                    <div class="header-ctn">
+                        <!-- Cart -->
+                        <div class="dropdown">
+                            <a class="dropdown-toggle hidden-xs" data-toggle="dropdown" aria-expanded="true">
+                                <i class="fa fa-shopping-cart"></i>
+                                <span>ตะกร้าสินค้า</span>
+                            <div class="qty">100</div>
+                            </a>
+                            <a class="dropdown-toggle visible-xs" href="/checkout">
+                                <i class="fa fa-shopping-cart"></i>
+                                <span>ตะกร้าสินค้า</span>
+                                <div class="qty">3</div>
+                            </a>
+                            <div class="cart-dropdown">
+                                <div class="cart-list">
+                                    <div class="product-widget">
+                                        <div class="product-img">
+                                            <img src="./img/product01.png" alt="">
+                                        </div>
+                                        <div class="product-body">
+                                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                                            <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
+                                        </div>
+                                        <button class="delete"><i class="fa fa-close"></i></button>
+                                    </div>
+
+                                    <div class="product-widget">
+                                        <div class="product-img">
+                                            <img src="./img/product02.png" alt="">
+                                        </div>
+                                        <div class="product-body">
+                                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                                            <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
+                                        </div>
+                                        <button class="delete"><i class="fa fa-close"></i></button>
+                                    </div>
+                                </div>
+                                <div class="cart-summary">
+                                    <small>3 Item(s) selected</small>
+                                    <h5>SUBTOTAL: $2940.00</h5>
+                                </div>
+                                <div class="cart-btns">
+                                    <a href="#">View Cart</a>
+                                    <a href="#">Checkout <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Cart -->
+
+                        <!-- Menu Toogle -->
+                        <div class="menu-toggle">
+                            <a href="#">
+                                <i class="fa fa-bars"></i>
+                                <span>หมวดหมู่</span>
+                            </a>
+                        </div>
+                        <!-- /Menu Toogle -->
+                    </div>
+                </div>
+                <!-- /ACCOUNT -->
+            </div>
+            <!-- row -->
+        </div>
+        <!-- container -->
+    </div>
+    <!-- /MAIN HEADER -->
+</header>
+<!-- /HEADER -->
+
+<!-- NAVIGATION -->
+<nav id="navigation">
+    <!-- container -->
+    <div class="container">
+        <!-- responsive-nav -->
+        <div id="responsive-nav">
+            <!-- NAV -->
+            <ul class="main-nav nav navbar-nav">
+                <li class=""><a href="/">หน้าแรก</a></li>
+                <li><a href="/allevent"> Event ทั้งหมด</a></li>
+                <li><a href="/event"> อุปกรณ์เสริม อิเล็กทรอนิกส์</a></li>
+                <li><a href="/event"> สุขภาพและความงาม</a></li>
+                <li><a href="/event"> เด็กอ่อน และของเล่น</a></li>
+                <li><a href="/event"> แฟชั่นผู้หญิง</a></li>
+                <li><a href="/event"> แฟชั่นผู้ชาย</a></li>
+                <li><a href="/event"> เครื่องประดับ</a></li>
+                <li><a href="/event"> อื่นๆ</a></li>
+            </ul>
+            <!-- /NAV -->
+        </div>
+        <!-- /responsive-nav -->
+    </div>
+    <!-- /container -->
+</nav>
+<!-- /NAVIGATION -->
+
+
+
+    @section('content')
+    @endsection 
+
+
+<!-- FOOTER -->
+<footer id="footer">
+    <!-- top footer -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-3 col-xs-6">
+                    <div class="footer">
+                        <h3 class="footer-title">เกี่ยวกับเรา</h3>
+                        <p>Mebag
+                            คือแอพพลิเคชั่นที่รวบรวมเอาความต้องการของคนฝากหิ้วสินค้าและคนรับหิ้วสินค้าเข้ามาไว้ด้วยกัน
+                            เพื่อให้สะดวกสบายต่อการฝากหิ้วสินค้ามากยิ่งขึ้น</p>
+                        <ul class="footer-links">
+                            <li><a href="#"><i class="fa fa-link"></i>MEBAG.COM</a></li>
+                            <li><a href="#"><i class="fa fa-phone"></i>088-232-8949</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i>contact@mebag.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-xs-6">
+                    <div class="footer">
+                        <h3 class="footer-title">หมวดหมู่</h3>
+                        <ul class="footer-links">
+                            <li><a href="event.html"> อุปกรณ์เสริม อิเล็กทรอนิกส์</a></li>
+                            <li><a href="event.html"> สุขภาพและความงาม</a></li>
+                            <li><a href="event.html"> เด็กอ่อน และของเล่น</a></li>
+                            <li><a href="event.html"> แฟชั่นผู้หญิง</a></li>
+                            <li><a href="event.html"> แฟชั่นผู้ชาย</a></li>
+                            <li><a href="event.html"> เครื่องประดับ</a></li>
+                            <li><a href="event.html"> อื่นๆ</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="clearfix visible-xs"></div>
+
+                <div class="col-md-3 col-xs-6">
+                    <div class="footer">
+                        <h3 class="footer-title">ข้อมูล</h3>
+                        <ul class="footer-links">
+                            <li><a href="aboutus.html">เกี่ยวกับเรา</a></li>
+                            <li><a href="contact.html">ติดต่อเรา</a></li>
+                            <li><a href="terms.html">ข้อตกลง</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-xs-6">
+                    <div class="footer">
+                        <h3 class="footer-title">บริการ</h3>
+                        <ul class="footer-links">
+                            <li><a href="login.html">เข้าสู่ระยย</a></li>
+                            <li><a href="register.html">สมัครสมาชิก</a></li>
+                            <li><a href="checkout.html">ตะกร้าสินค้า</a></li>
+                            <li><a href="manual.html">คู่มือการใช้งาน</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /top footer -->
+
+    <!-- bottom footer -->
+    <div id="bottom-footer" class="section">
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <ul class="footer-payments">
+                        <li><a href="#"><i class="fa fa-cc-visa text-light"></i></a></li>
+                        <li><a href="#"><i class="fa fa-credit-card text-light"></i></a></li>
+                        <li><a href="#"><i class="fa fa-cc-paypal text-light"></i></a></li>
+                        <li><a href="#"><i class="fa fa-cc-mastercard text-light"></i></a></li>
+                        <li><a href="#"><i class="fa fa-cc-discover text-light"></i></a></li>
+                        <li><a href="#"><i class="fa fa-cc-amex text-light"></i></a></li>
+                    </ul>
+                    <span class="copyright">
+					MEBAG.COM
+							</span>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /bottom footer -->
+</footer>
+<!-- /FOOTER -->
+
+<!-- jQuery Plugins -->
+<script src="../../assets/js/jquery.min.js"></script>
+<script src="../../assets/js/bootstrap.min.js"></script>
+<script src="../../assets/js/slick.min.js"></script>
+<script src="../../assets/js/nouislider.min.js"></script>
+<script src="../../assets/js/jquery.zoom.min.js"></script>
+<script src="../../assets/js/main.js"></script>
+
+</body>
+</html>

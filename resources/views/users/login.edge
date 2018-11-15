@@ -1,0 +1,102 @@
+
+@layout('template.user')
+@section('content')
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="breadcrumb-header">เข้าสู่ระบบ</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/">MEBAG.COM</a></li>
+                        <li class="active">เข้าสู่ระบบ</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+<div class="section">
+        <!-- container -->
+        <div class="container">
+            @if(error)
+           
+            <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            <strong>แจ้งเตือน !</strong> {{error}}
+                        </div>
+                    </div>
+            </div>
+              
+            @endif
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading text-center">
+                            <h3>เข้าสู่ระบบ</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                    <form method="post" action="/login/check" enctype="multipart/form-data" role="form">
+                                        {{ csrfField() }}
+                                        <div class="row">
+            
+                                          <div class="col-md-12">
+                                              <div class="form-group col-sm-12">
+                                                  <label for="email">email</label>
+                                                  <input type="email" name="email" id="email"
+                                                         class="form-control" required />
+                                              </div>
+            
+                                              <div class="form-group col-sm-12">
+                                                  <label for="password">Password</label>
+                                                  <input type="password" name="password" id="password"
+                                                         class="form-control" required />
+                                              </div>
+                                              <div class="text-center">
+                                                  <button type="submit" class="btn btn-danger">เข้าสู่ระบบ</button>
+                                                  <a href="/register" class="btn btn-default">สมัครสมาชิก</a>
+                                              </div>
+                                          </div>
+                                           
+                                        </div>
+            
+            
+            
+            
+                                    </form>
+                            </div>
+                            <div class="row">
+                                    <div class=" text-center" style="margin-top:20px">
+                                            <ul>
+                                                <li><a href="forgotpassword.html"><i class="fa fa-unlock"></i> ลืมรหัสผ่าน</a></li>
+                                                <li><a href="term.html">ข้อตกลงการใช้งาน</a></li>
+                                                <li><a href="contact.html">ติดต่อเรา</a></li>
+                                            </ul>
+                                        </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                </div>
+                <div class="col-md-3 text-center">
+                       
+                 </div>
+    
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+    
+@endsection

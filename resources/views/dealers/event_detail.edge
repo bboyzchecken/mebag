@@ -1,0 +1,181 @@
+@layout('template.dealer')
+@section('content')
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+
+        <!-- row -->
+        <div class="row ">
+            <div class="col-md-12 text-center">
+                <div class="hot-deal">
+                    <h2 class="text-uppercase">เมนูจัดการ Event</h2>
+                    <p>จัดการ Event เพื่อเพิ่ม ลบ แก้ไข รายละเอียดของ Event</p>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+        <div class="row">
+ <!-- ASIDE -->
+ <div id="aside" class="col-md-3">
+        <!-- aside Widget -->
+        <div class="aside">
+            <h3 class="aside-title">ตัวอย่าง Event</h3>           
+              <!-- product -->
+              <div class="product">
+                    <div class="product-img">
+                    <img src="../../../assets/fileuploads/events/{{events[0].Event_CoverImage}}" alt="">
+                        <div class="product-label">
+                            <span class="new">มาใหม่</span>
+                        </div>
+                    </div>
+                    <div class="product-body">
+                        <p class="product-category">หมวดหมู่</p>
+                        <h3 class="product-name"><a href="#">{{events[0].Event_Name}}</a></h3>
+                        <h4 class="product-price">{{events[0].Event_Price}} ฿.-</h4>
+                        <p class="product-category">ระยะเวลา</p>
+                        <h4 class="product-price">{{events[0].Event_Start}} - {{events[0].Event_End}}</h4>
+
+                        <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="product-btns">
+                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">ดูเพิ่มเติม</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="add-to-cart">
+                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart
+                        </button>
+                    </div>
+                </div>
+                <!-- /product -->
+        </div>
+        <!-- /aside Widget -->
+</div>
+
+            <!-- STORE -->
+<div id="store" class="col-md-9 ">                
+                <!-- store products -->
+              
+                    <div class="panel ">
+           
+                        <div class="row">
+                                <div class="panel panel-heading">
+                                        <a class="btn btn-default" href="/dealer/event">
+                                            <span class="fa fa-sign-out"></span>  กลับหน้าจัดการ Event
+                                        </a>
+                                    </div>
+                                    <div class="panel panel-body">
+                                        <div class="row">
+                                                <div class="col-md-12 table-responsive">
+                                                        <div class="col-md-12 form-group">
+                                                            ชื่อ Event : {{events[0].Event_Name}}
+                                                            </div>
+                                                            <div class="col-md-12 form-group">
+                                                                รายละเอียด : {{events[0].Event_Detail}}
+                                                            </div>
+                                                            <div class="col-md-12 form-group">
+                                                                สถานที่จัด Event : {{events[0].Event_Place}}
+                                                            </div>
+                                                            <div class="col-md-12 form-group">
+                                                                หมวดหมู่สินค้า : {{events[0].Event_Type}}
+                                                            </div>
+                                                            <div class="col-md-12 form-group">
+                                                                วันที่เริ่ม : {{events[0].Event_Start}}  - วันที่สิ้นสุด : {{events[0].Event_End}}
+                                                            </div>                                      
+                                                            <div class="col-md-12 form-group">
+                                                                ราคาหิ้วสินค้าต่อชิ้น : {{events[0].Event_Price}}
+                                                            </div>
+                                                            <div class="col-md-12 form-group">
+                                                                ราคาจัดส่งปกติ : {{events[0].Event_TransportPrice}}
+                                                            </div>
+                                                            <div class="col-md-12 form-group">
+                                                                ราคาจัดส่งอื่นๆ : {{events[0].Event_OtherTransportRate}}
+                                                            </div>
+                                                            <div class="col-md-12 form-group">
+                                                            วันที่สร้าง Event : {{events[0].created_at}}
+                                                            </div>
+                                                            <div class="col-md-12 form-group">
+                                                                    แก้ไข Event ครั้งล่าสุดเมื่อ : {{events[0].updated_at}}
+                                                            </div>
+                                                </div>
+                                        </div>
+                                       
+                                    </div>
+                            </div>
+                            <div class="row">
+                                    <div class="panel panel-heading">
+                                            <a class="btn btn-danger" href="/dealer/product_create_event_{{event_id}}">
+                                                <span class="fa fa-plus"></span>  เพิ่มสินค้า
+                                            </a>
+                                        </div>
+                                        <div class="panel panel-body">
+                                            <div class="row">
+                                                    <div class="col-md-12 table-responsive">
+                                                            <table class="table  table-bordered">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>#รหัสสินค้า</th>
+                                                                        <th>ชื่อสินค้า</th>
+                                                                        <th>ขนาดหรือตัวเลือกสินค้า</th>
+                                                                        <th>ราคาสินค้า</th>
+                                                                        <th>ตัวเลือก</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @if(products[0])
+                                                                        @each(product in products)
+                                                                        <tr>
+                                                                        <td>{{product.Product_ID}}</td>
+                                                                                <td class="text-center">{{product.Product_Name}}</td>
+                                                                                <td>{{product.Product_Type}}</td>
+                                                                                <td>{{product.Product_Price}}</td>
+                                                                                <td>
+                                                                                    <a class="btn btn-warning" href="/dealer/product_edit_{{product.Product_ID}}">
+                                                                                        <span class="fa fa-edit"></span>
+                                                                                    </a>
+                                                                                    <a class="btn btn-danger" href="/dealer/product_delete/{{product.Product_ID}}">
+                                                                                        <span class="fa fa-trash"></span>
+                                                                                    </a>                                                                               
+                                                                                </td>                                                        
+                                                                                </td>
+                                        
+                                                                            </tr>
+                                                                        @endeach
+                                                                         @else
+                                                                          <tr>
+                                                                                <td colspan="6"><div class="alert alert-danger"><strong>แจ้งเตือน</strong> ไม่พบข้อมูลสินค้า</div></td>                                               
+                                        
+                                                                            </tr>
+                                                                        @endif
+                                                                      
+                                                                   
+                                                                    </tbody>
+                                                                </table>
+                                                    </div>
+                                            </div>
+                                           
+                                        </div>
+                                </div>
+                    </div>
+                
+                <!-- /store products -->
+
+
+</div>
+            <!-- /STORE -->
+        </div>
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+
+@endsection

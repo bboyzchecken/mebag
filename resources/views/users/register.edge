@@ -1,0 +1,130 @@
+@layout('template/user')
+@section('content')
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="breadcrumb-header">สมัครสมาชิก</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/">MEBAG.COM</a></li>
+                        <li class="active">สมัครสมาชิก</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+    
+    <!-- SECTION -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            @if(error)
+            <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert {{alert}}">
+                            <strong>แจ้งเตือน !</strong> {{error}}
+                        </div>
+                    </div>
+            </div>
+            @endif
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading text-center">
+                            <h3>สมัครใหม่</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form method="post" action="/register/add" enctype="multipart/form-data" role="form">
+                                {{ csrfField() }}
+                                <div class="row">
+                                    <div class="form-group col-sm-4">
+                                        <label for="User_FirstName">ชื่อ</label>
+                                        <input type="text" name="User_FirstName" id="User_FirstName" value=""
+                                               class="form-control " required="required"/>
+                                    </div>
+                                    <div class="form-group col-sm-4">
+                                        <label for="User_LastName">นามสกุล</label>
+                                        <input type="text" name="User_LastName" id="User_LastName"
+                                               value="" class="form-control "
+                                               required="required"/>
+                                    </div>
+                                    <div class="form-group col-sm-2">
+                                        <label for="User_Sex">เพศ</label>
+                                        <select name="User_Sex" id="User_Sex" class="form-control">
+                                            <option value="Male">
+                                                เพศชาย
+                                            </option>
+                                            <option value="Female">
+                                                เพศหญิง
+                                            </option>
+                                            <option value="Other">
+                                                อื่นๆ
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-sm-2">
+                                        <label for="User_BirthDay">วันเกิด</label>
+                                        <input type="date" name="User_BirthDay" id="User_BirthDay"
+                                               class="form-control" required="required"/>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="User_Tel">เบอร์โทรศัพท์</label>
+                                        <input type="text" name="User_Tel" id="User_Tel"
+                                               class="form-control" required="required"/>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="User_Email">อีเมล</label>
+                                        <input type="email" name="User_Email" id="User_Email"
+                                               class="form-control" required="required"/>
+                                    </div>
+    
+                                    <div class="form-group col-sm-12">
+                                        <label for="User_Address">ที่อยู่ </label>
+                                        <textarea name="User_Address" id="User_Address" rows="12"
+                                                  class="form-control markdown-editor"
+                                        ></textarea>
+                                    </div>
+                                    <div class="form-group col-sm-12  text-muted">
+                                        *ใช้ในการจัดส่งสินค้า
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="User_Password">Password</label>
+                                        <input type="password" name="User_Password" id="User_Password"
+                                               class="form-control" required="required"/>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="confirm_password">Confirm - Password</label>
+                                        <input type="password" name="confirm_password" id="confirm_password"
+                                               class="form-control" required="required"/>
+                                    </div>
+                                </div>
+    
+    
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-danger">สมัครสมาชิก</button>
+                                    <a href="/login" class="btn btn-default">เข้าสู่ระบบ</a>
+                                </div>
+    
+                            </form>
+                        </div>
+                    </div>
+    
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+@endsection

@@ -1,0 +1,172 @@
+@layout('template.dealer')
+@section('content')
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+
+        <!-- row -->
+        <div class="row ">
+            <div class="col-md-12 text-center">
+                <div class="hot-deal">
+                        <h2 class="text-uppercase">เมนูจัดการ Event</h2>
+                        <p>จัดการ Event เพื่อเพิ่ม ลบ แก้ไข รายละเอียดของ Event</p>  
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+        <div class="row">
+            <!-- STORE -->
+            <div id="store" class="col-md-12 ">
+                    @if(error)
+                    <div class="row">
+                            <div class="alert alert-danger">
+                                <strong>แจ้งเตือน !</strong> {{error}}
+                            </div>
+                    </div>
+                    @endif
+                <!-- store products -->
+                <div class="row">
+                    <div class="panel ">
+                        <div class="panel panel-heading">
+                            <a class="btn btn-default" href="/dealer/event">
+                                <span class="fa fa-sign-out"></span>  กลับหน้าจัดการ Event
+                            </a>
+                        </div>
+                        <div class="panel panel-body">
+                            <div class="col-md-12 table-responsive">
+                                <form method="post" action="/dealer/event/edit"  enctype="multipart/form-data" role="form">
+                                    {{ csrfField() }}
+                                    <input type="hidden" name="Event_ID" value="{{events[0].Event_ID}}">
+                                    <div class="row">
+                                        <div class="form-group col-sm-6">
+                                            <label for="Event_Name">ชื่อ Event</label>
+                                            <input type="text" name="Event_Name" id="Event_Name" 
+                                        class="form-control " value="{{events[0].Event_Name}}" required="required"/>
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label for="Event_Place">สถานที่จัด Event</label>
+                                            <input type="text" name="Event_Place" id="Event_Place"
+                                                   value="{{events[0].Event_Place}}" class="form-control "
+                                                   required="required"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-sm-3">
+                                            <label for="Event_Start">Start</label>
+                                                <input required="required" type="date" name="Event_Start"  value="{{events[0].Event_Start}}"
+                                                       class="form-control"
+                                                      >
+                                        </div>
+                                        <div class="form-group col-sm-3">
+                                            <label for="Event_End">End Events</label>
+                                                <input required="required" type="date" name="Event_End"
+                                                       class="form-control"
+                                                       id="Event_End" value="{{events[0].Event_End}}">
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label for="Event_Type">Event Type</label>
+                                            <select name="Event_Type" id="Event_Type" class="form-control"
+                                            >
+                                                <option value="1">
+                                                    อุปกรณ์เสริม อิเล็กทรอนิกส์
+                                                </option>
+                                                <option value="2" selected="selected">
+                                                        สุขภาพและความงาม
+                                                </option>
+                                                <option value="3">
+                                                        เด็กอ่อน และของเล่น
+                                                </option>
+                                                <option value="4">
+                                                        แฟชั่นผู้หญิง
+                                                </option>
+                                                <option value="5">
+                                                        แฟชั่นผู้ชาย
+                                                </option>
+                                                <option value="6">
+                                                        เครื่องประดับ
+                                                </option>
+                                                <option value="7">
+                                                  อื่นๆ
+                                                </option>
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-sm-4">
+                                            <label for="Event_Price">ราคาค่าหิ้ว / ชิ้น</label>
+                                            <input type="number" name="Event_Price" id="Event_Price"
+                                            value="{{events[0].Event_Price}}"   class="form-control" required="required"/>
+                                        </div>
+                                        <div class="form-group col-sm-4">
+                                            <label for="Event_TransportPrice">ราคาส่งแบบลงทะเบียน</label>
+                                            <input type="number" name="Event_TransportPrice" id="Event_TransportPrice"
+                                            value="{{events[0].Event_TransportPrice}}"    class="form-control" required="required"/>
+                                        </div>
+                                        <div class="form-group col-sm-4">
+                                            <label for="Event_OtherTransportRate">ราคาส่งแบบอื่น</label>
+                                            <input type="number" name="Event_OtherTransportRate" id="Event_OtherTransportRate"
+                                                    value="{{events[0].Event_OtherTransportRate}}"    class="form-control" required="required"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Event_Detail">รายละเอียดของ Event</label>
+                                        <textarea name="Event_Detail" id="Event_Detail" rows="12"
+                                                  class="form-control markdown-editor"
+                                        >{{events[0].Event_Detail}}</textarea>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-12">
+                                            <label for="inputAttachments">ตัวอย่างสินค้า (หมายเหตุ: ตั้งชื่อไฟล์
+                                                เป็นภาษาอังกฤษ
+                                                นะครับ)</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="file" name="attachments[]" id="inputAttachments"
+                                                   class="form-control"/>
+                                            <div id="fileUploadsContainer"></div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-default btn-block"
+                                                    onclick="extraTicketAttachment()">
+                                                <i class="fa fa-plus"></i> เพิ่มอีก
+                                            </button>
+                                        </div>
+                                        <div class="col-xs-12 ticket-attachments-message text-muted">
+                                            อนุญาตให้อัพโหลดเฉพาะ: .jpg, .gif, .jpeg, .png
+                                        </div>
+                                    </div>
+
+
+                                    <div id="autoAnswerSuggestions" class="well hidden"></div>
+
+                                    <div class="text-center margin-bottom">
+
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-danger">Edit Event</button>
+                                        <a href="/dealer/event" class="btn btn-default">ยกเลิก</a>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /store products -->
+
+
+            </div>
+            <!-- /STORE -->
+        </div>
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+
+
+@endsection

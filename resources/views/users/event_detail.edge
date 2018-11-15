@@ -1,0 +1,299 @@
+@layout('template.user')
+@section('content')
+		<!-- BREADCRUMB -->
+		<div id="breadcrumb" class="section">
+                <!-- container -->
+                <div class="container">
+                    <!-- row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="breadcrumb-tree">
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/allevent">All Categories</a></li>                          
+                            <li class="active">{{events[0].Event_Name}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /row -->
+                </div>
+                <!-- /container -->
+        </div>
+            <!-- /BREADCRUMB -->
+    
+            <!-- SECTION -->
+        <div class="section">
+                <!-- container -->
+                <div class="container">
+                    <!-- row -->
+                    <div class="row">
+                        <!-- Product main img -->
+                        <div class="col-md-5 col-md-push-2">
+                            <div id="product-main-img">
+                                    @each(image in images)
+                                    <div class="product-preview">
+                                    <img src="assets/fileuploads/events/{{image.Img_FileName}}" alt="">
+                                    </div>
+                                    @endeach                                     
+                            </div>
+                        </div>
+                        <!-- /Product main img -->
+    
+                        <!-- Product thumb imgs -->
+                        <div class="col-md-2  col-md-pull-5">
+                            <div id="product-imgs">
+                                    @each(image in images)
+                                    <div class="product-preview">
+                                    <img src="assets/fileuploads/events/{{image.Img_FileName}}" alt="">
+                                    </div>
+                                    @endeach                 
+                               
+                            </div>
+                        </div>
+                        <!-- /Product thumb imgs -->
+    
+                        <!-- Product details -->
+                        <div class="col-md-5">
+                            <div class="product-details">
+                                <h2 class="product-name">{{events[0].Event_Name}}</h2>                              
+                                <div>
+                                    <h3 class="product-price">ค่าหิ้ว {{events[0].Event_Price}} ฿ </h3>
+                                    <span class="product-available">ดำเนินการอยู่</span>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table  table-bordered">
+                                        <thead>
+                                        <tr>
+                                         
+                                            <th>ชื่อสินค้า</th>
+                                            <th>ขนาดหรือตัวเลือกสินค้า</th>
+                                            <th>ราคาสินค้า</th>
+                                            <th>ตัวเลือก</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if(products[0])
+                                            @each(product in products)
+                                            <tr>
+                                          
+                                                    <td>{{product.Product_Name}}</td>
+                                                    <td>{{product.Product_Type}}</td>
+                                                    <td>{{product.Product_Price}}</td>
+                                                    <td>   
+                                                        <div class="add-to-cart">
+                                                            <form action="/add_cart" method="POST">
+                                                                {{ csrfField() }}
+                                                                <input type="hidden" name="Product_ID" value="{{product.Product_ID}}">
+                                                                <input type="hidden" name="Event_ID" value="{{product.Event_ID}}">
+                                                                <div class="add-to-cart">
+                                                                        <div class="qty-label">
+                                                                            จำนวน 
+                                                                            <div class="input-number">
+                                                                                <input type="number" value="1" name="qty">
+                                                                                <span class="qty-up">+</span>
+                                                                                <span class="qty-down">-</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                                                    </div>
+                                                            </form>
+                                                                         
+                                                        </div>                                             
+                                                                                                               
+                                                    </td>
+            
+                                                </tr>
+                                            @endeach
+                                             @else
+                                              <tr>
+                                                    <td colspan="6"><div class="alert alert-danger"><strong>แจ้งเตือน</strong> ไม่พบข้อมูลสินค้า</div></td>                                               
+            
+                                                </tr>
+                                            @endif
+                                          
+                                       
+                                        </tbody>
+                                    </table>
+                                </div>
+    
+                           
+    
+    
+    
+    
+                            </div>
+                        </div>
+                        <!-- /Product details -->
+    
+                        <!-- Product tab -->
+                        <div class="col-md-12">
+                            <div id="product-tab">
+                                <!-- product tab nav -->
+                                <ul class="tab-nav">
+                                    <li class="active"><a data-toggle="tab" href="#tab1">รายละเอียด Event</a></li>
+                                    <li><a data-toggle="tab" href="#tab2">เรทราคา Event</a></li>
+                                    <li><a data-toggle="tab" href="#tab3">โปรไฟล์คนรับหิ้ว</a></li>
+                                </ul>
+                                <!-- /product tab nav -->
+    
+                                <!-- product tab content -->
+                               <div class="panel panel-default" style="padding: 15px">
+                                    <div class="tab-content">
+                                            <!-- tab1  -->
+                                            <div id="tab1" class="tab-pane fade in active">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <p>{{events[0].Event_Name}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /tab1  -->
+            
+                                            <!-- tab2  -->
+                                            <div id="tab2" class="tab-pane fade in">
+                                                <div class="row">
+                                                    <div class="col-md-12 table-responsive">
+                                                        <table class="table text-center">
+                                                            <thead>
+                                                               <tr>
+                                                                <th>ราคารับหิ้ว / ชิ้น</th>
+                                                                <th>จัดส่งแบบลงทะเบียน / ชิ้น</th>
+                                                                <th>จัดส่งแบบอื่น / ชิ้น</th>
+                                                               </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>{{events[0].Event_Price}}฿</td>
+                                                                    <td>{{events[0].Event_TransportPrice}}฿</td>
+                                                                    <td>{{events[0].Event_OtherTransportRate}}฿</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                       
+                                                      </div>
+                                                </div>
+                                            </div>
+                                            <!-- /tab2  -->
+            
+                                            <!-- tab3  -->
+                                            <div id="tab3" class="tab-pane fade in">
+                                                <div class="row">
+                                                   
+                                                   
+                                       
+            
+                                                    <!-- Review Form -->
+                                                    <div class="col-md-12 text-center">
+                                                   <div class="form-group">
+                                                        <a href="/profile_{{profiles[0].User_ID}}"><img
+                                                            src="https://storage.googleapis.com/fastwork-static/95d5413a-6a74-4507-9137-ccf6196ff4ff.jpg{{--  assets/fileuploads/profilepicture  --}}"
+                                                            class="avatar-10x" alt=""><br> {{profiles[0].User_FirstName}} {{profiles[0].User_LastName}}</a>
+                                                   </div>
+                                                   <div class="form-group">
+                                                        <a  href="/profile_{{profiles[0].User_ID}}" class="btn btn-danger">
+                                                            <i class="fa fa-user fa-fw"></i>&nbsp; ดูเพิ่มเติม
+                                                        </a>    
+                                                   </div>
+                                                 <div class="row">
+                                                        <div class="col-md-4">
+                                                           
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                                <div class="list-group">
+                                                                        <a  href="/account" class="list-group-item">
+                                                                            <i class="fa fa-shopping-bag fa-fw"></i>&nbsp; รับหิ้วไปแล้ว 3 ครั้ง
+                                                                        </a>    
+                                                                        <a  href="/account" class="list-group-item">
+                                                                            <i class="fa fa-tag fa-fw"></i>&nbsp; Event ทั้งหมด 3 Evnet
+                                                                        </a>    
+                                                                    </div>
+                                                        </div>
+                                                    <div class="col-md-4">
+                                                          
+                                                    </div>
+                                                 </div>
+                                                                   
+                                                       
+                                                    </div>
+                                                    <!-- /Review Form -->
+                                                </div>
+                                            </div>
+                                            <!-- /tab3  -->
+                                        </div>
+                               </div>
+                                <!-- /product tab content  -->
+                            </div>
+                        </div>
+                        <!-- /product tab -->
+                    </div>
+                    <!-- /row -->
+                </div>
+                <!-- /container -->
+            </div>
+            <!-- /SECTION -->
+    
+            <!-- Section -->
+            <div class="section">
+                <!-- container -->
+                <div class="container">
+                    <!-- row -->
+                    <div class="row">
+    
+                        <div class="col-md-12">
+                            <div class="section-title text-center">
+                                <h3 class="title">Event สำหรับคุณ</h3>
+                            </div>
+                        </div>
+    
+                        @each(all_event in all_events)
+                           <!-- product -->
+                        <div class="col-md-3 col-xs-6">
+                                <div class="product">
+                                    <div class="product-img">
+                                    <img src="assets/fileuploads/events/{{all_event.Event_CoverImage}}" alt="">
+                                        <div class="product-label">
+                                                <span class="new">มาใหม่</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-body">
+                                          
+                                            <h3 class="product-name"><a href="#">{{all_event.Event_Name}}</a></h3>
+                                            <h4 class="product-price">{{all_event.Event_Price}} ฿.-</h4>
+                                            <p class="product-category">ระยะเวลา</p>
+                                            <h4 class="product-price">{{all_event.Event_Start}} - {{all_event.Event_End}}</h4>
+            
+                                            <div class="product-rating">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
+                                            <div class="product-btns">
+                                                <button onclick="window.location.href='/event_detail_{{all_event.Event_ID}}'" class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">ดูเพิ่มเติม</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    <div class="add-to-cart">
+                                        <button onclick="window.location.href='/event_detail_{{all_event.Event_ID}}'" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> ดูเพิ่มเติม
+                                        </button>
+                                
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /product -->
+                        @endeach
+                       
+    
+                      
+    
+                        <div class="clearfix visible-sm visible-xs"></div>
+    
+                        
+    
+                    </div>
+                    <!-- /row -->
+                </div>
+                <!-- /container -->
+            </div>
+            <!-- /Section -->
+@endsection
