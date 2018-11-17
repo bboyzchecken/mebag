@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>MEBAG.COM | ADMIN MODE</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="../assets/css/bootstrap.min.css"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" href="../assets/css/slick.css"/>
+    <link type="text/css" rel="stylesheet" href="../assets/css/slick-theme.css"/>
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" href="../assets/css/nouislider.min.css"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="../assets/css/style.css"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+
+<!-- HEADER -->
+<header>
+    <!-- TOP HEADER -->
+    <div id="top-header">
+        <div class="container">
+            <ul class="header-links pull-left">
+                <li><a href="/"><i class="fa fa-home"></i>กลับหน้าหลัก</a></li>            
+                <li><a href="/create_admin"><i class="fa fa-user-plus"></i>สร้างผู้ดูแล</a></li>               
+            </ul>          
+        </div>
+    </div>
+    <!-- /TOP HEADER -->
+</header>
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section " style="background-color: #dc3545">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="breadcrumb-header text-light"><span class="fa fa-lock text-light"></span> ผู้ดูแลระบบ</h3>
+                <ul class="breadcrumb-tree">
+                    <li><a href="/" style="color: black">MEBAG.COM</a></li>
+                    <li class="active">ADMIN MODE</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+            @if(error)
+           
+            <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            <strong>แจ้งเตือน !</strong> {{error}}
+                        </div>
+                    </div>
+            </div>
+              
+            @endif
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-8 text-center">
+                <img src="../assets/img/logo.png" style="width: 100%" alt="">
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-danger">
+                    <div class="panel-heading text-center">
+                        <h3>เข้าสู่ระบบ</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form method="post" action="/admin/login" enctype="multipart/form-data" role="form">
+                            {{ csrfField() }}
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group col-sm-12">
+                                        <label for="email">email</label>
+                                        <input type="email" name="email" id="email"
+                                               class="form-control" required />
+                                    </div>
+
+                                    <div class="form-group col-sm-12">
+                                        <label for="password">Password</label>
+                                        <input type="password" name="password" id="password"
+                                               class="form-control" required/>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-danger">เข้าสู่ระบบ</button>
+                                        <a href="/" class="btn btn-default">กลับหน้าหลัก</a>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+
+
+
+<!-- FOOTER -->
+<footer id="footer" style=" position: fixed;
+    left: 0;
+    bottom: 0;
+width: 100%;
+">
+
+
+    <!-- bottom footer -->
+    <div id="bottom-footer" class="section">
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12 text-center">
+ระบบดูแลจัดการเว็บไซต์
+                    <span class="copyright">
+					MEBAG.COM
+							</span>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /bottom footer -->
+</footer>
+<!-- /FOOTER -->
+
+<!-- jQuery Plugins -->
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/slick.min.js"></script>
+<script src="../assets/js/nouislider.min.js"></script>
+<script src="../assets/js/jquery.zoom.min.js"></script>
+<script src="../assets/js/main.js"></script>
+
+</body>
+</html>

@@ -107,15 +107,16 @@
                             <a class="dropdown-toggle hidden-xs" data-toggle="dropdown" aria-expanded="true">
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>ตะกร้าสินค้า</span>
-                            <div class="qty">100</div>
+                            <div class="qty">{{carts.length}}</div>
                             </a>
                             <a class="dropdown-toggle visible-xs" href="/checkout">
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>ตะกร้าสินค้า</span>
-                                <div class="qty">3</div>
+                                <div class="qty">{{carts.length}}</div>
                             </a>
                             <div class="cart-dropdown">
                                 <div class="cart-list">
+                                   
                                     <div class="product-widget">
                                         <div class="product-img">
                                             <img src="./img/product01.png" alt="">
@@ -127,16 +128,7 @@
                                         <button class="delete"><i class="fa fa-close"></i></button>
                                     </div>
 
-                                    <div class="product-widget">
-                                        <div class="product-img">
-                                            <img src="./img/product02.png" alt="">
-                                        </div>
-                                        <div class="product-body">
-                                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                            <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-                                        </div>
-                                        <button class="delete"><i class="fa fa-close"></i></button>
-                                    </div>
+                                 
                                 </div>
                                 <div class="cart-summary">
                                     <small>3 Item(s) selected</small>
@@ -199,6 +191,7 @@
 
 
     @section('content')
+    
     @endsection 
 
 

@@ -14,14 +14,37 @@ class AdminController {
     }
 
     //ระบบสมาชิก
-    async register_page({ view, response, session }) {
+    async create_page({ view, response, session }) {
         const users = await Database.from('users').where({
             'User_ID': session.get('User_ID')
         });
-        return view.render('users/register', {
+        return view.render('admins/create', {
             users: users
         })
     }
+
+    async managedealer({ view, response, session }) {
+        /*  const users = await Database.from('users').where({
+             'User_ID': session.get('User_ID')
+         }); */
+        return view.render('admins/managedealer');
+    }
+
+    async tranfer({ view, response, session }) {
+        /*  const users = await Database.from('users').where({
+             'User_ID': session.get('User_ID')
+         }); */
+        return view.render('admins/tranfer');
+    }
+
+    async balance({ view, response, session }) {
+        /*  const users = await Database.from('users').where({
+             'User_ID': session.get('User_ID')
+         }); */
+        return view.render('admins/balance');
+    }
+
+
 }
 
 module.exports = AdminController

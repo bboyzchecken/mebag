@@ -82,7 +82,10 @@
                                                         <div class="add-to-cart">
                                                             <form action="/add_cart" method="POST">
                                                                 {{ csrfField() }}
+                                                                <input type="hidden" name="Product_Key" value="product_{{product.Product_ID}}">
                                                                 <input type="hidden" name="Product_ID" value="{{product.Product_ID}}">
+                                                                <input type="hidden" name="Product_Price" value="{{product.Product_Price}}">
+                                                                <input type="hidden" name="Product_Name" value="{{product.Product_Name}}">
                                                                 <input type="hidden" name="Event_ID" value="{{product.Event_ID}}">
                                                                 <div class="add-to-cart">
                                                                         <div class="qty-label">

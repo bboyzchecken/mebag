@@ -3,17 +3,21 @@ const Database = use("Database");
 const User = use("App/Models/User");
 const { validate } = use('Validator');
 const Hash = use('Hash');
+const lodash = require('lodash');
 class UserController {
 
     async index({ view, response, session }) {
         const users = await Database.from('users').where({
             'User_ID': session.get('User_ID')
         });
+        
         const events = await Database.from('events');
+
         return view.render('welcome', {
             users: users,
             events: events,
-            cart:session.get('cart')
+            carts : session.get('cart')
+
         })
     }
 
@@ -24,7 +28,8 @@ class UserController {
             'User_ID': session.get('User_ID')
         });
         return view.render('users/register', {
-            users: users
+            users: users,
+            carts : session.get('cart')
         })
     }
 
@@ -79,11 +84,11 @@ class UserController {
                 session.put('User_ID', users[0].User_ID);
                 return response.redirect("/account");
             } else {
-                return view.render('users/login', { error: " รหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบ" })
+                return view.render('users/login', { error: " รหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบ", carts : session.get('cart') })
             }
 
         } else {
-            return view.render('users/login', { error: "  อีเมล หรือ รหัสผ่านของท่านไม่ถูกต้อง กรุณาตรวจสอบ " })
+            return view.render('users/login', { error: "  อีเมล หรือ รหัสผ่านของท่านไม่ถูกต้อง กรุณาตรวจสอบ " , carts : session.get('cart')})
         }
 
     }
@@ -93,9 +98,16 @@ class UserController {
             const users = await Database.from('users').where({
                 'User_ID': session.get('User_ID')
             });
-            return view.render('users/account', { users: users })
+            return view.render('users/account', {
+                 users: users ,
+                 carts : session.get('cart')
+            })
         } else {
-            return view.render('users/login', { error: "  กรุณาล็อกอินเข้าสู่ระบบ " })
+            return view.render('users/login', { 
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ " ,
+                carts : session.get('cart')
+            
+            })
         }
     }
 
@@ -109,73 +121,72 @@ class UserController {
 
 
     async logout({ response, session, view }) {
-        session.clear()
+        session.forget('username');
         return response.redirect("/");
     }
 
 
     async add_cart({ response, session, view, request }) {
         let GETDATA = request.post();
-        // return session.get('product_'+ GETDATA.Product_ID).qty;
+
+
         if (GETDATA.qty != 0) {
             if (session.get('cart')) {
-                if (session.get('product_' + GETDATA.Product_ID)) {
-                 /*    session.put('product_' + GETDATA.Product_ID, {
-                        _csrf: GETDATA._csrf,
+                const result = session.get('cart').find(product => product.Product_Key === GETDATA.Product_Key);
+                if (result) {
+                    const index = session.get('cart').findIndex(product => product.Product_Key === GETDATA.Product_Key);
+                    session.get('cart')[index].qty = parseInt(session.get('cart')[index].qty) + parseInt(GETDATA.qty);
+                    return response.redirect("back");
+                } else {
+                    session.get('cart').push({
+                        Product_Key: GETDATA.Product_Key,
                         Product_ID: GETDATA.Product_ID,
                         Event_ID: GETDATA.Event_ID,
-                        qty: parseInt(session.get('product_' + GETDATA.Product_ID).qty) + parseInt(GETDATA.qty)
-                    }) */
-                    // session.put(('product_' + GETDATA.Product_ID)['qty'], parseInt(session.get('product_'+ GETDATA.Product_ID).qty) + parseInt(GETDATA.qty));
-                   // return response.redirect("back");return session.all();
-                } else {
-                    //session.put('cart', session.get('cart') + 1);
-                    session.put('cart', {
-                        products : GETDATA
-                     });
+                        qty: GETDATA.qty
+                    });
                     return response.redirect("back");
                 }
             } else {
-                
-                session.put('cart', {
-                   products : GETDATA
+
+                let cart = [];
+                cart.push({
+                    Product_Key: GETDATA.Product_Key,
+                    Product_ID: GETDATA.Product_ID,
+                    Event_ID: GETDATA.Event_ID,
+                    qty: GETDATA.qty
                 });
-               // session.put('product_' + GETDATA.Product_ID, GETDATA);
-               // session.put('cart'['product_'+GETDATA.Product_ID],GETDATA);
+                //let re_key = lodash.keyBy(cart, "Product_Key");
+                session.put('cart', cart);
                 return response.redirect("back");
+                return session.get('cart')[GETDATA.Product_Key];
             }
-        } else {
-      //   alert("กรุณาใส่จำนวนสินค้ามากกว่า 0");
-         return response.redirect("back");
-          //  return "ใส่ QTY > 0";
         }
 
-        /* 
-                   if (GETDATA.qty != 0) {
-                       if (session.get('total')) {
-                           if (session.get(GETDATA.Product_ID)) {
-                               session.put('qty_' + GETDATA.Product_ID, parseInt(session.get('qty_' + GETDATA.Product_ID)) + parseInt(GETDATA.qty));
-                               return session.all();
-                               return "มี " + session.get(GETDATA.Product_ID) + " แล้ว :" + session.get('qty_' + GETDATA.Product_ID) + " ชิ้น จำนวนสินค้าทั้งหมดในตะกร้า " + session.get('total') + " สินค้า";
-                           } else {
-                               session.put('total', session.get('total') + 1);
-                               session.put(GETDATA.Product_ID, GETDATA.Product_ID);
-                               session.put('qty_' + GETDATA.Product_ID, parseInt(GETDATA.qty));
-                               return session.all();
-                               return "ใส่" + GETDATA.Product_ID + "ลงในตะกร้า จำนวน " + session.get('qty_' + GETDATA.Product_ID) + "ชิ้น เรียบร้อยแล้ว";
-                           }
-           
-                       } else {
-                           session.put('total', session.get('total') + 1);
-                           session.put(GETDATA.Product_ID, GETDATA.Product_ID);
-                           session.put('qty_' + GETDATA.Product_ID, parseInt(GETDATA.qty));
-                           return session.all();
-                           return "ใส่" + GETDATA.Product_ID + "ลงในตะกร้า จำนวน " + session.get('qty_' + GETDATA.Product_ID) + "ชิ้น เรียบร้อยแล้ว";
-                       }
-                   }else{
-                       return "ใส่ QTY > 0";
-                   }  */
-
+        /*   if (GETDATA.qty != 0) {
+              if (session.get('total')) {
+                  if (session.get(GETDATA.Product_ID)) {
+                      session.put('qty_' + GETDATA.Product_ID, parseInt(session.get('qty_' + GETDATA.Product_ID)) + parseInt(GETDATA.qty));
+                      return session.all();
+                      return "มี " + session.get(GETDATA.Product_ID) + " แล้ว :" + session.get('qty_' + GETDATA.Product_ID) + " ชิ้น จำนวนสินค้าทั้งหมดในตะกร้า " + session.get('total') + " สินค้า";
+                  } else {
+                      session.put('total', session.get('total') + 1);
+                      session.put(GETDATA.Product_ID, GETDATA.Product_ID);
+                      session.put('qty_' + GETDATA.Product_ID, parseInt(GETDATA.qty));
+                      return session.all();
+                      return "ใส่" + GETDATA.Product_ID + "ลงในตะกร้า จำนวน " + session.get('qty_' + GETDATA.Product_ID) + "ชิ้น เรียบร้อยแล้ว";
+                  }
+  
+              } else {
+                  session.put('total', session.get('total') + 1);
+                  session.put(GETDATA.Product_ID, GETDATA.Product_ID);
+                  session.put('qty_' + GETDATA.Product_ID, parseInt(GETDATA.qty));
+                  return session.all();
+                  return "ใส่" + GETDATA.Product_ID + "ลงในตะกร้า จำนวน " + session.get('qty_' + GETDATA.Product_ID) + "ชิ้น เรียบร้อยแล้ว";
+              }
+          }else{
+              return "ใส่ QTY > 0";
+          }  
+*/
 
         /* 
            session.put(GETDATA.Product_ID, GETDATA.Product_ID);
@@ -185,6 +196,8 @@ class UserController {
     }
 
     async check_session({ response, session, view, request }) {
+
+
         return session.all();
         /*  return session.get('product_2').qty; */
         /* 
@@ -278,7 +291,8 @@ class UserController {
                 products: products,
                 event_id: event_id,
                 all_events: all_events,
-                profiles: profiles
+                profiles: profiles,
+                carts : session.get('cart')
             })
         } else {
             return response.redirect("back");

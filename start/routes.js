@@ -52,4 +52,9 @@ Route.get("/dealer/product_delete/:product_id", 'DealerController.delete_product
 ////
 
 Route.get("/admin", 'AdminController.login_page');
+Route.get("/admin/create_admin", 'AdminController.create_page');
+Route.get("/admin/managedealer", 'AdminController.managedealer');
+Route.get("/admin/tranfer", 'AdminController.tranfer');
+Route.get("/admin/balance", 'AdminController.balance');
+
 

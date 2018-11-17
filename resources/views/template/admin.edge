@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>MEBAG.COM | ระบบรับฝากหิ้วสินค้า</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="../assets/css/bootstrap.min.css"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" href="../assets/css/slick.css"/>
+    <link type="text/css" rel="stylesheet" href="../assets/css/slick-theme.css"/>
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" href="../assets/css/nouislider.min.css"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="../assets/css/style.css"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+
+<!-- HEADER -->
+<header>
+    <!-- TOP HEADER -->
+    <div id="top-header">
+        <div class="container">
+            <ul class="header-links pull-left">
+                <li><a href="/"><i class="fa fa-home"></i>กลับหน้าหลัก</a></li>
+                <li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
+            </ul>
+            <ul class="header-links pull-right">
+                <li><a href="/dealer/account"><img
+                        src="https://storage.googleapis.com/fastwork-static/95d5413a-6a74-4507-9137-ccf6196ff4ff.jpg"
+                        class="avatar" alt="">  {{users[0].User_Email}}</a></li>
+
+                <li><a href="/dealer/dashboard"><i class="fa fa-list"></i> เมนูจัดการรับหิ้วสินค้า</a></li>
+                <li><a href="/logout"><i class="fa fa-sign-out"></i> ออกจากระบบ</a></li>
+
+            </ul>
+        </div>
+    </div>
+    <!-- /TOP HEADER -->
+</header>
+<!-- /HEADER -->
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section " style="background-color: #dc3545">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+
+                <h3 class="breadcrumb-header text-light"><span class="fa fa-shopping-bag text-light"></span>
+                    ผู้รับหิ้วสินค้า</h3>
+                <ul class="breadcrumb-tree">
+                    <li><a href="/" style="color: black">MEBAG.COM</a></li>
+                    <li class="active">ระบบรับหิ้วสินค้า</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+@section('content')
+
+@endsection 
+
+
+<!-- FOOTER -->
+<footer id="footer" style="background-color: #ffffff">
+
+
+    <!-- bottom footer -->
+    <div id="bottom-footer" style="background-color: #ffffff" class="section">
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    ระบบรับฝากหิ้วสินค้า
+                    <span class="copyright">
+					MEBAG.COM
+							</span>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /bottom footer -->
+</footer>
+<!-- /FOOTER -->
+
+<!-- jQuery Plugins -->
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/slick.min.js"></script>
+<script src="../assets/js/nouislider.min.js"></script>
+<script src="../assets/js/jquery.zoom.min.js"></script>
+<script src="../assets/js/main.js"></script>
+<script !src="">
+    function extraTicketAttachment() {
+        jQuery("#fileUploadsContainer").append('<input type="file" name="attachments[]" class="form-control" />')
+    }
+</script>
+</body>
+</html>
