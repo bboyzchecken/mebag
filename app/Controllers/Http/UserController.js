@@ -10,14 +10,15 @@ class UserController {
         const users = await Database.from('users').where({
             'User_ID': session.get('User_ID')
         });
-        
+
         const events = await Database.from('events');
 
         return view.render('welcome', {
             users: users,
             events: events,
-            carts : session.get('cart')
-
+            carts: session.get('cart'),
+            sum_product: session.get('sum_product'),
+            sum_event: session.get('sum_event'),
         })
     }
 
@@ -29,7 +30,9 @@ class UserController {
         });
         return view.render('users/register', {
             users: users,
-            carts : session.get('cart')
+            carts: session.get('cart'),
+            sum_product: session.get('sum_product'),
+            sum_event: session.get('sum_event'),
         })
     }
 
@@ -55,16 +58,40 @@ class UserController {
                     await Database.table("verifies").insert({
                         User_ID: postId,
                     });
-                    return view.render('users/register', { error: "สมัครสมาชิกสำเร็จ", alert: "alert-success" })
+                    return view.render('users/register', {
+                        error: "สมัครสมาชิกสำเร็จ",
+                        alert: "alert-success",
+                        sum_product: session.get('sum_product'),
+                        sum_event: session.get('sum_event'),
+                        carts: session.get('cart'),
+                    })
                 } else {
-                    return view.render('users/register', { error: "รหัสผ่านไม่ตรงกัน กรุณาตรวจสอบ", alert: "alert-danger" })
+                    return view.render('users/register', {
+                        error: "รหัสผ่านไม่ตรงกัน กรุณาตรวจสอบ",
+                        alert: "alert-danger",
+                        sum_product: session.get('sum_product'),
+                        sum_event: session.get('sum_event'),
+                        carts: session.get('cart'),
+                    })
                 }
             } else {
-                return view.render('users/register', { error: "รูปแบบของรหัสผ่านไม่ถูกต้อง ไม่อณุญาตให้ใช้ภาษาไทยเป็นรหัสผ่าน หรือ รหัสผ่านน้อยกว่า 4 ตัวอักษร", alert: "alert-danger" })
+                return view.render('users/register', {
+                    error: "รูปแบบของรหัสผ่านไม่ถูกต้อง ไม่อณุญาตให้ใช้ภาษาไทยเป็นรหัสผ่าน หรือ รหัสผ่านน้อยกว่า 4 ตัวอักษร",
+                    alert: "alert-danger",
+                    sum_product: session.get('sum_product'),
+                    sum_event: session.get('sum_event'),
+                    carts: session.get('cart'),
+                })
             }
 
         } else {
-            return view.render('users/register', { error: "อีเมลถูกใช้งานแล้ว", alert: "alert-danger" })
+            return view.render('users/register', {
+                error: "อีเมลถูกใช้งานแล้ว",
+                alert: "alert-danger",
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+                carts: session.get('cart'),
+            })
         }
 
     }
@@ -84,11 +111,21 @@ class UserController {
                 session.put('User_ID', users[0].User_ID);
                 return response.redirect("/account");
             } else {
-                return view.render('users/login', { error: " รหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบ", carts : session.get('cart') })
+                return view.render('users/login', {
+                    error: " รหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบ",
+                    carts: session.get('cart'),
+                    sum_product: session.get('sum_product'),
+                    sum_event: session.get('sum_event'),
+                })
             }
 
         } else {
-            return view.render('users/login', { error: "  อีเมล หรือ รหัสผ่านของท่านไม่ถูกต้อง กรุณาตรวจสอบ " , carts : session.get('cart')})
+            return view.render('users/login', {
+                error: "  อีเมล หรือ รหัสผ่านของท่านไม่ถูกต้อง กรุณาตรวจสอบ ",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+            })
         }
 
     }
@@ -99,14 +136,18 @@ class UserController {
                 'User_ID': session.get('User_ID')
             });
             return view.render('users/account', {
-                 users: users ,
-                 carts : session.get('cart')
+                users: users,
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
             })
         } else {
-            return view.render('users/login', { 
-                error: "  กรุณาล็อกอินเข้าสู่ระบบ " ,
-                carts : session.get('cart')
-            
+            return view.render('users/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+
             })
         }
     }
@@ -129,21 +170,33 @@ class UserController {
     async add_cart({ response, session, view, request }) {
         let GETDATA = request.post();
 
-
         if (GETDATA.qty != 0) {
             if (session.get('cart')) {
                 const result = session.get('cart').find(product => product.Product_Key === GETDATA.Product_Key);
                 if (result) {
+                    session.put('sum_product', parseFloat(session.get('sum_product')) + (parseFloat(GETDATA.qty) * parseFloat(GETDATA.Product_Price)));
+                    session.put('sum_event', parseFloat(session.get('sum_event')) + (parseFloat(GETDATA.qty) * parseFloat(GETDATA.Event_Price)));
                     const index = session.get('cart').findIndex(product => product.Product_Key === GETDATA.Product_Key);
                     session.get('cart')[index].qty = parseInt(session.get('cart')[index].qty) + parseInt(GETDATA.qty);
+
+                    /*   session.get('sum_product') = (parseFloat(session.get('sum_product'))) + (parseFloat(GETDATA.qty) * parseFloat(GETDATA.Product_Price));
+                      session.get('sum_event') = (parseFloat(session.get('sum_event'))) + (parseFloat(GETDATA.qty) * parseFloat(GETDATA.Event_Price)); */
                     return response.redirect("back");
                 } else {
                     session.get('cart').push({
                         Product_Key: GETDATA.Product_Key,
                         Product_ID: GETDATA.Product_ID,
+                        Product_Name: GETDATA.Product_Name,
+                        Product_Price: GETDATA.Product_Price,
                         Event_ID: GETDATA.Event_ID,
+                        Event_CoverImage: GETDATA.Event_CoverImage,
+                        Event_Price: GETDATA.Event_Price,
                         qty: GETDATA.qty
                     });
+                    session.put('sum_product', parseFloat(session.get('sum_product')) + (parseFloat(GETDATA.qty) * parseFloat(GETDATA.Product_Price)));
+                    session.put('sum_event', parseFloat(session.get('sum_event')) + (parseFloat(GETDATA.qty) * parseFloat(GETDATA.Event_Price)));
+                    /*  session.get('sum_product') = parseFloat(session.get('sum_product')) + (parseFloat(GETDATA.qty) * parseFloat(GETDATA.Product_Price));
+                     session.get('sum_event') = parseFloat(session.get('sum_event')) + (parseFloat(GETDATA.qty) * parseFloat(GETDATA.Event_Price)); */
                     return response.redirect("back");
                 }
             } else {
@@ -152,10 +205,18 @@ class UserController {
                 cart.push({
                     Product_Key: GETDATA.Product_Key,
                     Product_ID: GETDATA.Product_ID,
+                    Product_Name: GETDATA.Product_Name,
+                    Product_Price: GETDATA.Product_Price,
                     Event_ID: GETDATA.Event_ID,
+                    Event_CoverImage: GETDATA.Event_CoverImage,
+                    Event_Price: GETDATA.Event_Price,
                     qty: GETDATA.qty
+
                 });
+
                 //let re_key = lodash.keyBy(cart, "Product_Key");
+                session.put('sum_product', parseFloat(GETDATA.qty) * parseFloat(GETDATA.Product_Price));
+                session.put('sum_event', parseFloat(GETDATA.qty) * parseFloat(GETDATA.Event_Price));
                 session.put('cart', cart);
                 return response.redirect("back");
                 return session.get('cart')[GETDATA.Product_Key];
@@ -188,23 +249,32 @@ class UserController {
           }  
 */
 
-        /* 
-           session.put(GETDATA.Product_ID, GETDATA.Product_ID);
-           return session.get(GETDATA.Product_ID); */
-        /*    session.put('username', users[0].User_Email);
-           session.put('User_ID', users[0].User_ID); */
+
     }
 
     async check_session({ response, session, view, request }) {
-
-
         return session.all();
-        /*  return session.get('product_2').qty; */
-        /* 
-           session.put(GETDATA.Product_ID, GETDATA.Product_ID);
-           return session.get(GETDATA.Product_ID); */
-        /*    session.put('username', users[0].User_Email);
-           session.put('User_ID', users[0].User_ID); */
+
+    }
+
+
+    async clear_cart({ response, session, view, request }) {
+        session.forget('cart');
+        return response.redirect("back");
+    }
+
+    async del_cart({ response, session, view, params }) {
+        const Product_Key = await params.product_key;
+        const index = session.get('cart').findIndex(product => product.Product_Key === Product_Key);
+        session.put('sum_product', parseInt(session.get('sum_product')) - (parseFloat(session.get('cart')[index].qty) * parseFloat(session.get('cart')[index].Product_Price)));
+        session.put('sum_event', parseInt(session.get('sum_event')) - (parseFloat(session.get('cart')[index].qty) * parseFloat(session.get('cart')[index].Event_Price)));
+        (session.get('cart')).splice(index, 1);
+        return response.redirect("back");
+    }
+
+    async del_session({ response, session, view, params }) {
+        session.clear();
+        return response.redirect("back");
     }
 
     upload_image({ request, response }) {
@@ -292,7 +362,9 @@ class UserController {
                 event_id: event_id,
                 all_events: all_events,
                 profiles: profiles,
-                carts : session.get('cart')
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
             })
         } else {
             return response.redirect("back");

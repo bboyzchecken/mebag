@@ -28,6 +28,8 @@ Route.post("/login/check", 'UserController.login');
 Route.post("/register/add", 'UserController.register');
 Route.post("/add_cart", 'UserController.add_cart');
 Route.get("/check_session", 'UserController.check_session');
+Route.get("/clear_cart", 'UserController.clear_cart');
+Route.get("/del_cart/:product_key", 'UserController.del_cart');
 ///dealer
 Route.get("/dealer", 'DealerController.index');
 Route.post("/dealer/login", 'DealerController.login');

@@ -116,27 +116,34 @@
                             </a>
                             <div class="cart-dropdown">
                                 <div class="cart-list">
-                                   
-                                    <div class="product-widget">
-                                        <div class="product-img">
-                                            <img src="./img/product01.png" alt="">
-                                        </div>
-                                        <div class="product-body">
-                                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                            <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-                                        </div>
-                                        <button class="delete"><i class="fa fa-close"></i></button>
-                                    </div>
+                                @if(carts)
+                                @each(cart in carts)
+                                
+                                <div class="product-widget">
+                                     <div class="product-img">
+                                     <img src="../assets/fileuploads/events/{{cart.Event_CoverImage}}" alt="">
+                                     </div>
+                                     <div class="product-body">
+                                     <h3 class="product-name"><a href="/event_detail_{{cart.Event_ID}}">{{cart.Product_Name}}</a></h3>
+                                         <h4 class="product-price"><span class="qty">{{cart.qty}} x</span>{{cart.Product_Price}} ฿</h4>
+                                     </div>
+                                     <button class="delete" onclick="window.location = '/del_cart/{{cart.Product_Key}}';"><i class="fa fa-close"></i></button>
+                                 </div>
 
+                                @endeach
+                                @else
+                                <div class="text-center"> ยังไม่มีสินค้าในตะกร้า </div>
+                                   @endif
                                  
                                 </div>
                                 <div class="cart-summary">
-                                    <small>3 Item(s) selected</small>
-                                    <h5>SUBTOTAL: $2940.00</h5>
+                                    <small>จำนวน {{carts.length}} สินค้า</small>
+                                    <h5>รวมค่าหิ้ว : {{sum_product}} ฿</h5>
+                                    <h5>รวมราคาสินค้า : {{sum_event}} ฿</h5>
                                 </div>
                                 <div class="cart-btns">
-                                    <a href="#">View Cart</a>
-                                    <a href="#">Checkout <i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="/view_cart">View Cart</a>
+                                    <a href="/clear_cart">Empty <i class="fa fa-trash"></i></a>
                                 </div>
                             </div>
                         </div>
