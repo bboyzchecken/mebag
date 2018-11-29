@@ -22,24 +22,25 @@ class DealerController {
             'User_Permission': 1
         });
 
-
-
         if (users != 0) {
             const password = await Hash.verify(GETDATA.password, users[0].User_Password);
             if (password) {
-
                 session.put('dealername', users[0].User_Email);
                 session.put('Dealer_ID', users[0].User_ID);
                 return response.redirect("/dealer/dashboard");
-
             } else {
                 return view.render('dealers/login', { error: " รหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบ" })
             }
-
         } else {
             return view.render('dealers/login', { error: " โปรดตรวจสอบบัญชีผู้ใช้งานของท่าน " })
         }
 
+    }
+
+    async delaer_logout({ view, session, response, request }) {
+        session.forget('dealername');
+        session.forget('Dealer_ID');        
+        return response.redirect("/dealer");
     }
 
     async dashboard({ view, session }) {
@@ -146,7 +147,7 @@ class DealerController {
             Event_Type: GETDATA.Event_Type,
             Event_Price: GETDATA.Event_Price,
             Event_TransportPrice: GETDATA.Event_TransportPrice,
-            Event_OtherTransportRate: GETDATA.Event_OtherTransportRate,
+          
             Event_Detail: GETDATA.Event_Detail,
             Event_Whose: session.get('Dealer_ID'),
             Event_CoverImage: Event_Image['_files'][0].fileName,
@@ -276,7 +277,7 @@ class DealerController {
                 Event_Type: GETDATA.Event_Type,
                 Event_Price: GETDATA.Event_Price,
                 Event_TransportPrice: GETDATA.Event_TransportPrice,
-                Event_OtherTransportRate: GETDATA.Event_OtherTransportRate,
+              
                 Event_Detail: GETDATA.Event_Detail,
             });
 

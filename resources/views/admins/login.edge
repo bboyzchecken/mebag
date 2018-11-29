@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>MEBAG.COM | ADMIN MODE</title>
+    <title>MEBAG.COM | ADMIN SYSTEM</title>
 
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
@@ -61,7 +61,7 @@
                 <h3 class="breadcrumb-header text-light"><span class="fa fa-lock text-light"></span> ผู้ดูแลระบบ</h3>
                 <ul class="breadcrumb-tree">
                     <li><a href="/" style="color: black">MEBAG.COM</a></li>
-                    <li class="active">ADMIN MODE</li>
+                    <li class="active">ADMIN SYSTEM</li>
                 </ul>
             </div>
         </div>
@@ -88,14 +88,14 @@
             @endif
         <!-- row -->
         <div class="row">
-            <div class="col-md-8 text-center">
-                <img src="../assets/img/logo.png" style="width: 100%" alt="">
+            <div class="col-md-4 text-center">
+               
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4 text-center">
                 <div class="panel panel-danger">
                     <div class="panel-heading text-center">
-                        <h3>เข้าสู่ระบบ</h3>
+                        <h3 class="text-light">เข้าสู่ระบบแอดมิน</h3>
                     </div>
                     <div class="panel-body">
                         <form method="post" action="/admin/login" enctype="multipart/form-data" role="form">
@@ -104,14 +104,14 @@
                             <div class="row">
 
                                 <div class="col-md-12">
-                                    <div class="form-group col-sm-12">
-                                        <label for="email">email</label>
+                                    <div class="form-group col-sm-12 text-left">
+                                        <label for="email" >email</label>
                                         <input type="email" name="email" id="email"
                                                class="form-control" required />
                                     </div>
 
-                                    <div class="form-group col-sm-12">
-                                        <label for="password">Password</label>
+                                    <div class="form-group col-sm-12 text-left">
+                                        <label for="password"  >Password</label>
                                         <input type="password" name="password" id="password"
                                                class="form-control" required/>
                                     </div>
@@ -131,6 +131,9 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="col-md-4 text-center">
+               
             </div>
         </div>
         <!-- /row -->

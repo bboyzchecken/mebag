@@ -24,6 +24,7 @@
         <div class="section">
                 <!-- container -->
                 <div class="container">
+                   
                     <!-- row -->
                     <div class="row">
                         <!-- Product main img -->
@@ -54,70 +55,49 @@
                         <!-- Product details -->
                         <div class="col-md-5">
                             <div class="product-details">
-                                <h2 class="product-name">{{events[0].Event_Name}}</h2>                              
+                                <h2 class="product-name">{{events[0].Event_Name}}   <span class="product-available">ดำเนินการอยู่</span></h2>                              
                                 <div>
-                                    <h3 class="product-price">ค่าหิ้ว {{events[0].Event_Price}} ฿ </h3>
-                                    <span class="product-available">ดำเนินการอยู่</span>
+                                    <h3 class="product-price">ราคาหิ้ว {{events[0].Event_Price}} ฿ / ชิ้น</h3>
+                                 
                                 </div>
+                                <div>
+                                        <h3 class="product-price">ค่าจดส่ง {{events[0].Event_TransportPrice}} ฿  / ชิ้น</h3>
+                                      
+                                    </div>
                                 <div class="table-responsive">
-                                    <table class="table  table-bordered">
-                                        <thead>
-                                        <tr>
-                                         
-                                            <th>ชื่อสินค้า</th>
-                                            <th>ขนาดหรือตัวเลือกสินค้า</th>
-                                            <th>ราคาสินค้า</th>
-                                            <th>ตัวเลือก</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if(products[0])
-                                            @each(product in products)
-                                            <tr>
-                                          
-                                                    <td>{{product.Product_Name}}</td>
-                                                    <td>{{product.Product_Type}}</td>
-                                                    <td>{{product.Product_Price}}</td>
-                                                    <td>   
-                                                        <div class="add-to-cart">
-                                                            <form action="/add_cart" method="POST">
-                                                                {{ csrfField() }}
-                                                                <input type="hidden" name="Product_Key" value="product_{{product.Product_ID}}">
-                                                                <input type="hidden" name="Product_ID" value="{{product.Product_ID}}">
-                                                                <input type="hidden" name="Product_Price" value="{{product.Product_Price}}">
-                                                                <input type="hidden" name="Product_Name" value="{{product.Product_Name}}">
-                                                                <input type="hidden" name="Event_ID" value="{{product.Event_ID}}">
-                                                                <input type="hidden" name="Event_CoverImage" value="{{events[0].Event_CoverImage}}">
-                                                                <input type="hidden" name="Event_Price" value="{{events[0].Event_Price}}">
-                                                                <div class="add-to-cart">
-                                                                        <div class="qty-label">
-                                                                            จำนวน 
-                                                                            <div class="input-number">
-                                                                                <input type="number" value="1" name="qty">
-                                                                                <span class="qty-up">+</span>
-                                                                                <span class="qty-down">-</span>
+                                        <div class="panel-default">
+                                            <div class="panel panel-heading">
+                                                <form action="/add_cart" method="POST">
+                                                    {{ csrfField() }}
+                                                   
+                                                            @if(products[0])
+                                                            <div class="form-group">
+                                                                <select name="Product_ID" class="form-control">
+                                                            @each(product in products)
+                                                                <option value="{{product.Product_ID}}">{{product.Product_Name}} {{product.Product_Type}} ราคา {{product.Product_Price}} ฿</option>
+                                                            @endeach
+                                                                </select>    
+                                                            </div>
+                                                            <div class="form-group">
+                                                                    <div class="add-to-cart">
+                                                                            <div class="qty-label">
+                                                                                จำนวน 
+                                                                                <div class="input-number">
+                                                                                    <input type="number" value="1" name="qty">
+                                                                                    <span class="qty-up">+</span>
+                                                                                    <span class="qty-down">-</span>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                                                            <button class="add-to-cart-btn" type="submit"><i class="fa fa-shopping-cart"></i> หยิบใส่ตะกร้า</button>
                                                                     </div>
-                                                            </form>
-                                                                         
-                                                        </div>                                             
-                                                                                                               
-                                                    </td>
-            
-                                                </tr>
-                                            @endeach
-                                             @else
-                                              <tr>
-                                                    <td colspan="6"><div class="alert alert-danger"><strong>แจ้งเตือน</strong> ไม่พบข้อมูลสินค้า</div></td>                                               
-            
-                                                </tr>
-                                            @endif
-                                          
-                                       
-                                        </tbody>
-                                    </table>
+                                                            </div>
+                                                            @else
+                                                                <div class="alert alert-danger text-center"><strong>แจ้งเตือน</strong> ไม่พบข้อมูลสินค้า</div>
+                                                           @endif
+                                                </form>                                              
+                                                </div>                                       
+                                          </div>
+                                   
                                 </div>
     
                            
@@ -135,7 +115,7 @@
                                 <!-- product tab nav -->
                                 <ul class="tab-nav">
                                     <li class="active"><a data-toggle="tab" href="#tab1">รายละเอียด Event</a></li>
-                                    <li><a data-toggle="tab" href="#tab2">เรทราคา Event</a></li>
+                                  
                                     <li><a data-toggle="tab" href="#tab3">โปรไฟล์คนรับหิ้ว</a></li>
                                 </ul>
                                 <!-- /product tab nav -->
@@ -153,31 +133,7 @@
                                             </div>
                                             <!-- /tab1  -->
             
-                                            <!-- tab2  -->
-                                            <div id="tab2" class="tab-pane fade in">
-                                                <div class="row">
-                                                    <div class="col-md-12 table-responsive">
-                                                        <table class="table text-center">
-                                                            <thead>
-                                                               <tr>
-                                                                <th>ราคารับหิ้ว / ชิ้น</th>
-                                                                <th>จัดส่งแบบลงทะเบียน / ชิ้น</th>
-                                                                <th>จัดส่งแบบอื่น / ชิ้น</th>
-                                                               </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>{{events[0].Event_Price}}฿</td>
-                                                                    <td>{{events[0].Event_TransportPrice}}฿</td>
-                                                                    <td>{{events[0].Event_OtherTransportRate}}฿</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                       
-                                                      </div>
-                                                </div>
-                                            </div>
-                                            <!-- /tab2  -->
+                                        
             
                                             <!-- tab3  -->
                                             <div id="tab3" class="tab-pane fade in">

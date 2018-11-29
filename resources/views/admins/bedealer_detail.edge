@@ -1,0 +1,103 @@
+@layout('template/admin')
+@section('content')
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section " style="background-color: #dc3545">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+    
+                    <h3 class="breadcrumb-header text-light"><span class="fa fa-address-book text-light"></span>
+                        จัดการผู้รับหิ้ว</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/" style="color: black">MEBAG.COM</a></li>
+                        <li class="active"><a href="/admin/managedealer">จัดการผู้รับหิ้ว</a></li>
+                        <li class="active">รายละเอียดผู้รับหิ้ว</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="container">
+      
+        <div class="row">
+                <div class="col-md-12">
+                                     <!-- ASIDE -->
+                    <div id="aside" class="col-md-3">
+                        <!-- aside Widget -->
+                        <div class="aside">
+                               
+                            <div menuItemName="Support" class="panel panel-danger ">     
+                                    <div class="panel-heading">
+                                            <h3 class="panel-title text-light">
+                                                <i class="fa fa-user-o"></i>&nbsp; ข้อมูลผู้รับหิ้ว
+                
+                                            </h3>
+                                        </div>                           
+                                <div class="list-group">
+                                    <a  data-toggle="tab" href="#detail_normal" class="list-group-item"
+                                      >
+                                        <i class="fa fa-address-card fa-fw"></i>&nbsp; ข้อมูลทั่วไป
+                                    </a>
+                                    <a  data-toggle="tab" href="#detail_card" class="list-group-item"
+                                    >
+                                        <i class="fa fa-lock fa-fw"></i>&nbsp; บัตรประชาชน
+                                    </a>
+                                    <a  data-toggle="tab" href="#detail_bank" class="list-group-item"
+                                      >
+                                        <i class="fa fa-list fa-fw"></i>&nbsp; บัญชีธนาคาร
+                                    </a>
+                                                                                                   
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /aside Widget -->
+                    </div>
+                    <!-- /ASIDE -->
+                     <!-- STORE -->
+                     <div id="store" class="col-md-9 ">
+        
+        
+                            <!-- store products -->
+                            <div class="row">
+                                <div class="panel ">
+                                    <div class="panel panel-heading">
+                                       <div class="row">
+                                           <div class="col-md-12">
+                                               <h3> ข้อมูลผู้สมัครรับหิ้ว </h3>                                             
+                                           </div>
+                                          
+                                       </div>
+            
+                                    </div>
+                                    <div class="panel panel-body">
+                                        <div class="products-tabs">
+                                            <div id="detail_normal" class="tab-pane active">
+                                                1
+                                            </div>
+                                            <div id="detail_card" class="tab-pane ">
+                                                    2
+                                            </div>
+                                            <div id="detail_bank" class="tab-pane ">
+                                                    3
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /store products -->
+            
+            
+                        </div>
+                        <!-- /STORE -->
+                </div>
+        </div>
+        
+    </div>
+@endsection

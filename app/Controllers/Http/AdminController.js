@@ -13,6 +13,14 @@ class AdminController {
         }
     }
 
+    async admin_login({ view, response, session }) {
+        return response.redirect("/admin/dashboard");
+    }
+
+    async admin_logout({ view, response, session }) {
+        return response.redirect("/admin/");
+    }
+
     //ระบบสมาชิก
     async create_page({ view, response, session }) {
         const users = await Database.from('users').where({
@@ -23,28 +31,38 @@ class AdminController {
         })
     }
 
-    async managedealer({ view, response, session }) {
-        /*  const users = await Database.from('users').where({
-             'User_ID': session.get('User_ID')
-         }); */
-        return view.render('admins/managedealer');
+    async dashboard({ view, response, session }) {
+        return view.render('admins/dashboard');
+
     }
 
     async tranfer({ view, response, session }) {
-        /*  const users = await Database.from('users').where({
-             'User_ID': session.get('User_ID')
-         }); */
         return view.render('admins/tranfer');
     }
 
     async balance({ view, response, session }) {
-        /*  const users = await Database.from('users').where({
-             'User_ID': session.get('User_ID')
-         }); */
         return view.render('admins/balance');
     }
 
-
+    async managedealer_page({ view, response, session }) {
+        const users_wait = await Database.from('users').where({
+            'User_Permission': 3
+        });
+        //return users_wait;
+        return view.render('admins/managedealer', {
+            users_wait: users_wait,
+        });
+    }
+    async bedealer_detail({ view, response, session ,params}) {
+        const user_bedealer = await params.id;
+        const users_wait_detail = await Database.from('users').where({
+            'User_ID':user_bedealer 
+        });
+        //return users_wait;
+        return view.render('admins/bedealer_detail', {
+            users_detail: users_wait_detail,
+        });
+    }
 }
 
 module.exports = AdminController

@@ -26,6 +26,7 @@
 
     <!-- Custom stlylesheet -->
     <link type="text/css" rel="stylesheet" href="../assets/css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="../assets/css/datatables.min.css"/>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -44,16 +45,15 @@
     <div id="top-header">
         <div class="container">
             <ul class="header-links pull-left">
-                <li><a href="/"><i class="fa fa-home"></i>กลับหน้าหลัก</a></li>
-                <li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
+                <li><a href="/"><i class="fa fa-home"></i>กลับหน้าหลัก</a></li>              
             </ul>
             <ul class="header-links pull-right">
                 <li><a href="/dealer/account"><img
                         src="https://storage.googleapis.com/fastwork-static/95d5413a-6a74-4507-9137-ccf6196ff4ff.jpg"
                         class="avatar" alt="">  {{users[0].User_Email}}</a></li>
 
-                <li><a href="/dealer/dashboard"><i class="fa fa-list"></i> เมนูจัดการรับหิ้วสินค้า</a></li>
-                <li><a href="/logout"><i class="fa fa-sign-out"></i> ออกจากระบบ</a></li>
+                <li><a href="/admin/account"><i class="fa fa-lock"></i> จัดการบัญชี</a></li>
+                <li><a href="/admin/logout"><i class="fa fa-sign-out"></i> ออกจากระบบ</a></li>
 
             </ul>
         </div>
@@ -61,27 +61,29 @@
     <!-- /TOP HEADER -->
 </header>
 <!-- /HEADER -->
-<!-- BREADCRUMB -->
-<div id="breadcrumb" class="section " style="background-color: #dc3545">
+
+<!-- NAVIGATION -->
+<nav id="navigation" style="background-color: #b9babc54">
     <!-- container -->
     <div class="container">
-        <!-- row -->
-        <div class="row">
-            <div class="col-md-12">
-
-                <h3 class="breadcrumb-header text-light"><span class="fa fa-shopping-bag text-light"></span>
-                    ผู้รับหิ้วสินค้า</h3>
-                <ul class="breadcrumb-tree">
-                    <li><a href="/" style="color: black">MEBAG.COM</a></li>
-                    <li class="active">ระบบรับหิ้วสินค้า</li>
-                </ul>
-            </div>
+        <!-- responsive-nav -->
+        <div id="responsive-nav">
+            <!-- NAV -->
+            <ul class="main-nav nav navbar-nav">
+                    <li class=""><a href="/admin/Dashboard">Dashboard</a></li>
+                <li class=""><a href="/admin/managedealer">จัดการผู้รับหิ้ว</a></li>
+                <li><a href="/admin/tranfer"> จัดการแจ้งโอนเงิน</a></li>
+                <li><a href="/admin/tranfer_date"> จัดการรอบโอนเงิน</a></li>
+                <li><a href="/admin/balance"> บัญชีการเงินระบบ</a></li>              
+            </ul>
+            <!-- /NAV -->
         </div>
-        <!-- /row -->
+        <!-- /responsive-nav -->
     </div>
     <!-- /container -->
-</div>
-<!-- /BREADCRUMB -->
+</nav>
+<!-- /NAVIGATION -->
+
 
 @section('content')
 
@@ -98,7 +100,7 @@
             <!-- row -->
             <div class="row">
                 <div class="col-md-12 text-center">
-                    ระบบรับฝากหิ้วสินค้า
+                    ระบบผู้ดูแลเว็บไซต์
                     <span class="copyright">
 					MEBAG.COM
 							</span>
@@ -119,10 +121,28 @@
 <script src="../assets/js/nouislider.min.js"></script>
 <script src="../assets/js/jquery.zoom.min.js"></script>
 <script src="../assets/js/main.js"></script>
+<script src="../assets/js/datatables.js"></script>
 <script !src="">
     function extraTicketAttachment() {
         jQuery("#fileUploadsContainer").append('<input type="file" name="attachments[]" class="form-control" />')
     }
+</script>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
+    $(document).ready(function() {
+        $('#dataaccept').DataTable();
+    } );
+    $(document).ready(function() {
+        $('#datareject').DataTable();
+    } );
+</script>
+<script type="text/javascript">
+	// For demo to fit into DataTables site builder...
+	$('#example')
+		.removeClass( 'display' )
+		.addClass('table table-striped table-bordered');
 </script>
 </body>
 </html>

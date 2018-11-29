@@ -23,17 +23,25 @@ Route.get("/event_detail_:event_id", 'UserController.event_detail');
 Route.get("/register", 'UserController.register_page');
 Route.get("/login", 'UserController.login_check');
 Route.get("/account", 'UserController.account');
+Route.get("/bedealer", 'UserController.bedealer_page');
+Route.post("/bedealer_register", 'UserController.bedealer_register');
 Route.get("/logout", 'UserController.logout');
 Route.post("/login/check", 'UserController.login');
 Route.post("/register/add", 'UserController.register');
 Route.post("/add_cart", 'UserController.add_cart');
+Route.get("/checkout_:user_id", 'UserController.checkout');
+//
 Route.get("/check_session", 'UserController.check_session');
 Route.get("/clear_cart", 'UserController.clear_cart');
+Route.get("/del_session", 'UserController.del_session');
 Route.get("/del_cart/:product_key", 'UserController.del_cart');
+Route.get("/view_cart", 'UserController.view_cart');
+
 ///dealer
 Route.get("/dealer", 'DealerController.index');
 Route.post("/dealer/login", 'DealerController.login');
 Route.get("/dealer/dashboard", 'DealerController.dashboard');
+Route.get("/dealer/logout", 'DealerController.delaer_logout');
 Route.get("/dealer/account", 'DealerController.account');
 Route.post("/dealer/account_edit_intro", 'DealerController.edit_intro');
 Route.get("/dealer/bank", 'DealerController.bank');
@@ -42,6 +50,8 @@ Route.get("/dealer/event_create", 'DealerController.event_create');
 Route.get("/dealer/event_detail_:event_id", 'DealerController.event_detail');
 Route.get("/dealer/event/delete/:event_id", 'DealerController.delete_event');
 Route.get("/dealer/event_edit_:event_id", 'DealerController.event_edit');
+Route.get("/dealer/accept/:order_id", 'DealerController.delete_event');
+Route.get("/dealer/reject/:order_id", 'DealerController.event_edit');
 Route.post("/dealer/event/edit/", 'DealerController.edit_event');
 Route.post("/dealer/event/add", 'DealerController.add_event');
 ////
@@ -54,8 +64,12 @@ Route.get("/dealer/product_delete/:product_id", 'DealerController.delete_product
 ////
 
 Route.get("/admin", 'AdminController.login_page');
+Route.post("admin/login", 'AdminController.admin_login');
+Route.get("/admin/logout", 'AdminController.admin_logout');
+Route.get("/admin/dashboard", 'AdminController.dashboard');
 Route.get("/admin/create_admin", 'AdminController.create_page');
-Route.get("/admin/managedealer", 'AdminController.managedealer');
+Route.get("/admin/managedealer", 'AdminController.managedealer_page');
+Route.get("/admin/bedealer_detail_:id", 'AdminController.bedealer_detail');
 Route.get("/admin/tranfer", 'AdminController.tranfer');
 Route.get("/admin/balance", 'AdminController.balance');
 

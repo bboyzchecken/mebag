@@ -1,0 +1,215 @@
+@layout('template.user')
+@section('content')
+		<!-- BREADCRUMB -->
+		<div id="breadcrumb" class="section">
+                <!-- container -->
+                <div class="container">
+                    <!-- row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="breadcrumb-tree">
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/view_cart">ตะกร้าสินค้า</a></li>                          
+                          
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /row -->
+                </div>
+                <!-- /container -->
+        </div>
+            <!-- /BREADCRUMB -->
+    
+            <!-- SECTION -->
+        <div class="section">
+                <!-- container -->
+                <div class="container">
+                    @if(flashMessage('error'))
+                    <div class="row">
+                                <div class="col-md-12">
+                                        <div class="alert alert-danger">
+                                                <strong>แจ้งเตือน !</strong>  {{flashMessage('error')}}
+                                        </div>
+                                </div>
+                        </div>
+                    @endif
+                    @if(flashMessage('success'))
+                    <div class="row">
+                                <div class="col-md-12">
+                                        <div class="alert alert-success">
+                                                <strong>แจ้งเตือน !</strong>  {{flashMessage('success')}}
+                                        </div>
+                                </div>
+                        </div>
+                    @endif
+                    <!-- row -->
+                    <div class="row">
+                        <!-- Product main img -->
+                        <div class="col-md-9">
+                                <div class="row">
+                                        <div class="col-md-12">
+                                                <div class="panel-danger">
+                                                        <div class="panel panel-heading">
+                                                                <table class="table  ">
+                                                                <thead class="text-light">
+                                                                        <tr>
+                                                                            <th>Event</th>                                                                          
+                                                                            <th colspan="4">สินค้าและตัวเลือกสินค้า</th>
+                                                                            <th>จำนวน</th>
+                                                                            <th>ราคาสินค้า / ชิ้น</th>
+                                                                            <th>ตัวเลือก</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                </table>
+                                                        </div>                                       
+                                                </div>
+                                        </div>                                        
+                                </div>
+                                
+                            @each(event_index in event_loop)
+                         
+                               <div class="row"> 
+                                    <div class="col-md-12">
+                                            <div class="form-group text-center">                                       
+                                                    <a class="" style="font-size:20px" href="/event_detail_{{event_index.Event_ID}}">
+                                                          {{event_index.Event_Name}} <script>let keep = {{event_index.Event_ID}}</script>
+                                                      </a>  
+                                         
+                                                                                              
+                                            </div>
+                                            <div class="panel-default">
+                                                    <div class="panel panel-heading">   
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                    <img src="../assets/fileuploads/events/{{event_index.Event_CoverImage}}" class="img-responsive">
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                            
+                                                                    <table class="table  ">
+                                                                            <tbody> 
+                                                                             
+                                                                                   @each(cart in carts)                                                                                     
+                                                                            
+                                                                                @if($parent.event_index.Event_ID == cart.Event_ID)
+                                                                                <tr>                                                             
+                                                                                        <td colspan="2"> {{cart.Product_Name}}   {{cart.Product_Type}}</td>                                                                                            
+                                                                                         <td>{{cart.qty}}</td>
+                                                                                         <td>x</td>
+                                                                                         <td class="">{{cart.Product_Price}}.- ฿</td>
+                                                                                         <td class="text-center"><button class="btn btn-danger text-light" onclick="window.location = '/del_cart/{{cart.Product_Key}}';"><i class="fa fa-close"></i></button></td>
+                                                                                    </tr>     
+                                                                                @endif
+                                                                                 
+                                                                                                                                                     
+                                                                                   @endeach
+                                                                                       
+                                                                                    
+                                                                                   
+                                                                                   
+                                                                              
+                                                                             </tbody>                                                                                
+                                                                    </table>
+                                                            </div>
+                                                        </div> 
+                                                        <div class="row">                                                                 
+                                                                <div class="col-md-12">
+                                                                        <table class="table  ">                                                                                  
+                                                                                 <tfoot >
+                                                                                        <tr>
+                                                                                               <th>หมายเหตุ</th>
+                                                                                               <th colspan="3" class="text-right">ค่าหิ้วสินค้า </th>                                                                       
+                                                                                               <th class="text-center">   {{event_index.Event_Price}} บาท ต่อชิ้น</th>          
+                                                                                       </tr>
+                                                                                   </tfoot>
+                                                                        </table>
+                                                                </div>
+                                                            </div> 
+                                                    </div>                                       
+                                              </div>
+                                    </div> 
+                                    
+                            </div>
+                            @else
+                            <div class="row"> 
+                                    <div class="col-md-12">
+                                           <div class="alert alert-danger text-center">
+                                                แจ้งเตือน ! ยังไม่มีสินค้าในตะกร้า
+                                           </div>
+                                    </div> 
+                                    
+                            </div>
+                            @endeach
+                                                             
+                                <div class="row">
+                                        <div class="col-md-12">
+                                                <div class="panel-danger">
+                                                        <div class="panel panel-heading">
+                                                                <table style="width:100%">                                                                                                            
+                                                                            <tfoot class="text-light">
+                                                                                 <tr>
+                                                                                        <th>ยอดรวม</th>
+                                                                                        <th colspan="3" class="text-right">สินค้า </th>                                                                       
+                                                                                        <th class="text-center">  {{sum_product}} บาท</th>          
+                                                                                </tr>               
+                                                                                <tr>                                                                      
+                                                                                        <th colspan="4" class="text-right">ค่าหิ้วสินค้า</th>
+                                                                                        <th class="text-center"> {{sum_event}} บาท</th>          
+                                                                                </tr>   
+                                                                                <tr>                                                                      
+                                                                                        <th colspan="4" class="text-right">ค่าจัดส่ง</th>
+                                                                                        <th class="text-center"> {{sum_transport}} บาท</th>          
+                                                                                </tr>     
+                                                                            </tfoot>
+                                                                           
+                                                                     
+                                                                </table>
+                                                        </div>                                       
+                                                </div>
+                                        </div>
+                                </div>
+                               
+                                
+                                        
+                               
+               
+                        </div>
+                        <!-- /Product main img -->
+                        <div class="col-md-3">
+                          <div class="panel panel-danger">
+                                <div class="panel panel-heading">
+                                        <h3 class="panel-title text-center text-light">
+                                                <i class="fa fa-database"></i>
+                                                รายละเอียด
+                                            </h3>
+                                </div>
+                                <div class="panel panel-body">
+                                        <strong>ยอดรวมชำระทั้งหมด : </strong> {{sum_transport+sum_event+sum_product}} บาท <br>
+                                      
+                                </div>  
+                                <div class="panel panel-footer text-center">
+                                        @if(users[0].User_Email)
+                                        @if(carts)
+                                        <a href="/checkout_{{users[0].User_ID}}" class="btn btn-warning text-light">
+                                                Checkout
+                                        </a>  
+                                        @else
+                                            <div class="alert alert-danger text-center"><strong>แจ้งเตือน !</strong> ไม่มีสินค้าในตะกร้า</div>
+                                        @endif                                    
+                                        @else
+                                        <div class="alert alert-danger text-center"><strong>แจ้งเตือน !</strong> กรุณาเข้าสู่ระบบ</div>
+                                        @endif                
+                                      
+                                </div>
+                          </div>
+                        </div>
+                     
+                    
+                    </div>
+                    <!-- /row -->
+                </div>
+                <!-- /container -->
+            </div>
+            <!-- /SECTION -->
+    
+        
+@endsection

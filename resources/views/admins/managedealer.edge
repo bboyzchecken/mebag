@@ -1,5 +1,147 @@
-@layout('template/admin')
+ @layout('template/admin')
 @section('content')
 
-<a href="/admin/tranfer">หน้าโอนเงิน</a>
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section " style="background-color: #dc3545">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+    
+                    <h3 class="breadcrumb-header text-light"><span class="fa fa-address-book text-light"></span>
+                        จัดการผู้รับหิ้ว</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/" style="color: black">MEBAG.COM</a></li>
+                        <li class="active">จัดการผู้รับหิ้ว</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="container">
+      
+        <div class="row">
+                <div class="col-md-12 text-center">
+                        <div class="section-nav">
+                                <ul class="section-tab-nav tab-nav text-center">
+                                    <li class="active"><a data-toggle="tab" href="#wait">รอการอนุมัติ</a></li>
+                                    <li><a data-toggle="tab" href="#accept">อนุมัติแล้ว</a></li>
+                                    <li><a data-toggle="tab" href="#reject">ไม่อนุมัติ</a></li>
+                                </ul>
+                            </div>
+                </div>
+        </div>
+        <br>
+        <div class="row">
+                <div class="col-md-12">
+                        <div class="products-tabs">
+                                <div id="wait" class="tab-pane active">
+
+                                    <!-- product -->
+                                    <div class="col-md-12  table-responsive">
+                                            <table class="table table-bordered display" id="example"  style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>ชื่อ - นามสกุล</th>
+                                                            <th>บัญชีผู้ใช้</th>
+                                                            <th>ตัวเลือก</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                         @if(users_wait)
+                                                                @each(user in users_wait)
+                                                                <tr>
+                                                                        <td> #{{user.User_ID}} </td>
+                                                                        <td>{{user.User_FirstName}} {{user.User_LastName}}</td>
+                                                                        <td>{{user.User_Email}}</td>
+                                                                        <td>
+                                                                         <a class="btn btn-info" href="/admin/bedealer_detail_{{user.User_ID}}">
+                                                                                <span class="fa fa-user-o"></span>
+                                                                            </a>
+                                                                            <a class="btn btn-success"><span class="fa fa-check"></span></a>
+                                                                            <a class="btn btn-danger"><span class="fa fa-times"></span></a>
+                                                                        </td>
+                                                                    </tr> 
+                                                                @endeach  
+                                                            @else
+                                                            <tr>
+                                                                    <td colspan="6"> ยังไม่มีผู้สมัครรับหิ้ว</td>
+                                                                   
+                                                                </tr>   
+                                                         @endif                      
+                                                        </tbody>
+                                                </table>
+                                    </div>
+                                    <!-- /product -->
+
+                                </div>
+                                <div id="accept" class="tab-pane">
+                                <!-- product -->
+                                <div class="col-md-12  table-responsive">
+                                        <table class="table table-bordered display" id="dataaccept"  style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>ชื่อ - นามสกุล</th>
+                                                        <th>บัญชีผู้ใช้</th>
+                                                        <th>ตัวเลือก</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                        <tr>
+                                                            <td> #1 </td>
+                                                            <td>จิรพัฒน์ สินธุวงศ์</td>
+                                                            <td>jirapatsintuwong@gmail.com</td>
+                                                            <td>
+                                                                <a class="btn btn-info"><span class="fa fa-user-o"></span></a>
+                                                                <a class="btn btn-success"><span class="fa fa-check"></span></a>
+                                                                <a class="btn btn-danger"><span class="fa fa-times"></span></a>
+                                                            </td>
+                                                        </tr>                         
+                                                    </tbody>
+                                            </table>
+                                </div>
+                                <!-- /product -->
+                                </div>
+                                <div id="reject" class="tab-pane">
+                                    <!-- product -->
+                                    <div class="col-md-12  table-responsive">
+                                            <table class="table table-bordered display" id="datareject"  style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>ชื่อ - นามสกุล</th>
+                                                            <th>บัญชีผู้ใช้</th>
+                                                            <th>ตัวเลือก</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                            <tr>
+                                                                <td> #1 </td>
+                                                                <td>จิรพัฒน์ สินธุวงศ์</td>
+                                                                <td>jirapatsintuwong@gmail.com</td>
+                                                                <td>
+                                                                    <a class="btn btn-info"><span class="fa fa-user-o"></span></a>
+                                                                    <a class="btn btn-success"><span class="fa fa-check"></span></a>
+                                                                    <a class="btn btn-danger"><span class="fa fa-times"></span></a>
+                                                                </td>
+                                                            </tr>                         
+                                                        </tbody>
+                                                </table>
+                                    </div>
+                                    <!-- /product -->
+                                     
+                                </div>
+                              
+                            </div>
+       
+                </div>
+        </div>
+    </div>
 @endsection

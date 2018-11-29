@@ -1,0 +1,116 @@
+@layout('template.admin')
+@section('content')
+
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>1000</h3>
+
+                        <p>จำนวนคนรับหิ้ว</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>20</h3>
+
+                        <p>จำนวนแจ้งโอน</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>1000 บาท</h3>
+
+                        <p>รายได้ของระบบ</p>
+
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box " style="background-color: #eb9fff">
+                    <div class="inner">
+                        <h3>1,000</h3>
+
+                        <p>จำนวน EVENT</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <!-- row -->
+        <div class="row ">
+            <div class="col-md-12 text-center">
+                <div class="hot-deal">
+                    <h2 class="text-uppercase">ระบบดูแลเว็บไซต์ MEBAG.COM</h2>
+                    <p>กรุณาตรวจสอบการดำเนินการทุกอย่างด้วยความระมัดระวัง</p>
+                    <ul class="hot-deal-countdown">
+                        <li>
+                            <div>
+                                <a href="/admin/managedealer">
+                                    <h3><i class="fa fa-address-book"></i></h3>
+                                    <span>จัดการผู้รับหิ้ว</span>
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <a href="/admin/tranfer"><h3><i class="fa fa-bullhorn"></i></h3>
+                                    <span>การแจ้งโอน</span></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <a href="/admin/tranfer_date"><h3><i class="fa fa-calendar"></i></h3>
+                                    <span>รอบการโอนเงิน</span></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <a href="/admin/balance"><h3><i class="fa fa-dollar"></i></h3>
+                                    <span>บัญชีการเงินของระบบ</span></a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+@endsection
