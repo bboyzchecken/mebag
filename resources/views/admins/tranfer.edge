@@ -1,4 +1,66 @@
 @layout('template/admin')
 @section('content')
-<a href="/admin/balance">ไปหน้ารายได้ของระบบ</a>
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section " style="background-color: #dc3545">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+    
+                    <h3 class="breadcrumb-header text-light"><span class="fa fa-bullhorn text-light"></span>
+                        จัดการแจ้งโอนเงิน</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/admin/dashboard" style="color: black">Dashboard</a></li>
+                        <li class="active">จัดการแจ้งโอนเงิน</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                    <table class="table table-bordered display" id="example"  style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>ชื่อ - นามสกุล</th>
+                                    <th>ยอดโอนเงิน</th>
+                                    <th>ตัวเลือก</th>
+                                </tr>
+                            </thead>
+                            <tbody>     
+                            
+                                      @if(tranfers.length>0)
+                                      @each(tranfer in tranfers)
+                                      <tr>
+                                            <td> #{{tranfer.User_ID}} </td>
+                                            <td>{{tranfer.User_FirstName}} {{tranfer.User_LastName}} </td>
+                                            <td class="text-center"> <Label class="label label-danger" style="font-size: 15px"> {{tranfer.User_Wallet}} ฿</Label></td>
+                                            <td>                                                      
+                                             <a class="btn btn-primary" href="/admin/receipt_upload_{{tranfer.User_ID}}">
+                                                <i class="fa fa-upload"></i> อัพโหลดหลักฐาน
+                                                </a>
+                                              
+                                            <a class="btn btn-success" href="/admin/accept_tranfer_{{tranfer.User_ID}}"><span class="fa fa-check"></span> จ่ายเงินแล้ว</a> 
+                                                                                             
+                                            </td>
+                                        </tr> 
+                                      @endeach
+                                     
+                                      @endif
+                                       
+                                       
+                                   
+                                                     
+                                </tbody>
+                        </table>    
+            </div>
+        </div>
+    </div>
 @endsection

@@ -6,7 +6,7 @@ const Hash = use('Hash');
 const lodash = require('lodash');
 const Helpers = use('Helpers')
 const Encryption = use('Encryption');
-
+const format = use('date-format');
 class UserController {
 
     async index({ view, response, session }) {
@@ -14,7 +14,7 @@ class UserController {
             'User_ID': session.get('User_ID')
         });
 
-        const events = await Database.from('events');
+        const events = await Database.from('events').limit(4).orderBy('Event_ID', 'desc');
 
         return view.render('welcome', {
             users: users,
@@ -24,7 +24,6 @@ class UserController {
             sum_event: session.get('sum_event'),
         })
     }
-
 
     //ระบบสมาชิก
     async register_page({ view, response, session }) {
@@ -53,6 +52,7 @@ class UserController {
                         User_BirthDay: GETDATA.User_BirthDay,
                         User_Tel: GETDATA.User_Tel,
                         User_Email: GETDATA.User_Email,
+                        User_Image: 0,
                         User_Address: GETDATA.User_Address,
                         User_Password: await Hash.make(GETDATA.confirm_password.trim()),
                         User_Permission: '0'
@@ -79,7 +79,7 @@ class UserController {
                 }
             } else {
                 return view.render('users/register', {
-                    error: "รูปแบบของรหัสผ่านไม่ถูกต้อง ไม่อณุญาตให้ใช้ภาษาไทยเป็นรหัสผ่าน หรือ รหัสผ่านน้อยกว่า 4 ตัวอักษร",
+                    error: "รูปแบบของรหัสผ่านไม่ถูกต้อง ไม่อณุญาตให้ใช้ภาษาไทยเป็นรหัสผ่าน หรือ รหัสผ่านน้อยกว่า 6 ตัวอักษร",
                     alert: "alert-danger",
                     sum_product: session.get('sum_product'),
                     sum_event: session.get('sum_event'),
@@ -135,10 +135,12 @@ class UserController {
     }
 
     async account({ view, session }) {
+
         if (session.get('username')) {
             const users = await Database.from('users').where({
                 'User_ID': session.get('User_ID')
             });
+
             return view.render('users/account', {
                 users: users,
                 carts: session.get('cart'),
@@ -299,6 +301,7 @@ class UserController {
         if (GETDATA.qty != 0) {
             if (session.get('cart')) {
                 const result = session.get('cart').find(product => product.Product_Key === "product_" + products[0].Product_ID);
+                //console.log(result)
                 if (result) {
                     session.put('sum_transport', parseFloat(session.get('sum_transport')) + (parseFloat(GETDATA.qty) * parseFloat(products[0].Event_TransportPrice)));
                     session.put('sum_product', parseFloat(session.get('sum_product')) + (parseFloat(GETDATA.qty) * parseFloat(products[0].Product_Price)));
@@ -346,10 +349,7 @@ class UserController {
                     Event_CoverImage: products[0].Event_CoverImage,
                     Event_Price: products[0].Event_Price,
                     Event_TransportPrice: products[0].Event_TransportPrice,
-                    qty: GETDATA.qty,
-                    sum_event: parseFloat(GETDATA.qty) * parseFloat(products[0].Event_Price),
-                    sum_product:parseFloat(GETDATA.qty) * parseFloat(products[0].Product_Price),
-                    sum_transport:parseFloat(GETDATA.qty) * parseFloat(products[0].Event_TransportPrice),
+                    qty: GETDATA.qty
                 });
 
                 //let re_key = lodash.keyBy(cart, "Product_Key");
@@ -361,33 +361,6 @@ class UserController {
                 return session.get('cart')[GETDATA.Product_Key];
             }
         }
-
-        /*   if (GETDATA.qty != 0) {
-              if (session.get('total')) {
-                  if (session.get(GETDATA.Product_ID)) {
-                      session.put('qty_' + GETDATA.Product_ID, parseInt(session.get('qty_' + GETDATA.Product_ID)) + parseInt(GETDATA.qty));
-                      return session.all();
-                      return "มี " + session.get(GETDATA.Product_ID) + " แล้ว :" + session.get('qty_' + GETDATA.Product_ID) + " ชิ้น จำนวนสินค้าทั้งหมดในตะกร้า " + session.get('total') + " สินค้า";
-                  } else {
-                      session.put('total', session.get('total') + 1);
-                      session.put(GETDATA.Product_ID, GETDATA.Product_ID);
-                      session.put('qty_' + GETDATA.Product_ID, parseInt(GETDATA.qty));
-                      return session.all();
-                      return "ใส่" + GETDATA.Product_ID + "ลงในตะกร้า จำนวน " + session.get('qty_' + GETDATA.Product_ID) + "ชิ้น เรียบร้อยแล้ว";
-                  }
-  
-              } else {
-                  session.put('total', session.get('total') + 1);
-                  session.put(GETDATA.Product_ID, GETDATA.Product_ID);
-                  session.put('qty_' + GETDATA.Product_ID, parseInt(GETDATA.qty));
-                  return session.all();
-                  return "ใส่" + GETDATA.Product_ID + "ลงในตะกร้า จำนวน " + session.get('qty_' + GETDATA.Product_ID) + "ชิ้น เรียบร้อยแล้ว";
-              }
-          }else{
-              return "ใส่ QTY > 0";
-          }  
-*/
-
 
     }
 
@@ -457,37 +430,71 @@ class UserController {
                 let sum_event = 0;
                 let sum_product = 0;
                 let sum_transport = 0;
+                let obj_sum = [];
                 const test = session.get('cart').find(product => product.Event_ID === 17);
+
                 for (let index = 0; index < event_loop.length; index++) {
                     const result_cart = session.get('cart').find(product => product.Event_ID === event_loop[index]);
+                    // console.log(event_loop[index])
 
-               
-                   
+                    for (let cart_index = 0; cart_index < session.get('cart').length; cart_index++) {
+                        if (session.get('cart')[cart_index].Event_ID == event_loop[index]) {
+                            sum_event = parseFloat(sum_event) + parseFloat(session.get('cart')[cart_index].qty) * parseFloat(session.get('cart')[cart_index].Event_Price);
+                            sum_product = parseFloat(sum_product) + parseFloat(session.get('cart')[cart_index].qty) * parseFloat(session.get('cart')[cart_index].Product_Price);
+                            sum_transport = parseFloat(sum_transport) + parseFloat(session.get('cart')[cart_index].qty) * parseFloat(session.get('cart')[cart_index].Event_TransportPrice);
+                        }
 
-                    /*   let checkout_id = await Database.table("orders").insert({
-                          Order_Whose: session.get('User_ID'),
-                          Order_ToWho: result_cart.Event_Whose,
-                          Event_ID: result_cart.Event_ID,
-                          Event_Name: result_cart.Event_Name,
-                          Order_PriceRate: session.get('sum_event'),
-                          Order_Transport: session.get('sum_transport'),
-                          Order_Sum: session.get('sum_product'),
-                          Order_Status: '0',
-                      });
-                      if(!checkout_id){
-                          session.flash({ error: 'ไม่สามารถ checkout ได้' })
-                          return response.redirect('back');
-                      } */
+                    }
+                    /*  console.log(sum_event)
+                     console.log(sum_product)
+                     console.log(sum_transport) */
+                    const checkout_id = await Database.table("orders").insert({
+                        Order_Whose: session.get('User_ID'),
+                        Order_ToWho: result_cart.Event_Whose,
+                        Event_ID: result_cart.Event_ID,
+                        Event_Name: result_cart.Event_Name,
+                        Order_SumEvent: sum_event,
+                        Order_SumTransport: sum_transport,
+                        Order_SumProduct: sum_product,
+                        Order_Total: parseFloat(sum_event) + parseFloat(sum_transport) + parseFloat(sum_product),
+                        Order_Status: '0',
+                        Order_date: format.asString('dd-MM-yyyy', new Date())
+                    });
+                    //event_loop คือ  ไอดี Event  id event and product ยัด product all ลงใน detail order
+                    for (let cart_index = 0; cart_index < session.get('cart').length; cart_index++) {
+                        if (session.get('cart')[cart_index].Event_ID == event_loop[index]) {
+                            let detail_id = await Database.table("order_details").insert({
+                                Order_ID: checkout_id,
+                                Product_ID: session.get('cart')[cart_index].Product_ID,
+                                Product_Name: session.get('cart')[cart_index].Product_Name,
+                                Product_Type: session.get('cart')[cart_index].Product_Type,
+                                Product_Price: session.get('cart')[cart_index].Product_Price,
+                                qty: session.get('cart')[cart_index].qty
+                            });
+                            /*   console.log(session.get('cart')[cart_index]) */
+                            if (!detail_id) {
+                                session.flash({ error: 'ไม่สามารถ checkout ได้' })
+                                return response.redirect('back');
+                            }
+                        }
+
+
+                    }
+                    //console.log('++++++++++++++++++++++++')
+
+
+                    if (!checkout_id) {
+                        session.flash({ error: 'ไม่สามารถ checkout ได้' })
+                        return response.redirect('back');
+                    }
+                    sum_event = 0;
+                    sum_product = 0;
+                    sum_transport = 0;
                 }
-                /* 
-                                const Product_Key = await params.product_key;
-                                const index = session.get('cart').findIndex(product => product.Product_Key === Product_Key);
-                                session.put('sum_product', parseInt(session.get('sum_product')) - (parseFloat(session.get('cart')[index].qty) * parseFloat(session.get('cart')[index].Product_Price)));
-                                session.put('sum_event', parseInt(session.get('sum_event')) - (parseFloat(session.get('cart')[index].qty) * parseFloat(session.get('cart')[index].Event_Price)));
-                                session.put('sum_transport', parseInt(session.get('sum_transport')) - (parseFloat(session.get('cart')[index].qty) * parseFloat(session.get('cart')[index].Event_TransportPrice)));
-                                (session.get('cart')).splice(index, 1);
-                                return response.redirect("back"); */
-
+                session.forget('cart');
+                session.put('sum_transport', parseFloat(0));
+                session.put('sum_product', parseFloat(0));
+                session.put('sum_event', parseFloat(0));
                 session.flash({ success: 'สั่งสินค้าเรียบร้อยแล้ว กรุณาตรวจสอบใน การซื้อของฉัน' })
                 return response.redirect('back');
             } else {
@@ -510,55 +517,6 @@ class UserController {
 
     }
 
-    upload_image({ request, response }) {
-
-    }
-
-    change_password({ request, response }) {
-
-    }
-
-    forgot_password({ request, response }) {
-
-    }
-
-    select_accout({ request, response }) {
-
-    }
-
-    edit_accout({ request, response }) {
-
-    }
-
-    ///ส่วนของการซ์ื้อของฉัน
-
-    select_topay({ request, response }) {
-
-    }
-
-    select_torecive({ request, response }) {
-
-    }
-
-    select_success({ request, response }) {
-
-    }
-
-    select_cancel({ request, response }) {
-
-    }
-
-    select_event({ request, response }) {
-
-    }
-
-    payment({ request, response }) {
-
-    }
-
-    register_dealer({ request, response }) {
-
-    }
 
     async event_detail({ params, view, session, request, response }) {
         const event_id = await params.event_id;
@@ -606,6 +564,351 @@ class UserController {
 
     }
 
+    async all_events({ params, view, session, request, response }) {
+        const users = await Database.from('users').where({
+            'User_ID': session.get('User_ID')
+        });
+
+        const events = await Database.from('events').orderBy('Event_ID', 'desc');
+        const event_widget = await Database.from('events').orderBy('Event_ID', 'desc').limit(4).orderBy('Event_ID', 'desc');
+
+        return view.render('users/all_events', {
+            users: users,
+            events: events,
+            carts: session.get('cart'),
+            sum_product: session.get('sum_product'),
+            sum_event: session.get('sum_event'),
+            event_widget: event_widget
+        })
+
+    }
+
+    async history({ params, view, session, request, response }) {
+        // let event_uniq = lodash.uniqBy(session.get('cart'), 'Event_ID');
+        if (session.get('username')) {
+            const users = await Database.from('users').where({
+                'User_ID': session.get('User_ID')
+            });
+            //ออเดอร์รอคนหิ้วรับ
+            const orders_wait = await Database.from('orders').innerJoin('order_details', 'orders.Order_ID', 'order_details.Order_ID').innerJoin('events', 'orders.Event_ID', 'events.Event_ID').where({
+                'Order_Whose': session.get('User_ID'),
+                'Order_Status': '0'
+            });
+            let events_wait = lodash.uniqBy(orders_wait, 'Order_ID');
+
+            //ออเดอร์ที่คนหิ้วรับแล้วแต่รอจ่าย 
+            const orders_topay = await Database.from('orders').innerJoin('order_details', 'orders.Order_ID', 'order_details.Order_ID').innerJoin('events', 'orders.Event_ID', 'events.Event_ID').where({
+                'Order_Whose': session.get('User_ID'),
+                'Order_Status': 'accept'
+            });
+            let events_topay = lodash.uniqBy(orders_topay, 'Order_ID');
+            //ออเดอร์ที่จ่ายแล้วรอแอดมินตรวจสอบ          
+            //ออเดอร์ที่แอดมินอนุมัติแล้วรอรับ
+            const orders_torecive = await Database.from('orders').innerJoin('order_details', 'orders.Order_ID', 'order_details.Order_ID').innerJoin('events', 'orders.Event_ID', 'events.Event_ID').where({
+                'Order_Whose': session.get('User_ID'),
+                'Order_Status': 'paid'
+            });
+            let events_torecive = lodash.uniqBy(orders_torecive, 'Order_ID');
+            //ออเดอร์ที่กดรับของเรียบร้อยแล้ว
+            const orders_success = await Database.from('orders').innerJoin('order_details', 'orders.Order_ID', 'order_details.Order_ID').innerJoin('events', 'orders.Event_ID', 'events.Event_ID').where({
+                'Order_Whose': session.get('User_ID'),
+                'Order_Status': 'success'
+            });
+            let events_success = lodash.uniqBy(orders_success, 'Order_ID');
+            //ออเดอร์ที่คนหิ้วไม่รับ
+            const order_cancel = await Database.from('orders').innerJoin('order_details', 'orders.Order_ID', 'order_details.Order_ID').innerJoin('events', 'orders.Event_ID', 'events.Event_ID')
+                .where({
+                    'Order_Whose': session.get('User_ID'),
+                    'Order_Status': 'reject'
+                   
+                }).orWhere({
+                    'Order_Whose': session.get('User_ID'),
+                    'Order_Status': 'cancel'
+                });
+            let events_cancel = lodash.uniqBy(order_cancel, 'Order_ID');
+
+            return view.render('users/history', {
+                users: users,
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+                orders_wait: orders_wait,
+                orders_topay: orders_topay,
+                orders_torecive: orders_torecive,
+                orders_success: orders_success,
+                order_cancel: order_cancel,
+                events_wait: events_wait,
+                events_topay: events_topay,
+                events_torecive: events_torecive,
+                events_success: events_success,
+                events_cancel: events_cancel,
+
+            })
+        } else {
+            return view.render('users/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+
+            })
+        }
+
+    }
+    async upload_image({ params, view, session, request, response }) {
+        if (session.get('username')) {
+
+            const profilePic = request.file('profile', {
+                types: ['image'],
+                size: '2mb'
+            })
+
+
+            await profilePic.moveAll(Helpers.publicPath('assets/fileuploads/profilepicture/' + session.get('User_ID')), (file) => {
+                return {
+                    name: session.get('User_ID') + "_" + Encryption.encrypt(file.fileName) + "." + `${file.subtype}`
+                }
+            })
+
+            if (profilePic.movedAll()) {
+                let update = await Database.table('users').where('User_ID', session.get('User_ID')).update({
+                    User_Image: profilePic['_files'][0].fileName
+                });
+
+                if (update) {
+                    session.flash({ success: 'อัพโหลดรูปสำเร็จ ' })
+                    return response.redirect('back');
+                } else {
+                    session.flash({ error: 'อัพโหลดไม่สำเร็จ' })
+                    return response.redirect('back');
+                }
+
+            } else {
+                session.flash({ error: profilePic.error() })
+                return response.redirect('back');
+            }
+        } else {
+            return view.render('users/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+
+            })
+        }
+
+    }
+    async edit_profile({ params, view, session, request, response }) {
+        if (session.get('username')) {
+            let DATA = request.post();
+            let update = await Database.table('users').where('User_ID', session.get('User_ID')).update({
+                User_FirstName: DATA.User_FirstName,
+                User_LastName: DATA.User_LastName,
+                User_BirthDay: DATA.User_BirthDay,
+                User_Address: DATA.User_Address,
+                User_Tel: DATA.User_Tel,
+                User_Sex: DATA.User_Sex,
+            });
+            if (update) {
+                session.flash({ success: 'แก้ไขข้อมูลสำเร็จ ' })
+                return response.redirect('back');
+            } else {
+                session.flash({ error: 'แก้ไขข้อมูลไม่สำเร็จ' })
+                return response.redirect('back');
+            }
+        } else {
+            return view.render('users/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+
+            })
+        }
+
+    }
+    async change_password_page({ params, view, session, request, response }) {
+        if (session.get('username')) {
+            const users = await Database.from('users').where({
+                'User_ID': session.get('User_ID')
+            });
+
+            return view.render('users/password', {
+                users: users,
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+            })
+        } else {
+            return view.render('users/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+
+            })
+        }
+
+    }
+    async password_change({ params, view, session, request, response }) {
+        if (session.get('username')) {
+            let DATA = request.post();
+            const users = await Database.from('users').where({
+                'User_ID': session.get('User_ID')
+            });
+
+            const password = await Hash.verify(DATA.oldpassword, users[0].User_Password);
+
+            if (password) {
+                const pattern_eng = /^[a-zA-Z0-9\s]+$/;
+                if (DATA.confirmpassword.length > 6 && DATA.confirmpassword.length < 26 && DATA.confirmpassword.match(pattern_eng)) {
+                    if (DATA.confirmpassword == DATA.newpassword) {
+                        let update = await Database.table('users').where('User_ID', session.get('User_ID')).update({
+                            User_Password: await Hash.make(DATA.confirmpassword.trim())
+                        });
+                        if (update) {
+                            session.flash({ success: 'เปลี่ยนรหัสผ่านสำเร็จ ' })
+                            return response.redirect('back');
+                        } else {
+                            session.flash({ error: 'เปลี่ยนรหัสผ่านไม่สำเร็จ กรุณาติดต่อเจ้าหน้าที่' })
+                            return response.redirect('back');
+                        }
+                    } else {
+                        session.flash({ error: 'เปลี่ยนรหัสผ่านไม่สำเร็จ กรุณากรอกรหัสผ่านตรงกัน' })
+                        return response.redirect('back');
+                    }
+                } else {
+                    session.flash({ error: 'เปลี่ยนรหัสผ่านไม่สำเร็จ รูปแบบของรหัสผ่านไม่ถูกต้อง ไม่อณุญาตให้ใช้ภาษาไทยเป็นรหัสผ่าน หรือ รหัสผ่านน้อยกว่า 4 ตัวอักษร' })
+                    return response.redirect('back');
+                }
+
+            } else {
+                session.flash({ error: 'รหัสผ่านไม่ถูกต้อง' })
+                return response.redirect('back');
+            }
+
+        } else {
+            return view.render('users/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+
+            })
+        }
+
+    }
+    async payment_page({ params, view, session, request, response }) {
+        let order_id = params.order_id;
+        if (session.get('username')) {
+            const users = await Database.from('users').where({
+                'User_ID': session.get('User_ID')
+            });
+
+            let orders = await Database.from('orders').where({
+                'Order_ID': order_id,
+                'Order_Whose': session.get('User_ID'),
+                Order_Status: 'accept'
+            });
+            if (orders.length < 1) {
+                session.flash({ error: 'ไม่มีออเดอร์นี้อยู่ กรุณาตรวจสอบ' })
+                return response.redirect('/history');
+            }
+
+            return view.render('users/payment', {
+                users: users,
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+                orders: orders
+            })
+        } else {
+            return view.render('users/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+
+            })
+        }
+
+    }
+    async payment({ params, view, session, request, response }) {
+        const DATA = request.post();
+        if (session.get('username')) {
+
+            let orders = await Database.from('orders').where({
+                Order_ID: DATA.Order_ID,
+                Order_Whose: session.get('User_ID'),
+                Order_Status: 'accept'
+            });
+            if (orders.length > 0) {
+
+                const Payment_Receipt = request.file('Payment_Receipt', {
+                    types: ['image'],
+                    size: '2mb'
+                })
+
+
+                await Payment_Receipt.moveAll(Helpers.publicPath('assets/fileuploads/receipts/' + session.get('User_ID')), (file) => {
+                    return {
+                        name: session.get('User_ID') + "_" + Encryption.encrypt(file.fileName) + "." + `${file.subtype}`
+                    }
+                })
+
+                if (Payment_Receipt.movedAll()) {
+                    let payment_id = await Database.table('payments').insert({
+                        Order_ID: DATA.Order_ID,
+                        Payment_Urgent: DATA.Payment_Urgent,
+                        Payment_Message: DATA.Payment_Message,
+                        Payment_Bank: DATA.Payment_Bank,
+                        Payment_Time: DATA.Payment_Time,
+                        Payment_Date: DATA.Payment_Date,
+                        Payment_Amount: DATA.Payment_Amount,
+                        Payment_Receipt: Payment_Receipt['_files'][0].fileName,
+                        Payment_Whose: session.get('User_ID'),
+                        Payment_Status: '0'
+
+
+
+                    });
+                    if (payment_id) {
+                        let paymentup = await Database.table('orders').where('Order_ID', DATA.Order_ID).update({
+                            Order_Payment: payment_id
+                        });
+                        if (paymentup) {
+                            session.flash({ success: 'แจ้งชำระเงินสำเร็จ กรุณารอเจ้าหน้าที่ตรวจสอบ ' })
+                            return response.redirect('/history');
+                        } else {
+                            session.flash({ error: 'แจ้งชำระเงินไม่สำเร็จ กรุณาติดต่อเจ้าหน้าที่' })
+                            return response.redirect('/history');
+                        }
+                    } else {
+                        session.flash({ error: 'แจ้งชำระเงินไม่สำเร็จ กรุณาติดต่อเจ้าหน้าที่' })
+                        return response.redirect('/history');
+                    }
+
+                } else {
+
+                    session.flash({ error: 'การอัพโหลด ใบเสร็จโอนเงินมีปัญหา กรุณาตรวจสอบไฟล์' })
+                    return response.redirect('/history');
+                }
+
+            } else {
+                session.flash({ error: 'ไม่มีออเดอร์นี้อยู่ กรุณาตรวจสอบ' })
+                return response.redirect('/history');
+            }
+
+        } else {
+            return view.render('users/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+            })
+        }
+
+    }
 }
 
 

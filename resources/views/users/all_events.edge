@@ -1,0 +1,219 @@
+@layout('template.user')
+@section('content')
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/allevent">All Categories</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+    
+    <!-- SECTION -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- ASIDE -->
+                <div id="aside" class="col-md-3">
+    
+                    <!-- aside Widget -->
+                    <div class="aside">
+                        <h3 class="aside-title">กำหนดค่ารับหิ้ว</h3>
+                        <div class="price-filter">
+                            <div id="price-slider"></div>
+                            <div class="input-number price-min">
+                                <input id="price-min" type="number">
+                                <span class="qty-up">+</span>
+                                <span class="qty-down">-</span>
+                            </div>
+                            <span>-</span>
+                            <div class="input-number price-max">
+                                <input id="price-max" type="number">
+                                <span class="qty-up">+</span>
+                                <span class="qty-down">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /aside Widget -->
+    
+    
+    
+                    <!-- aside Widget -->
+                    <div class="aside">
+                        <h3 class="aside-title">Event แนะนำ</h3>
+                        @each(event in event_widget)
+                        
+                        <div class="product-widget">
+                                <div class="product-img">
+                                <img src="assets/fileuploads/events/{{event.Event_CoverImage}}" alt="">
+                                </div>
+                                <div class="product-body">
+                                    <p class="product-category">All Category</p>
+                                    <h3 class="product-name"><a href="/event_detail_{{event.Event_ID}}">{{event.Event_Name}}</a></h3>
+                                    <h4 class="product-price">{{event.Event_Price}} ฿ </h4>
+                                </div>
+                            </div>
+        
+                        @endeach
+       
+                    </div>
+                    <!-- /aside Widget -->
+                </div>
+                <!-- /ASIDE -->
+    
+                <!-- STORE -->
+                <div id="store" class="col-md-9">
+                            <div class="row">
+                                    <!-- store top filter -->
+                                <div class="store-filter clearfix">
+                                        <div class="store-sort">
+                                            <label>
+                                                เรียงตาม:
+                    
+                                            </label>
+                                            <div class="section-nav">
+                                                <ul class="section-tab-nav tab-nav">
+                                                    <li class="active"><a data-toggle="tab" href="#recent">ล่าสุด</a></li>
+                                                    <li><a data-toggle="tab" href="#cheap">ราคาต่ำสุด</a></li>
+                                                    <li><a data-toggle="tab" href="#height">ราคาสูงสุด</a></li>
+                                                    <li><a data-toggle="tab" href="#timeup">ใกล้หมดเวลา</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                    <!-- /store top filter -->
+                            </div>
+    
+                    <!-- store products -->
+                    <div class="row">
+                        <div class="products-tabs">
+                            <div id="recent" class="tab-pane active">
+                       
+                                  @each(event in events)
+                                          <!-- product -->
+                                          <div class="col-md-4">
+                                                <!-- product -->
+                                                   <div class="product">
+                                                           <div class="product-img">
+                                                               <img src="assets/fileuploads/events/{{event.Event_CoverImage}}" style="width: 100%;height: 174px" alt="">
+                                                               <div class="product-label">
+                                                                   <span class="new">มาใหม่</span>
+                                                               </div>
+                                                           </div>
+                                                           <div class="product-body">
+                                                               <p class="product-category">หมวดหมู่</p>
+                                                               <h3 class="product-name"><a href="#">{{event.Event_Name}}</a></h3>
+                                                               <h4 class="product-price">{{event.Event_Price}} ฿.-</h4>
+                                                               <p class="product-category">ระยะเวลา</p>
+                                                               <h4 class="product-price">{{event.Event_Start}} - {{event.Event_End}}</h4>
+                               
+                                                               <div class="product-rating">
+                                                                   <i class="fa fa-star"></i>
+                                                                   <i class="fa fa-star"></i>
+                                                                   <i class="fa fa-star"></i>
+                                                                   <i class="fa fa-star"></i>
+                                                                   <i class="fa fa-star"></i>
+                                                               </div>
+                                                               <div class="product-btns">
+                                                                   <button onclick="window.location.href='/event_detail_{{event.Event_ID}}'" class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">ดูเพิ่มเติม</span>
+                                                                   </button>
+                                                               </div>
+                                                           </div>
+                                                           <div class="add-to-cart">
+                                                               <button onclick="window.location.href='/event_detail_{{event.Event_ID}}'" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> ดูเพิ่มเติม
+                                                               </button>
+                                                       
+                                                           </div>
+                                                       </div>
+                                                       <!-- /product -->
+                                               </div>
+                                               <!-- /product -->
+                                  @endeach
+                              
+                               
+                                
+                            </div>
+                            <div id="cheap" class="tab-pane">
+                               
+                            </div>
+                        </div>
+    
+    
+    
+    
+    
+    
+                    </div>
+                    <!-- /store products -->
+    
+                    <div class="row">
+                        <!-- store bottom filter -->
+                        <div class="store-filter clearfix">
+                            <ul class="store-pagination">
+                                <li class="active">1</li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+                            </ul>
+                        </div>
+                        <!-- /store bottom filter -->
+                    </div>   
+                </div>
+                <!-- /STORE -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+    
+    <!-- NEWSLETTER -->
+    <div id="newsletter" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="newsletter">
+                        <p>รับข่าวสาร <strong>โปรโมชั่น</strong></p>
+                        <form>
+                            <input class="input" type="email" placeholder="กรอกอีเมล">
+                            <button class="newsletter-btn"><i class="fa fa-envelope"></i> ติดตาม</button>
+                        </form>
+                        <ul class="newsletter-follow">
+                            <li>
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /NEWSLETTER -->
+    @endsection

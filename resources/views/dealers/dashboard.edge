@@ -11,7 +11,7 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>10</h3>
+                        <h3>{{count_events.length}}</h3>
 
                         <p>Event</p>
                     </div>
@@ -26,9 +26,9 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>20</h3>
+                    <h3>{{orders.length}}</h3>
 
-                        <p>ออเดอร์</p>
+                        <p>ออเดอร์มาใหม่</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
@@ -41,9 +41,9 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>1000</h3>
+                        <h3>{{count_orders.length}}</h3>
 
-                        <p>สินค้าทั้งหมด</p>
+                        <p>ออเดอร์ทั้งหมด</p>
 
                     </div>
                     <div class="icon">
@@ -57,7 +57,7 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>1,000฿</h3>
+                    <h3>{{users[0].User_Wallet}}฿</h3>
 
                         <p>ยอดรับทั้งหมด</p>
                     </div>
@@ -110,6 +110,25 @@
             </div>
         </div>
         <!-- /row -->
+       @if(flashMessage('success'))
+       <div class="row ">
+            <div class="col-md-12 text-center table-responsive">
+                <div class="alert alert-success">
+                    <strong>แจ้งเตือน !</strong> {{flashMessage('success')}}
+                </div>
+            </div>
+        </div>
+       @endif
+
+       @if(flashMessage('error'))
+       <div class="row ">
+            <div class="col-md-12 text-center table-responsive">
+                <div class="alert alert-danger">
+                    <strong>แจ้งเตือน !</strong> {{flashMessage('error')}}
+                </div>
+            </div>
+        </div>
+       @endif
           <!-- row -->
           <div class="row ">
             <div class="col-md-12 text-center table-responsive">
@@ -124,15 +143,29 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if(orders.length > 0)
+
+                        @each(order in orders)
                         <tr>
-                            <td>1</td>
-                            <td>test</td>
-                            <td> 12000 บาท</td>
-                            <td>
-                            <a class="btn btn-success" href="/dealer/accept_order/{{'order_ID'}}"><span class="fa fa-check"></span></a>
-                                <a class="btn btn-danger" href="/dealer/reject_order/{{'order_ID'}}"><span class="fa fa-times"></span></a>
-                            </td>
-                        </tr>
+                                <td>{{order.Order_ID}}</td>
+                                <td>{{order.Event_Name}}</td>
+                                <td> {{order.Order_Total}} บาท</td>
+                                <td>
+                                <a class="btn btn-info" href="/dealer/order_detail_{{order.Order_ID}}"><span class="fa fa-search-plus"></span></a>
+                                <a class="btn btn-success" href="/dealer/accept/{{order.Order_ID}}"><span class="fa fa-check"></span></a>
+                                    <a class="btn btn-danger" href="/dealer/reject/{{order.Order_ID}}"><span class="fa fa-times"></span></a>
+                                </td>
+                            </tr>
+                        @endeach
+                        
+                        @else
+                        <tr>
+                                <td colspan="4">
+                                    <div class="alert alert-danger text-center"><strong>แจ้งเตือน !</strong> ไม่พบออเดอร์ใหม่</div>
+                                </td>
+                            </tr>
+                        @endif
+                        
                     </tbody>
                 </table>
             </div>

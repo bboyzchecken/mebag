@@ -26,7 +26,7 @@
 
     <!-- Custom stlylesheet -->
     <link type="text/css" rel="stylesheet" href="../assets/css/style.css"/>
-
+    <link type="text/css" rel="stylesheet" href="../assets/css/datatables.min.css"/>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -48,9 +48,17 @@
                 <li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
             </ul>
             <ul class="header-links pull-right">
-                <li><a href="/dealer/account"><img
-                        src="https://storage.googleapis.com/fastwork-static/95d5413a-6a74-4507-9137-ccf6196ff4ff.jpg"
-                        class="avatar" alt="">  {{users[0].User_Email}}</a></li>
+                <li><a href="/dealer/account">
+                    @if(users[0].User_Image==0 && users[0].User_Sex=="Male")
+                    <img src="../assets/img/men_avatar.png" class="avatar" alt="">
+                    @elseif(users[0].User_Image==0 && users[0].User_Sex=="Female")
+                    <img src="../assets/img/women_avatar.png" class="avatar" alt="">
+                    @elseif(users[0].User_Image==0 && users[0].User_Sex=="Other")
+                    <img src="../assets/img/other_avatar.png" class="avatar" alt="">
+                    @else
+                    <img src="../assets/fileuploads/profilepicture/{{users[0].User_ID}}/{{users[0].User_Image}}" class="avatar" alt="">
+                    @endif
+                    {{users[0].User_Email}}</a></li>
 
                 <li><a href="/dealer/dashboard"><i class="fa fa-list"></i> เมนูจัดการรับหิ้วสินค้า</a></li>
                 <li><a href="/dealer/logout"><i class="fa fa-sign-out"></i> ออกจากระบบ</a></li>
@@ -118,10 +126,28 @@
 <script src="../assets/js/nouislider.min.js"></script>
 <script src="../assets/js/jquery.zoom.min.js"></script>
 <script src="../assets/js/main.js"></script>
+<script src="../assets/js/datatables.js"></script>
 <script !src="">
     function extraTicketAttachment() {
         jQuery("#fileUploadsContainer").append('<input type="file" name="attachments[]" class="form-control" />')
     }
+</script>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
+    $(document).ready(function() {
+        $('#dataaccept').DataTable();
+    } );
+    $(document).ready(function() {
+        $('#datareject').DataTable();
+    } );
+</script>
+<script type="text/javascript">
+	// For demo to fit into DataTables site builder...
+	$('#example')
+		.removeClass( 'display' )
+		.addClass('table table-striped table-bordered');
 </script>
 </body>
 </html>

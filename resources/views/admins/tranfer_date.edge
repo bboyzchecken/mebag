@@ -1,0 +1,78 @@
+@layout('template/admin')
+@section('content')
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section " style="background-color: #dc3545">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+    
+                    <h3 class="breadcrumb-header text-light"><span class="fa fa-calendar text-light"></span>
+                        จัดการรอบโอนเงิน</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/admin/dashboard" style="color: black">Dashboard</a></li>
+                        <li class="active">จัดการรอบโอนเงิน</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="container">
+            @if(flashMessage('success'))
+            <div class="row">
+                 <div class="col-md-12">
+                     <div class="alert alert-success">
+                         <strong>แจ้งเตือน !</strong> {{flashMessage('success')}}
+                     </div> 
+                  </div> 
+             </div>  
+            @endif
+               @if(flashMessage('error'))
+               <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            <strong>แจ้งเตือน !</strong> {{flashMessage('error')}}
+                        </div> 
+                     </div> 
+                </div>  
+               @endif
+        <div class="row">
+            <div class="col-md-12">
+                 <div class="panel panel-danger">
+                        <div class="panel panel-heading text-center ">
+                            <label class="text-light">วันที่โอนเงินล่าสุด :</label> 
+                            @if(date.length>0)
+                            <label class="label label-default" style="font-size: 15px"> {{date[0].Tranfer_Date}}</label>
+                            @else
+                            <label class="label label-default" style="font-size: 15px"> 0/0/000</label>
+                            @endif 
+                        </div>    
+                        <div class="panel panel-body">
+                                <form action="/admin/tranfer_date" method="POST">
+                                       
+                                        <div class="form-group col-sm-3">
+                                                {{ csrfField() }}
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                                <label for="Event_Name"><span class="fa fa-calendar"></span> รอบการโอนเงิน</label>
+                                                <input type="date" name="Tranfer_Date" id="Event_Name" value=""
+                                                       class="form-control " required="required"/>
+                                        </div>
+                                        <div class="form-group col-sm-3">
+                                              
+                                        </div>
+                                        <div class="form-group col-sm-12 text-center">
+                                              <button type="submit" class="btn btn-success">ยืนยัน</button>  <a href="/admin/dashboard" class="btn btn-default">ยกเลิก</a>
+                                        </div>
+                                </form>
+                        </div>    
+                </div>    
+            </div>
+        </div>
+    </div>
+@endsection

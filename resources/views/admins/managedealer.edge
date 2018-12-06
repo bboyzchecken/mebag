@@ -12,7 +12,7 @@
                     <h3 class="breadcrumb-header text-light"><span class="fa fa-address-book text-light"></span>
                         จัดการผู้รับหิ้ว</h3>
                     <ul class="breadcrumb-tree">
-                        <li><a href="/" style="color: black">MEBAG.COM</a></li>
+                        <li><a href="/admin/dashboard" style="color: black">Dashboard</a></li>
                         <li class="active">จัดการผู้รับหิ้ว</li>
                     </ul>
                 </div>
@@ -24,7 +24,26 @@
     <!-- /BREADCRUMB -->
 
     <div class="container">
-      
+            @if(flashMessage('success'))
+            <div class="row ">
+                 <div class="col-md-12 text-center table-responsive">
+                     <div class="alert alert-success">
+                         <strong>แจ้งเตือน !</strong> {{flashMessage('success')}}
+                     </div>
+                 </div>
+             </div>
+            @endif
+     
+            @if(flashMessage('error'))
+            <div class="row ">
+                 <div class="col-md-12 text-center table-responsive">
+                     <div class="alert alert-danger">
+                         <strong>แจ้งเตือน !</strong> {{flashMessage('error')}}
+                     </div>
+                 </div>
+             </div>
+            @endif
+                  
         <div class="row">
                 <div class="col-md-12 text-center">
                         <div class="section-nav">
@@ -54,7 +73,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                         @if(users_wait)
+                                                         @if(users_wait.length>0)
                                                                 @each(user in users_wait)
                                                                 <tr>
                                                                         <td> #{{user.User_ID}} </td>
@@ -64,16 +83,12 @@
                                                                          <a class="btn btn-info" href="/admin/bedealer_detail_{{user.User_ID}}">
                                                                                 <span class="fa fa-user-o"></span>
                                                                             </a>
-                                                                            <a class="btn btn-success"><span class="fa fa-check"></span></a>
-                                                                            <a class="btn btn-danger"><span class="fa fa-times"></span></a>
+                                                                        <a class="btn btn-success" href="/admin/accept_dealer_{{user.User_ID}}"><span class="fa fa-check"></span></a>
+                                                                            <a class="btn btn-danger"  href="/admin/reject_dealer_{{user.User_ID}}"><span class="fa fa-times"></span></a>
                                                                         </td>
                                                                     </tr> 
                                                                 @endeach  
-                                                            @else
-                                                            <tr>
-                                                                    <td colspan="6"> ยังไม่มีผู้สมัครรับหิ้ว</td>
-                                                                   
-                                                                </tr>   
+                                                           
                                                          @endif                      
                                                         </tbody>
                                                 </table>
@@ -94,16 +109,22 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                        <tr>
-                                                            <td> #1 </td>
-                                                            <td>จิรพัฒน์ สินธุวงศ์</td>
-                                                            <td>jirapatsintuwong@gmail.com</td>
-                                                            <td>
-                                                                <a class="btn btn-info"><span class="fa fa-user-o"></span></a>
-                                                                <a class="btn btn-success"><span class="fa fa-check"></span></a>
-                                                                <a class="btn btn-danger"><span class="fa fa-times"></span></a>
-                                                            </td>
-                                                        </tr>                         
+                                                        @if(users_accept.length>0)
+                                                                @each(user in users_accept)
+                                                                <tr>
+                                                                        <td> #{{user.User_ID}} </td>
+                                                                        <td>{{user.User_FirstName}} {{user.User_LastName}}</td>
+                                                                        <td>{{user.User_Email}}</td>
+                                                                        <td class="text-center">
+                                                                         <a class="btn btn-info" target="_blank" href="/admin/bedealer_detail_{{user.User_ID}}">
+                                                                                <span class="fa fa-user-o"></span>
+                                                                            </a>
+                                                                      
+                                                                        </td>
+                                                                    </tr> 
+                                                                @endeach  
+                                                           
+                                                         @endif                  
                                                     </tbody>
                                             </table>
                                 </div>
@@ -122,16 +143,22 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                            @if(users_reject.length>0)
+                                                            @each(user in users_reject)
                                                             <tr>
-                                                                <td> #1 </td>
-                                                                <td>จิรพัฒน์ สินธุวงศ์</td>
-                                                                <td>jirapatsintuwong@gmail.com</td>
-                                                                <td>
-                                                                    <a class="btn btn-info"><span class="fa fa-user-o"></span></a>
-                                                                    <a class="btn btn-success"><span class="fa fa-check"></span></a>
-                                                                    <a class="btn btn-danger"><span class="fa fa-times"></span></a>
-                                                                </td>
-                                                            </tr>                         
+                                                                    <td> #{{user.User_ID}} </td>
+                                                                    <td>{{user.User_FirstName}} {{user.User_LastName}}</td>
+                                                                    <td>{{user.User_Email}}</td>
+                                                                    <td>
+                                                                     <a class="btn btn-info" href="/admin/bedealer_detail_{{user.User_ID}}">
+                                                                            <span class="fa fa-user-o"></span>
+                                                                        </a>
+                                                                 
+                                                                    </td>
+                                                                </tr> 
+                                                            @endeach  
+                                                      
+                                                     @endif                          
                                                         </tbody>
                                                 </table>
                                     </div>

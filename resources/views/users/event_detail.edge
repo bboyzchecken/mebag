@@ -127,7 +127,7 @@
                                             <div id="tab1" class="tab-pane fade in active">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <p>{{events[0].Event_Name}}</p>
+                                                        <p>{{events[0].Event_Detail}}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -145,9 +145,17 @@
                                                     <!-- Review Form -->
                                                     <div class="col-md-12 text-center">
                                                    <div class="form-group">
-                                                        <a href="/profile_{{profiles[0].User_ID}}"><img
-                                                            src="https://storage.googleapis.com/fastwork-static/95d5413a-6a74-4507-9137-ccf6196ff4ff.jpg{{--  assets/fileuploads/profilepicture  --}}"
-                                                            class="avatar-10x" alt=""><br> {{profiles[0].User_FirstName}} {{profiles[0].User_LastName}}</a>
+                                                        <a href="/profile_{{profiles[0].User_ID}}">
+                                                            @if(profiles[0].User_Image==0 && profiles[0].User_Sex=="Male")
+                                                            <img src="assets/img/men_avatar.png" class="avatar-10x" alt="">
+                                                            @elseif(profiles[0].User_Image==0 && profiles[0].User_Sex=="Female")
+                                                            <img src="assets/img/women_avatar.png" class="avatar-10x" alt="">
+                                                            @elseif(profiles[0].User_Image==0 && profiles[0].User_Sex=="Other")
+                                                            <img src="assets/img/other_avatar.png" class="avatar-10x" alt="">
+                                                            @else
+                                                          <img src="assets/fileuploads/profilepicture/{{users[0].User_ID}}/{{users[0].User_Image}}" class="avatar-10x" alt="">
+                                                            @endif                                                         
+                                                            <br> {{profiles[0].User_FirstName}} {{profiles[0].User_LastName}}</a>
                                                    </div>
                                                    <div class="form-group">
                                                         <a  href="/profile_{{profiles[0].User_ID}}" class="btn btn-danger">

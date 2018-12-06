@@ -2002,12 +2002,12 @@ textarea.input {
 ===========================================================*/
 
 #footer {
-  background: #15161D;
+   background: #15161D; 
   color: #B9BABC;
 }
 
 #bottom-footer {
-  background: #1E1F29;
+  /* background: #1E1F29; */
 }
 
 .footer {

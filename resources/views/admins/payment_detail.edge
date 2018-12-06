@@ -1,0 +1,142 @@
+@layout('template/admin')
+@section('content')
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section " style="background-color: #dc3545">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+    
+                    <h3 class="breadcrumb-header text-light"><span class="fa fa-money text-light"></span>
+                        จัดการการจ่ายเงิน</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/admin/dashboard" style="color: black">Dashboard</a></li>
+                        <li class="active">จัดการการจ่ายเงิน</li>
+                        <li class="active">รายละเอียดการจ่ายเงิน</li>
+                       
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="container">
+      
+        <div class="row">
+                <!-- ASIDE -->
+        <div id="aside" class="col-md-3">
+                <!-- aside Widget -->
+                <div class="aside">
+                    <h3 class="aside-title"> รายละเอียการจ่ายเงินที่ #{{payments[0].Payment_ID}}</h3>
+                    <hr>
+                    <div menuItemName="Support" class="panel panel-danger ">
+                        <div class="panel-heading">
+                            <h3 class="panel-title text-light">
+                                <i class="fa fa-money"></i>&nbsp; จัดการการจ่ายเงิน
+    
+                            </h3>
+                        </div>
+                        <div class="list-group">
+                           
+                        <a  href="/admin/payment" class="list-group-item"
+                              >
+                                <i class="fa fa-sign-out fa-fw"></i>&nbsp; กลับหน้าจัดการการจ่ายเงิน
+                            </a>
+                           
+                          
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- /aside Widget -->
+            </div>
+            <!-- /ASIDE -->
+    
+            <!-- STORE -->
+            <div id="store" class="col-md-9 ">
+                   
+    
+                <!-- store products -->
+                <div class="row">
+                    <div class="panel ">
+                        <div class="panel panel-heading">
+                           <div class="row">
+                               <div class="col-md-12">
+                                   <h3> ข้อมูลการจ่ายเงิน </h3>                                 
+                               </div>
+                             
+                           </div>
+    
+                        </div>
+                        <div class="panel panel-body">
+                            <div class="col-md-12">
+                                   
+                                        <div class="row">
+                                            <div class="form-group col-sm-4">
+                                                <label for="inputName">ลูกค้า</label> :
+                                                {{payments[0].User_FirstName}} {{payments[0].User_LastName}}
+                                            </div>   
+                                            <div class="form-group col-sm-5">
+                                                    <label for="inputAttachments">เลขที่ออเดอร์/Order</label> : <a href="/admin/order_detail_{{payments[0].Order_ID}}" target="_blank">#{{payments[0].Order_ID}}     </a>                                    
+                                            </div>                  
+                                            <div class="form-group col-sm-3">
+                                                    <label for="inputPriority">ระดับความเร่งด่วน</label> :   <label class="label label-danger" style="font-size: 15px">{{payments[0].Payment_Urgent}}</label>
+                                                                           
+                                                </div>
+                                            <div class="form-group col-sm-4">
+                                                    <label for="customfield67">โอนเข้าธนาคาร</label> : <label class="label label-warning" style="font-size: 15px">{{payments[0].Payment_Bank}}  </label>
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                    <label for="customfield1">เวลาที่ชำระเงิน</label> : <label class="label label-warning" style="font-size: 15px">{{payments[0].Payment_Time}}  </label>
+                                                  
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                    <label for="customfield2">วันที่ชำระเงิน</label> :  <label class="label label-warning" style="font-size: 15px">{{payments[0].Payment_Date}}  </label>                                          
+                                            </div>                                                    
+                                        </div>                                               
+                                        <div class="row">                                                     
+                                          
+                                              
+                                                <div class="form-group col-sm-3">
+                                                        <label for="customfield3">จำนวนเงินที่โอน</label> : <label class="label label-warning" style="font-size: 15px">{{payments[0].Payment_Amount}}  </label>                                             
+                                                </div>     
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputMessage">รายละเอียดเพิ่มเติมที่ต้องการฝากถึงแอดมิน</label>
+                                            <textarea name="Payment_Message" id="inputMessage" rows="12"
+                                                      class="form-control markdown-editor"
+                                                      data-auto-save-name="client_ticket_open" disabled>{{payments[0].Payment_Message}}</textarea>
+                                        </div>                
+                                        <div class="row form-group">
+                                            <div class="col-sm-12">
+                                                <label for="inputAttachments">ไฟล์แนบ </label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                            <img src="../assets/fileuploads/receipts/{{payments[0].User_ID}}/{{payments[0].Payment_Receipt}}" style="width: 70%">
+                                            </div>  
+                                        </div>                                          
+        
+        
+                                        <p class="text-center">                                          
+                                            <a href="/admin/payment" class="btn btn-default">กลับหน้าจัดการการจ่ายเงิน</a>
+                                        </p>
+        
+                                 
+                            </div>
+                           
+                    </div>
+                </div>
+                <!-- /store products -->
+    
+    
+            </div>
+            <!-- /STORE -->
+        </div>
+    
+    </div>
+@endsection

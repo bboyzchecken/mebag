@@ -53,9 +53,17 @@
                
 
               @if(users[0].User_Email)
-              <li><a href="/account"><img
-                src="https://storage.googleapis.com/fastwork-static/95d5413a-6a74-4507-9137-ccf6196ff4ff.jpg"
-                class="avatar" alt=""> {{users[0].User_Email}}</a></li>
+              <li><a href="/account">
+                @if(users[0].User_Image==0 && users[0].User_Sex=="Male")
+                <img src="assets/img/men_avatar.png" class="avatar" alt="">
+                @elseif(users[0].User_Image==0 && users[0].User_Sex=="Female")
+                <img src="assets/img/women_avatar.png" class="avatar" alt="">
+                @elseif(users[0].User_Image==0 && users[0].User_Sex=="Other")
+                <img src="assets/img/other_avatar.png" class="avatar" alt="">
+                @else
+              <img src="assets/fileuploads/profilepicture/{{users[0].User_ID}}/{{users[0].User_Image}}" class="avatar" alt="">
+                @endif
+                 {{users[0].User_Email}}</a></li>
               <li><a href="/history"><i class="fa fa-list-ol"></i> การซื้อของฉัน</a></li>
               <li><a href="/logout"><i class="fa fa-user-o"></i> ออกจากระบบ</a></li>
               @else
@@ -77,8 +85,8 @@
                 <!-- LOGO -->
                 <div class="col-md-3">
                     <div class="header-logo">
-                        <a href="index.html" class="logo">
-                            <img src="./img/head.PNG" class="img-responsive" alt="">
+                        <a href="/" class="logo">
+                            <img src="assets/img/head.png" class="img-responsive" alt="">
                         </a>
                     </div>
                 </div>
@@ -111,7 +119,7 @@
                                 <span>ตะกร้าสินค้า</span>
                             <div class="qty">{{carts.length}}</div>
                             </a>
-                            <a class="dropdown-toggle visible-xs" href="/checkout">
+                            <a class="dropdown-toggle visible-xs" href="/view_cart">
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>ตะกร้าสินค้า</span>
                                 <div class="qty">{{carts.length}}</div>
@@ -181,13 +189,13 @@
             <ul class="main-nav nav navbar-nav">
                 <li class=""><a href="/">หน้าแรก</a></li>
                 <li><a href="/allevent"> Event ทั้งหมด</a></li>
-                <li><a href="/event"> อุปกรณ์เสริม อิเล็กทรอนิกส์</a></li>
-                <li><a href="/event"> สุขภาพและความงาม</a></li>
-                <li><a href="/event"> เด็กอ่อน และของเล่น</a></li>
-                <li><a href="/event"> แฟชั่นผู้หญิง</a></li>
-                <li><a href="/event"> แฟชั่นผู้ชาย</a></li>
-                <li><a href="/event"> เครื่องประดับ</a></li>
-                <li><a href="/event"> อื่นๆ</a></li>
+                <li><a href="/allevent"> อุปกรณ์เสริม อิเล็กทรอนิกส์</a></li>
+                <li><a href="/allevent"> สุขภาพและความงาม</a></li>
+                <li><a href="/allevent"> เด็กอ่อน และของเล่น</a></li>
+                <li><a href="/allevent"> แฟชั่นผู้หญิง</a></li>
+                <li><a href="/allevent"> แฟชั่นผู้ชาย</a></li>
+                <li><a href="/allevent"> เครื่องประดับ</a></li>
+                <li><a href="/allevent"> อื่นๆ</a></li>
             </ul>
             <!-- /NAV -->
         </div>
@@ -230,13 +238,13 @@
                     <div class="footer">
                         <h3 class="footer-title">หมวดหมู่</h3>
                         <ul class="footer-links">
-                            <li><a href="event.html"> อุปกรณ์เสริม อิเล็กทรอนิกส์</a></li>
-                            <li><a href="event.html"> สุขภาพและความงาม</a></li>
-                            <li><a href="event.html"> เด็กอ่อน และของเล่น</a></li>
-                            <li><a href="event.html"> แฟชั่นผู้หญิง</a></li>
-                            <li><a href="event.html"> แฟชั่นผู้ชาย</a></li>
-                            <li><a href="event.html"> เครื่องประดับ</a></li>
-                            <li><a href="event.html"> อื่นๆ</a></li>
+                            <li><a href="/allevent"> อุปกรณ์เสริม อิเล็กทรอนิกส์</a></li>
+                            <li><a href="/allevent"> สุขภาพและความงาม</a></li>
+                            <li><a href="/allevent"> เด็กอ่อน และของเล่น</a></li>
+                            <li><a href="/allevent"> แฟชั่นผู้หญิง</a></li>
+                            <li><a href="/allevent"> แฟชั่นผู้ชาย</a></li>
+                            <li><a href="/allevent"> เครื่องประดับ</a></li>
+                            <li><a href="/allevent"> อื่นๆ</a></li>
                         </ul>
                     </div>
                 </div>
@@ -258,10 +266,10 @@
                     <div class="footer">
                         <h3 class="footer-title">บริการ</h3>
                         <ul class="footer-links">
-                            <li><a href="login.html">เข้าสู่ระยย</a></li>
-                            <li><a href="register.html">สมัครสมาชิก</a></li>
-                            <li><a href="checkout.html">ตะกร้าสินค้า</a></li>
-                            <li><a href="manual.html">คู่มือการใช้งาน</a></li>
+                            <li><a href="/login">เข้าสู่ระบบ</a></li>
+                            <li><a href="/register">สมัครสมาชิก</a></li>
+                            <li><a href="/view_cart">ตะกร้าสินค้า</a></li>
+                            <li><a href="/manual">คู่มือการใช้งาน</a></li>
                         </ul>
                     </div>
                 </div>

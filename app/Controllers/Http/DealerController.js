@@ -6,7 +6,7 @@ const md5 = use('md5');
 const Encryption = use('Encryption');
 const fs = use('fs');
 class DealerController {
-    
+
     async index({ view, response, session }) {
         if (session.get('dealername')) {
             return response.redirect("/dealer/dashboard");
@@ -39,7 +39,7 @@ class DealerController {
 
     async delaer_logout({ view, session, response, request }) {
         session.forget('dealername');
-        session.forget('Dealer_ID');        
+        session.forget('Dealer_ID');
         return response.redirect("/dealer");
     }
 
@@ -48,7 +48,25 @@ class DealerController {
             const users = await Database.from('users').where({
                 'User_ID': session.get('Dealer_ID')
             });
-            return view.render('dealers/dashboard', { users: users })
+            const orders = await Database.from('orders').where({
+                'Order_Status': '0',
+                'Order_ToWho': session.get('Dealer_ID')
+            });
+            const count_orders = await Database.from('orders').where({
+                'Order_ToWho': session.get('Dealer_ID')
+            });
+            const count_event = await Database.from('events').where({
+                'Event_Whose': session.get('Dealer_ID')
+            });
+
+
+
+            return view.render('dealers/dashboard', {
+                users: users,
+                orders: orders,
+                count_orders: count_orders,
+                count_events: count_event
+            })
         } else {
             return view.render('dealers/login', { error: "  กรุณาล็อกอินเข้าสู่ระบบ " })
         }
@@ -81,8 +99,6 @@ class DealerController {
             return view.render('dealers/login', { error: "  กรุณาล็อกอินเข้าสู่ระบบ " })
         }
     }
-
-
 
     async bank({ view, session }) {
         if (session.get('dealername')) {
@@ -147,7 +163,7 @@ class DealerController {
             Event_Type: GETDATA.Event_Type,
             Event_Price: GETDATA.Event_Price,
             Event_TransportPrice: GETDATA.Event_TransportPrice,
-          
+
             Event_Detail: GETDATA.Event_Detail,
             Event_Whose: session.get('Dealer_ID'),
             Event_CoverImage: Event_Image['_files'][0].fileName,
@@ -208,7 +224,7 @@ class DealerController {
         });
 
         for (let i = 0; i < event_image.length; i++) {
-            fs.unlink(Helpers.publicPath('assets/fileuploads/events/')+event_image[i].Img_FileName)         
+            fs.unlink(Helpers.publicPath('assets/fileuploads/events/') + event_image[i].Img_FileName)
         }
 
 
@@ -244,7 +260,7 @@ class DealerController {
             events: event_detail
         })
     }
-    
+
     async edit_event({ request, view, session, response }) {
         const Event_Image = request.file('attachments', {
             types: ['image'],
@@ -261,13 +277,9 @@ class DealerController {
                     name: session.get('Dealer_ID') + "_" + Encryption.encrypt(file.fileName) + "." + `${file.subtype}`
                 }
             })
-
-
             if (!Event_Image.movedAll()) {
                 return Event_Image.errors()
             }
-
-
 
             let postId = await Database.table("events").where('Event_ID', GETDATA.Event_ID).update({
                 Event_Name: GETDATA.Event_Name,
@@ -277,14 +289,14 @@ class DealerController {
                 Event_Type: GETDATA.Event_Type,
                 Event_Price: GETDATA.Event_Price,
                 Event_TransportPrice: GETDATA.Event_TransportPrice,
-              
+
                 Event_Detail: GETDATA.Event_Detail,
             });
 
             if (postId) {
                 for (let i = 0; i < Event_Image['_files'].length; i++) {
                     await Database.table("event_images").insert({
-                        Event_ID:  GETDATA.Event_ID,
+                        Event_ID: GETDATA.Event_ID,
                         Img_FileName: Event_Image['_files'][i].fileName,
                         Img_FilePath: Event_Image['_files'][i].tmpPath
                     });
@@ -394,6 +406,159 @@ class DealerController {
 
         return response.redirect("/dealer/product_event_" + products[0].Event_ID);
     }
+
+    async accept_order({ view, params, response, session }) {
+        const order_id = await params.order_id;
+
+        let postId = await Database.table("orders").where('Order_ID', order_id).update({
+            Order_Status: 'accept'
+        });
+        if (postId) {
+            session.flash({ success: 'รับออเดอร์เรียบร้อยแล้ว โปรดดำเนินการรับหิ้ว' })
+            return response.redirect("back");
+        } else {
+            session.flash({ error: 'เกิดข้อผิดพลาด กรุณาตรวจสอบ หรือติดต่อเจ้าหน้าที่' })
+            return response.redirect("back");
+        }
+
+    }
+
+    async reject_order({ view, params, response, session }) {
+        const order_id = await params.order_id;
+
+        let postId = await Database.table("orders").where('Order_ID', order_id).update({
+            Order_Status: 'reject'
+        });
+
+        if (postId) {
+            session.flash({ success: 'ปฏิเสธออเดอร์เรียบร้อยแล้ว' })
+            return response.redirect("back");
+        } else {
+            session.flash({ error: 'เกิดข้อผิดพลาด กรุณาตรวจสอบ หรือติดต่อเจ้าหน้าที่' })
+            return response.redirect("back");
+        }
+    }
+    async order({ view, params, response, session }) {
+
+        if (session.get('dealername')) {
+            const users = await Database.from('users').where({
+                'User_ID': session.get('Dealer_ID')
+            });
+            const orders_wait = await Database.from('orders').where({
+                'Order_Status': '0',
+                'Order_ToWho': session.get('Dealer_ID')
+            });
+            const orders_accept = await Database.from('orders').where({
+                'Order_Status': 'accept',
+                'Order_ToWho': session.get('Dealer_ID')
+            }).orWhere({
+                'Order_Status': 'paid',
+                'Order_ToWho': session.get('Dealer_ID')
+            });
+            const orders_success = await Database.from('orders').where({
+                'Order_Status': 'success',
+                'Order_ToWho': session.get('Dealer_ID')
+            });
+            return view.render('dealers/order', {
+                users: users,
+                orders_wait: orders_wait,
+                orders_accept: orders_accept,
+                orders_success: orders_success
+            })
+        } else {
+            return view.render('dealers/login', { error: "  กรุณาล็อกอินเข้าสู่ระบบ " })
+        }
+
+
+    }
+
+    async order_detail({ view, params, response, session }) {
+        let order_id = params.order_id;
+        if (session.get('dealername')) {
+            const users = await Database.from('users').where({
+                'User_ID': session.get('Dealer_ID')
+            });
+
+            const orders_detail = await Database.from('orders').innerJoin('order_details', 'orders.Order_ID', 'order_details.Order_ID').innerJoin('events', 'orders.Event_ID', 'events.Event_ID').where({
+                'orders.Order_ID ': order_id
+            });
+            const payment = await Database.from('payments').where({
+                'Order_ID': order_id
+            });
+
+            return view.render('dealers/order_detail', {
+                users: users,
+                order_detail: orders_detail,
+                payment: payment
+            })
+        } else {
+            return view.render('dealers/login', { error: "  กรุณาล็อกอินเข้าสู่ระบบ " })
+        }
+
+
+    }
+    async bank({ view, params, response, session }) {
+    
+        if (session.get('dealername')) {
+            const users = await Database.from('users').innerJoin('verifies', 'users.User_ID', 'verifies.User_ID').where({
+                'users.User_ID': session.get('Dealer_ID')
+            });
+
+
+
+
+            return view.render('dealers/bank', {
+                users: users,
+            })
+        } else {
+            return view.render('dealers/login', { error: "  กรุณาล็อกอินเข้าสู่ระบบ " })
+        }
+
+
+    }
+    async card({ view, params, response, session }) {
+   
+        if (session.get('dealername')) {
+            const users = await Database.from('users').innerJoin('verifies', 'users.User_ID', 'verifies.User_ID').where({
+                'users.User_ID': session.get('Dealer_ID')
+            });
+
+
+
+
+            return view.render('dealers/card', {
+                users: users,
+            })
+        } else {
+            return view.render('dealers/login', { error: "  กรุณาล็อกอินเข้าสู่ระบบ " })
+        }
+
+
+    }
+    async add_track({ view, request, response, session }) {
+        let data = request.post();
+
+        if (session.get('dealername')) {
+            let add_track = await Database.table('orders').where('Order_ID', data.Order_ID).update({
+                Order_Track: data.Order_Track
+            })
+            if (add_track) {
+                session.flash({ success: 'ใส่เลขแทรคจัดส่ง สำเร็จแล้ว' })
+                return response.redirect("back");
+            } else {
+                session.flash({ error: 'ใส่เลขแทรคจัดส่ง ไม่สำเร็จ' })
+                return response.redirect("back");
+            }
+
+        } else {
+            return view.render('dealers/login', { error: "  กรุณาล็อกอินเข้าสู่ระบบ " })
+        }
+
+
+    }
+
+
+
 }
 
 module.exports = DealerController

@@ -1,0 +1,104 @@
+@layout('template.dealer')
+@section('content')
+
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+       <!-- row -->
+       <div class="row">
+        <!-- ASIDE -->
+        <div id="aside" class="col-md-3">
+            <!-- aside Widget -->
+            <div class="aside">
+                <h3 class="aside-title">
+                        @if(users[0].User_Image==0 && users[0].User_Sex=="Male")
+                        <img src="../assets/img/men_avatar.png" class="avatar-5x" alt="">
+                        @elseif(users[0].User_Image==0 && users[0].User_Sex=="Female")
+                        <img src="../assets/img/women_avatar.png" class="avatar-5x" alt="">
+                        @elseif(users[0].User_Image==0 && users[0].User_Sex=="Other")
+                        <img src="../assets/img/other_avatar.png" class="avatar-5x" alt="">
+                        @else
+                        <img src="../assets/fileuploads/profilepicture/{{users[0].User_ID}}/{{users[0].User_Image}}" class="avatar-5x" alt="">
+                        @endif 
+                     {{users[0].User_FirstName}} {{users[0].User_LastName}}</h3>
+                <hr>
+                <div menuItemName="Support" class="panel panel-danger ">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-light">
+                            <i class="fa fa-user-o"></i>&nbsp; จัดการบัญชี
+
+                        </h3>
+                    </div>
+                    <div class="list-group">
+                       
+                    <a  href="/dealer/account" class="list-group-item"
+                          >
+                            <i class="fa fa-address-card fa-fw"></i>&nbsp; บัญชีของฉัน
+                        </a>
+                        <a  href="/dealer/bank" class="list-group-item"
+                        >
+                          <i class="fa fa-credit-card fa-fw"></i>&nbsp; ข้อมูลบัญชีธนาคาร
+                      </a>
+                      <a  href="/dealer/card" class="list-group-item"
+                      >
+                        <i class="fa fa-check fa-fw"></i>&nbsp; บัตรประชาชน
+                    </a>
+                      <a  href="/dealer/dashboard" class="list-group-item"
+                      >
+                        <i class="fa fa-sign-out fa-fw"></i>&nbsp; เมนูจัดการรับหิ้วสินค้า
+                    </a>
+                      
+                        
+                    </div>
+                </div>
+            </div>
+            <!-- /aside Widget -->
+        </div>
+        <!-- /ASIDE -->
+
+        <!-- STORE -->
+        <div id="store" class="col-md-9 ">
+                @if(error)
+                <div class="row">
+                        <div class="alert alert-danger"> แจ้งเตือน ! {{error}}</div>
+                        </div>
+                @endif
+
+            <!-- store products -->
+            <div class="row">
+                <div class="panel ">
+                    <div class="panel panel-heading">
+                       <div class="row">
+                           <div class="col-md-12">
+                               <h3> ข้อมูลของฉัน </h3>
+                               <p>
+                                 จัดการข้อมูลการรับหิ้วสินค้าที่นี้
+                               </p>
+                           </div>
+                         
+                       </div>
+
+                    </div>
+                    <div class="panel panel-body">
+                            <div class="col-md-12 form-group">
+                                    <label for="">บัตรประจำตัวประชาชน :  {{users[0].Verify_CardID}} </label> <br>
+                                 
+                            <img src="../assets/fileuploads/verify/{{users[0].User_ID}}/{{users[0].Verify_CardImage}}" style="width: 250px" alt="">
+          
+                    </div>
+                </div>
+            </div>
+            <!-- /store products -->
+
+
+        </div>
+        <!-- /STORE -->
+    </div>
+    <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+@endsection

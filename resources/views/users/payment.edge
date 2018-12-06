@@ -1,0 +1,226 @@
+@layout('template/user')
+@section('content')
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="breadcrumb-header">บัญชีของฉัน</h3>
+                    <ul class="breadcrumb-tree">
+                            <li><a href="/">MEBAG</a></li>
+                        <li class=""><a href="/account">จัดการบัญชี</a></li>
+                        <li class="active">การซื้อของฉัน</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+    
+<div class="section bg-gray">
+            <!-- /SECTION -->
+        <!-- container -->
+        <div class="container">
+                <!-- row -->
+                <div class="row">
+                    <!-- ASIDE -->
+                    <div id="aside" class="col-md-3">
+                        <!-- aside Widget -->
+                        <div class="aside">
+                            <h3 class="aside-title">
+                                    @if(users[0].User_Image==0 && users[0].User_Sex=="Male")
+                                    <img src="assets/img/men_avatar.png" class="avatar-5x" alt="">
+                                    @elseif(users[0].User_Image==0 && users[0].User_Sex=="Female")
+                                    <img src="assets/img/women_avatar.png" class="avatar-5x" alt="">
+                                    @elseif(users[0].User_Image==0 && users[0].User_Sex=="Other")
+                                    <img src="assets/img/other_avatar.png" class="avatar-5x" alt="">
+                                    @else
+                                    <img src="assets/fileuploads/profilepicture/{{users[0].User_ID}}/{{users[0].User_Image}}" class="avatar-5x" alt="">
+                                    @endif 
+                                {{users[0].User_FirstName}} {{users[0].User_LastName}}</h3>
+                            <hr>
+                            <div menuItemName="Support" class="panel panel-danger ">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title text-light">
+                                        <i class="fa fa-user-o"></i>&nbsp; จัดการบัญชี
+        
+                                    </h3>
+                                </div>
+                                <div class="list-group">
+                                    <a  href="/account" class="list-group-item"
+                                      >
+                                        <i class="fa fa-address-card fa-fw"></i>&nbsp; บัญชีของฉัน
+                                    </a>
+                                    <a  href="/change_password" class="list-group-item"
+                                    >
+                                        <i class="fa fa-lock fa-fw"></i>&nbsp; เปลี่ยนรหัสผ่าน
+                                    </a>
+                                    <a  href="/history" class="list-group-item"
+                                      >
+                                        <i class="fa fa-list fa-fw"></i>&nbsp; การซื้อของฉัน
+                                    </a>
+                                    <a href="/bedealer" class="list-group-item"
+                                       >
+                                        <i class="fa fa-shopping-bag  fa-fw"></i>&nbsp; สมัครเป็นคนรับหิ้ว
+                                    </a>
+                                    <a menuItemName="Downloads" href="/manual" class="list-group-item"
+                                     >
+                                        <i class="fa fa-info-circle fa-fw"></i>&nbsp; คู่มือการใช้งาน
+                                    </a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /aside Widget -->
+                    </div>
+                    <!-- /ASIDE -->
+        
+                     <!-- STORE -->
+            <div id="store" class="col-md-9 ">
+
+
+                    <!-- store products -->
+                    <div class="row">
+                        <div class="panel ">
+                            <div class="panel panel-heading">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                       <h3>แบบฟอร์ม แจ้งชำระ ออเดอร์ ที่ #123</h3>
+                                    </div>
+                                </div>
+    
+                            </div>
+                            <div class="panel panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                            <form method="post" action="/payment" enctype="multipart/form-data" role="form">
+                                                {{ csrfField() }}
+                                                <div class="row">
+                                                    <div class="form-group col-sm-4">
+                                                        <label for="inputName">ลูกค้า</label>
+                                                        <input type="text" id="inputName"
+                                                               value="{{users[0].User_FirstName}} {{users[0].User_LastName}}" class="form-control disabled"
+                                                               disabled="disabled"/>
+                                                    </div>     
+                                                    <div class="form-group col-sm-8">
+                                                            <label for="inputSubject">เรื่อง</label>
+                                                            <input type="text" id="inputSubject" value="แจ้งชำระเงิน"
+                                                                   disabled class="form-control"/>
+                                                    </div>                                              
+                                                </div>                                               
+                                                <div class="row">                                                     
+                                                    <div class="form-group col-sm-9">
+                                                            <label for="inputAttachments">เลขที่ออเดอร์/Order</label>
+                                                    <input type="text"  placeholder="#{{orders[0].Order_ID}}" 
+                                                           class="form-control" disabled/>
+                                                    <input type="hidden" name="Order_ID" value="{{orders[0].Order_ID}}">
+                                                    </div>
+                                                    <div class="form-group col-sm-3">
+                                                            <label for="inputPriority">ระดับความเร่งด่วน</label>    
+                                                            <select name="Payment_Urgent" id="inputPriority" class="form-control">
+                                                                    <option value="High">
+                                                                        ด่วน
+                                                                    </option>
+                                                                    <option value="Medium" selected="selected">
+                                                                        ปานกลาง
+                                                                    </option>
+                                                                    <option value="Low">
+                                                                        ต่ำ
+                                                                    </option>
+                                                                </select>                                     
+                                                        </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputMessage">รายละเอียดเพิ่มเติมที่ต้องการฝากถึงแอดมิน</label>
+                                                    <textarea name="Payment_Message" id="inputMessage" rows="12"
+                                                              class="form-control markdown-editor"
+                                                              data-auto-save-name="client_ticket_open"></textarea>
+                                                </div>                
+                                                <div class="row form-group">
+                                                    <div class="col-sm-12">
+                                                        <label for="inputAttachments">ไฟล์แนบ (หมายเหตุ: ตั้งชื่อไฟล์ เป็นภาษาอังกฤษ
+                                                            นะคะ)</label>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <input type="file" name="Payment_Receipt[]" id="inputAttachments" class="form-control" required/>
+                                                    </div>
+                
+                                                    <div class="col-xs-12 ticket-attachments-message text-muted">
+                                                        อนุญาตให้อัพโหลดเฉพาะ: .jpg, .gif, .jpeg, .png
+                                                    </div>
+                                                </div>                                          
+                
+                                                <div id="customFieldsContainer">
+                                                    <div class="form-group">
+                                                        <label for="customfield67">โอนเข้าธนาคาร</label>
+                                                        <select name="Payment_Bank" id="customfield67" class="form-control">
+                                                            <option value="กรุงไทย(KTB)">กรุงไทย(KTB)</option>
+                                                            <option value=" กสิกรไทย(KBank)"> กสิกรไทย(KBank)</option>
+                                                            <option value=" กรุงเทพ(Banking)"> กรุงเทพ(Banking)</option>
+                                                            <option value=" ไทยพาณิชย์(SCB )"> ไทยพาณิชย์(SCB )</option>
+                                                            <option value=" ธกส.(Bank)"> ธกส.(Bank)</option>
+                                                            <option value=" TrueMoney Wallet"> TrueMoney Wallet</option>
+                                                            <option value=" พร้อมเพย์ (PromptPay)"> พร้อมเพย์ (PromptPay)</option>
+                                                            <option value=" paypal.com"> paypal.com</option>
+                                                            <option value=" AIS mPAY"> AIS mPAY</option>
+                                                        </select>
+                                                        <p class="help-block">**การแจ้งผิดธนาคาร ทำให้ได้รับบริการช้า**</p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="customfield1">เวลาที่ชำระเงิน</label>
+                                                        <input type="text" name="Payment_Time" id="customfield1" value="" size="30"
+                                                               class="form-control" required/>
+                                                        <p class="help-block">เช่น 24.59 น.</p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="customfield2">วันที่ชำระเงิน</label>
+                                                        <input type="text" name="Payment_Date" id="customfield2" value="" size="30"
+                                                               class="form-control" required/>
+                                                        <p class="help-block">เช่น วันที่/เดือน/ปี</p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="customfield3">จำนวนเงินที่โอน</label>
+                                                        <input type="text" name="Payment_Amount" id="customfield3" value="" size="30"
+                                                               class="form-control" required/>
+                                                        <p class="help-block">เช่น 999.24</p>
+                                                    </div>                                                  
+                                                </div>
+                
+                                                <div id="autoAnswerSuggestions" class="well hidden"></div>
+                
+                                                <div class="text-center margin-bottom">
+                
+                                                </div>
+                
+                                                <p class="text-center">
+                                                    <input type="submit" id="openTicketSubmit" value="แจ้งชำระ"
+                                                           class="btn btn-danger"/>
+                                                    <a href="/history" class="btn btn-default">ยกเลิก</a>
+                                                </p>
+                
+                                            </form>
+    
+    
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /store products -->
+    
+    
+                </div>
+                <!-- /STORE -->
+                </div>
+                <!-- /row -->
+            </div>
+            <!-- /container -->
+
+    </div>
+@endsection

@@ -1,0 +1,507 @@
+@layout('template/user')
+@section('content')
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="breadcrumb-header">บัญชีของฉัน</h3>
+                    <ul class="breadcrumb-tree">
+                            <li><a href="/">MEBAG</a></li>
+                        <li class=""><a href="/account">จัดการบัญชี</a></li>
+                        <li class="active">การซื้อของฉัน</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+    
+<div class="section bg-gray">
+            <!-- /SECTION -->
+        <!-- container -->
+        <div class="container">
+                @if(flashMessage('success'))
+                <div class="row">
+                     <div class="col-md-12">
+                         <div class="alert alert-success">
+                             <strong>แจ้งเตือน !</strong> {{flashMessage('success')}}
+                         </div> 
+                      </div> 
+                 </div>  
+                @endif
+                   @if(flashMessage('error'))
+                   <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger">
+                                <strong>แจ้งเตือน !</strong> {{flashMessage('error')}}
+                            </div> 
+                         </div> 
+                    </div>  
+                   @endif
+                <!-- row -->
+                <div class="row">
+                    <!-- ASIDE -->
+                    <div id="aside" class="col-md-3">
+                        <!-- aside Widget -->
+                        <div class="aside">
+                            <h3 class="aside-title">
+                                    @if(users[0].User_Image==0 && users[0].User_Sex=="Male")
+                                    <img src="assets/img/men_avatar.png" class="avatar-5x" alt="">
+                                    @elseif(users[0].User_Image==0 && users[0].User_Sex=="Female")
+                                    <img src="assets/img/women_avatar.png" class="avatar-5x" alt="">
+                                    @elseif(users[0].User_Image==0 && users[0].User_Sex=="Other")
+                                    <img src="assets/img/other_avatar.png" class="avatar-5x" alt="">
+                                    @else
+                                    <img src="assets/fileuploads/profilepicture/{{users[0].User_ID}}/{{users[0].User_Image}}" class="avatar-5x" alt="">
+                                    @endif 
+                                {{users[0].User_FirstName}} {{users[0].User_LastName}}</h3>
+                            <hr>
+                            <div menuItemName="Support" class="panel panel-danger ">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title text-light">
+                                        <i class="fa fa-user-o"></i>&nbsp; จัดการบัญชี
+        
+                                    </h3>
+                                </div>
+                                <div class="list-group">
+                                    <a  href="/account" class="list-group-item"
+                                      >
+                                        <i class="fa fa-address-card fa-fw"></i>&nbsp; บัญชีของฉัน
+                                    </a>
+                                    <a  href="/change_password" class="list-group-item"
+                                    >
+                                        <i class="fa fa-lock fa-fw"></i>&nbsp; เปลี่ยนรหัสผ่าน
+                                    </a>
+                                    <a  href="/history" class="list-group-item"
+                                      >
+                                        <i class="fa fa-list fa-fw"></i>&nbsp; การซื้อของฉัน
+                                    </a>
+                                    <a href="/bedealer" class="list-group-item"
+                                       >
+                                        <i class="fa fa-shopping-bag  fa-fw"></i>&nbsp; สมัครเป็นคนรับหิ้ว
+                                    </a>
+                                    <a menuItemName="Downloads" href="/manual" class="list-group-item"
+                                     >
+                                        <i class="fa fa-info-circle fa-fw"></i>&nbsp; คู่มือการใช้งาน
+                                    </a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /aside Widget -->
+                    </div>
+                    <!-- /ASIDE -->
+        
+                     <!-- STORE -->
+            <div id="store" class="col-md-9 ">
+
+
+                    <!-- store products -->
+                    <div class="row">
+                        <div class="panel ">
+                            <div class="panel panel-heading">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="section-nav">
+                                            <ul class="section-tab-nav tab-nav text-center">
+                                                <li class="active"><a data-toggle="tab" href="#wait">รอรับออเดอร์</a></li>
+                                                <li><a data-toggle="tab" href="#topay">รอชำระ</a></li>
+                                                <li><a data-toggle="tab" href="#torecive">ที่ต้องได้รับ</a></li>
+                                                <li><a data-toggle="tab" href="#success">สำเร็จแล้ว</a></li>
+                                                <li><a data-toggle="tab" href="#cancel">ยกเลิกแล้ว</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                            </div>
+                            <div class="panel panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 form-group">
+                                            <div class="products-tabs">
+                                                    <div id="wait" class="tab-pane active">
+                                                        @if(events_wait.length>0)
+                                                            @each(event in events_wait)
+                                                            <!-- product -->
+                                                            <div class="col-md-12">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel panel-heading ">
+                                                                        <div class="row">
+                                                                            <div class="col-md-10 ">
+                                                                                <h3 class="text-danger"> <a href="/event_detail_{{event.Event_ID}}">{{event.Event_Name}}</a> </h3>
+                                                                            </div>
+                                                                            <div class="col-md-2 text-center">
+                                                                            <a class="btn btn-default" >ดูรายละเอียด</a>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="panel panel-body table-responsive">
+                                                                        <div class="row">
+                                                                            <div class="col-md-2">
+                                                                                <img src="assets/fileuploads/events/{{event.Event_CoverImage}}"
+                                                                                    style="width: 80px;height: 80px" alt="">
+                                                                            </div>
+                                                                            <div class="col-md-8">
+                                                                            
+                                                                                @each(detail in orders_wait)
+                                                                                    @if(detail.Order_ID == $parent.event.Order_ID)
+                                                                                    <div class="form-group">
+                                                                                            <h5>{{detail.Product_Name}}</h5>
+                                                                                            <p>จำนวนสินค้า {{detail.qty}} ชิ้น</p>
+                                                                                            <p>สินค้าราคา {{detail.Product_Price}} ฿</p>
+                                                                                        </div>
+                                                                                        <hr>
+                                                                                    @endif
+                                                                                @endeach                                                                                     
+                                                                            </div>
+                                                                        
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="panel panel-footer">
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <p class="">
+                                                                                    <span>วันที่ทำสั่งซื้อ {{event.Order_Date}}</span>
+                                                                                <h3> ยอดคำสั่งซื้อทั้งหมด : <span
+                                                                                        class="text-danger">{{event.Order_Total}} ฿</span></h3>
+                                                                                </p>
+                                                                            </div>                                                                                 
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- /product -->
+                                                    @endeach
+                                                    @else
+                                                    <div class="col-md-12">
+                                                            <div class="alert alert-danger">
+                                                                <strong>แจ้งเตือน !</strong> ยังไม่มีออเดอร์
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                        
+              
+                                                            </div>
+                                                <div id="topay" class="tab-pane ">
+                                                     
+                                                        @if(events_topay.length>0)
+                                                        @each(event in events_topay)
+                                                        <!-- product -->
+                                                        <div class="col-md-12">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel panel-heading ">
+                                                                    <div class="row">
+                                                                        <div class="col-md-10 ">
+                                                                            <h3 class="text-danger"> <a href="/event_detail_{{event.Event_ID}}">{{event.Event_Name}}</a> </h3>
+                                                                        </div>
+                                                                        <div class="col-md-2 text-center">
+                                                                        <a class="btn btn-default" >ดูรายละเอียด</a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="panel panel-body table-responsive">
+                                                                    <div class="row">
+                                                                        <div class="col-md-2">
+                                                                            <img src="assets/fileuploads/events/{{event.Event_CoverImage}}"
+                                                                                style="width: 80px;height: 80px" alt="">
+                                                                        </div>
+                                                                        <div class="col-md-8">
+                                                                            
+                                                                            @each(detail in orders_topay)
+                                                                                @if(detail.Order_ID == $parent.event.Order_ID)
+                                                                                <div class="form-group">
+                                                                                        <h5>{{detail.Product_Name}}</h5>
+                                                                                        <p>จำนวนสินค้า {{detail.qty}} ชิ้น</p>
+                                                                                        <p>สินค้าราคา {{detail.Product_Price}} ฿</p>
+                                                                                    </div>
+                                                                                    <hr>
+                                                                                @endif
+                                                                            @endeach                                                                                     
+                                                                        </div>
+                                                                    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <p class="">
+                                                                                <span>วันที่ทำสั่งซื้อ {{event.Order_Date}}</span>
+                                                                            <h3> ยอดคำสั่งซื้อทั้งหมด : <span
+                                                                                    class="text-danger">{{event.Order_Total}} ฿</span></h3>
+                                                                            </p>
+                                                                        </div>
+                                                                     
+                                                                      <div class="col-md-6 text-right">
+                                                                            @if(event.Order_Payment)
+                                                                            <a class="btn btn-success disabled" >ชำระแล้ว</a>
+                                                                            @else
+                                                                            <a class="btn btn-danger" href="/payment_{{event.Order_ID}}">ชำระคำสั่งซ์้อ</a>
+                                                                            @endif             
+                                                                        </div>         
+                                                                                                                                
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /product -->
+                                                @endeach
+                                                @else
+                                                <div class="col-md-12">
+                                                        <div class="alert alert-danger">
+                                                            <strong>แจ้งเตือน !</strong> ยังไม่มีออเดอร์
+                                                        </div>
+                                                    </div>
+                                                @endif
+    
+                                                </div>
+                                                <div id="torecive" class="tab-pane">
+    
+                                                        @if(events_torecive.length>0)
+                                                        @each(event in events_torecive)
+                                                        <!-- product -->
+                                                        <div class="col-md-12">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel panel-heading ">
+                                                                    <div class="row">
+                                                                        <div class="col-md-10 ">
+                                                                            <h3 class="text-danger"> <a href="/event_detail_{{event.Event_ID}}">{{event.Event_Name}}</a> </h3>
+                                                                        </div>
+                                                                        <div class="col-md-2 text-center">
+                                                                        <a class="btn btn-default" >ดูรายละเอียด</a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="panel panel-body table-responsive">
+                                                                    <div class="row">
+                                                                        <div class="col-md-2">
+                                                                            <img src="assets/fileuploads/events/{{event.Event_CoverImage}}"
+                                                                                style="width: 80px;height: 80px" alt="">
+                                                                        </div>
+                                                                        <div class="col-md-8">
+                                                                            
+                                                                            @each(detail in orders_torecive)
+                                                                                @if(detail.Order_ID == $parent.event.Order_ID)
+                                                                                <div class="form-group">
+                                                                                        <h5>{{detail.Product_Name}}</h5>
+                                                                                        <p>จำนวนสินค้า {{detail.qty}} ชิ้น</p>
+                                                                                        <p>สินค้าราคา {{detail.Product_Price}} ฿</p>
+                                                                                    </div>
+                                                                                    <hr>
+                                                                                @endif
+                                                                            @endeach                                                                                     
+                                                                        </div>
+                                                                    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <p class="">
+                                                                                <span>วันที่ทำสั่งซื้อ {{event.Order_Date}}</span>
+                                                                             @if(event.Order_Track)
+                                                                             <h4>เลขแทรค : {{event.Order_Track}}</h4>
+                                                                             @endif
+                                                                            <h3> ยอดคำสั่งซื้อทั้งหมด : <span
+                                                                                    class="text-danger">{{event.Order_Total}} ฿</span></h3>
+                                                                            </p>
+                                                                        </div>
+                                                                     
+                                                                      <div class="col-md-6 text-right">
+                                                                            @if( event.Order_Track)
+                                                                            <a class="btn btn-success" >ได้รับของแล้ว</a> <a class="btn btn-danger" >ไม่ได้รับของ</a> 
+                                                                            @else
+                                                                                <h3>  <label class="label label-warning">กำลังจัดส่งสินค้า</label></h3>
+                                                                            @endif             
+                                                                        </div>         
+                                                                                                                                
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /product -->
+                                                @endeach
+                                                @else
+                                                <div class="col-md-12">
+                                                        <div class="alert alert-danger">
+                                                            <strong>แจ้งเตือน !</strong> ยังไม่มีออเดอร์
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            
+                                                </div>
+                                                <div id="success" class="tab-pane">
+    
+                                                        @if(events_success.length>0)
+                                                        @each(event in events_success)
+                                                        <!-- product -->
+                                                        <div class="col-md-12">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel panel-heading ">
+                                                                    <div class="row">
+                                                                        <div class="col-md-10 ">
+                                                                            <h3 class="text-danger"> <a href="/event_detail_{{event.Event_ID}}">{{event.Event_Name}}</a> </h3>
+                                                                        </div>
+                                                                        <div class="col-md-2 text-center">
+                                                                        <a class="btn btn-default" >ดูรายละเอียด</a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="panel panel-body table-responsive">
+                                                                    <div class="row">
+                                                                        <div class="col-md-2">
+                                                                            <img src="assets/fileuploads/events/{{event.Event_CoverImage}}"
+                                                                                style="width: 80px;height: 80px" alt="">
+                                                                        </div>
+                                                                        <div class="col-md-8">
+                                                                            
+                                                                            @each(detail in orders_success)
+                                                                                @if(detail.Order_ID == $parent.event.Order_ID)
+                                                                                <div class="form-group">
+                                                                                        <h5>{{detail.Product_Name}}</h5>
+                                                                                        <p>จำนวนสินค้า {{detail.qty}} ชิ้น</p>
+                                                                                        <p>สินค้าราคา {{detail.Product_Price}} ฿</p>
+                                                                                    </div>
+                                                                                    <hr>
+                                                                                @endif
+                                                                            @endeach                                                                                     
+                                                                        </div>
+                                                                    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <p class="">
+                                                                                <span>วันที่ทำสั่งซื้อ {{event.Order_Date}}</span>
+                                                                             @if(event.Order_Track)
+                                                                             <h4>เลขแทรค : {{event.Order_Track}}</h4>
+                                                                             @endif
+                                                                            <h3> ยอดคำสั่งซื้อทั้งหมด : <span
+                                                                                    class="text-danger">{{event.Order_Total}} ฿</span></h3>
+                                                                            </p>
+                                                                        </div>
+                                                                     
+                                                                      <div class="col-md-6 text-right">
+                                                                            <h3>  <label class="label label-success">การฝากหิ้วสำเร็จ</label></h3>   
+                                                                        </div>         
+                                                                                                                                
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /product -->
+                                                @endeach
+                                                @else
+                                                <div class="col-md-12">
+                                                        <div class="alert alert-danger">
+                                                            <strong>แจ้งเตือน !</strong> ยังไม่มีออเดอร์
+                                                        </div>
+                                                    </div>
+                                                @endif
+                            
+                                                </div>
+                                                <div id="cancel" class="tab-pane">
+    
+                                          
+                                                        @if(events_cancel.length>0)
+                                                        @each(event in events_cancel)
+                                                        <!-- product -->
+                                                        <div class="col-md-12">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel panel-heading ">
+                                                                    <div class="row">
+                                                                        <div class="col-md-10 ">
+                                                                            <h3 class="text-danger"> <a href="/event_detail_{{event.Event_ID}}">{{event.Event_Name}}</a> </h3>
+                                                                        </div>
+                                                                        <div class="col-md-2 text-center">
+                                                                        <a class="btn btn-default" >ดูรายละเอียด</a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="panel panel-body table-responsive">
+                                                                    <div class="row">
+                                                                        <div class="col-md-2">
+                                                                            <img src="assets/fileuploads/events/{{event.Event_CoverImage}}"
+                                                                                style="width: 80px;height: 80px" alt="">
+                                                                        </div>
+                                                                        <div class="col-md-8">
+                                                                            
+                                                                            @each(detail in orders_cancel)
+                                                                                @if(detail.Order_ID == $parent.event.Order_ID)
+                                                                                <div class="form-group">
+                                                                                        <h5>{{detail.Product_Name}}</h5>
+                                                                                        <p>จำนวนสินค้า {{detail.qty}} ชิ้น</p>
+                                                                                        <p>สินค้าราคา {{detail.Product_Price}} ฿</p>
+                                                                                    </div>
+                                                                                    <hr>
+                                                                                @endif
+                                                                            @endeach                                                                                     
+                                                                        </div>
+                                                                    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <p class="">
+                                                                                <span>วันที่ทำสั่งซื้อ {{event.Order_Date}}</span>
+                                                                             @if(event.Order_Track)
+                                                                             <h4>เลขแทรค : {{event.Order_Track}}</h4>
+                                                                             @endif
+                                                                            <h3> ยอดคำสั่งซื้อทั้งหมด : <span
+                                                                                    class="text-danger">{{event.Order_Total}} ฿</span></h3>
+                                                                            </p>
+                                                                        </div>
+                                                                     
+                                                                      <div class="col-md-6 text-right">
+                                                                            <h3>  <label class="label label-danger">กรุณาติดต่อเจ้าหน้าที่</label></h3>   
+                                                                        </div>         
+                                                                                                                                
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /product -->
+                                                @endeach
+                                                @else
+                                                <div class="col-md-12">
+                                                        <div class="alert alert-danger">
+                                                            <strong>แจ้งเตือน !</strong> ยังไม่มีออเดอร์
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                </div>
+                                            </div>
+                                        </div>
+    
+    
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /store products -->
+    
+    
+                </div>
+                <!-- /STORE -->
+                </div>
+                <!-- /row -->
+            </div>
+            <!-- /container -->
+
+    </div>
+@endsection

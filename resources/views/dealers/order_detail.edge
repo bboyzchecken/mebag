@@ -1,0 +1,226 @@
+@layout('template.dealer')
+@section('content')
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+
+        <!-- row -->
+        <div class="row ">
+            <div class="col-md-12 text-center">
+                <div class="hot-deal">
+                    <h2 class="text-uppercase">เมนูจัดการออเดอร์</h2>
+                    <p>จัดการ ออเดอร์เพิ้อดำเนินการรับหิ้วสินค้า</p>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+
+           
+         @if(flashMessage('error'))
+         <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">
+                        <strong>แจ้งเตือน !</strong> {{flashMessage('error')}}
+                    </div>
+                </div>
+        </div> 
+         @endif
+
+             
+         @if(flashMessage('success'))
+         <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-success">
+                        <strong>แจ้งเตือน !</strong> {{flashMessage('success')}}
+                    </div>
+                </div>
+        </div> 
+         @endif
+           
+        <div class="row">
+            <!-- ASIDE -->
+            <div id="aside" class="col-md-3">
+                <!-- aside Widget -->
+                <div class="aside">
+                    <h3 class="aside-title">
+                            @if(users[0].User_Image==0 && users[0].User_Sex=="Male")
+                            <img src="../assets/img/men_avatar.png" class="avatar-5x" alt="">
+                            @elseif(users[0].User_Image==0 && users[0].User_Sex=="Female")
+                            <img src="../assets/img/women_avatar.png" class="avatar-5x" alt="">
+                            @elseif(users[0].User_Image==0 && users[0].User_Sex=="Other")
+                            <img src="../assets/img/other_avatar.png" class="avatar-5x" alt="">
+                            @else
+                            <img src="../assets/fileuploads/profilepicture/{{users[0].User_ID}}/{{users[0].User_Image}}" class="avatar-5x" alt="">
+                            @endif 
+                         {{users[0].User_FirstName}} {{users[0].User_LastName}}</h3>
+                    <hr>
+                    <div menuItemName="Support" class="panel panel-danger ">
+                        <div class="panel-heading">
+                            <h3 class="panel-title text-light">
+                                <i class="fa fa-user-o"></i>&nbsp; จัดการการรับหิ้วของฉัน
+
+                            </h3>
+                        </div>
+                        <div class="list-group">
+                            <a href="/dealer/order" class="list-group-item"
+                            >
+                                <i class="fa fa-shopping-bag fa-fw"></i>&nbsp; ออเดอร์
+                            </a>
+
+
+                            <a menuItemName="Downloads" href="/dealer/dashboard" class="list-group-item"
+                            >
+                                <i class="fa fa-home fa-fw"></i>&nbsp; กลับหน้าจัดการรับหิ้วของฉัน
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /aside Widget -->
+            </div>
+            <!-- /ASIDE -->
+
+            <!-- STORE -->
+            <div id="store" class="col-md-9 ">
+
+
+                <!-- store products -->
+                <div class="row">
+                        <div class="panel panel-default">
+                                <div class="panel panel-heading ">
+                                    <div class="row">
+                                        <div class="col-md-9 ">
+                                            <h3 class="text-danger"> <a href="/dealer/event_detail_{{order_detail[0].Event_ID}}">{{order_detail[0].Event_Name}}</a> </h3>
+                                        </div>
+                                        <div class="col-md-3 text-right">                                         
+                                                @if(order_detail[0].Order_Track && order_detail[0].Order_Status=='paid')
+                                                <a class="btn btn-warning" data-toggle="modal" data-target="#track">แก้ไขเลขแทรค</a>
+                                               @elseif(order_detail[0].Order_Status=='success')
+                                                <label for=""  style="color: green"> ออเดอร์เสร็จสิ้นแล้ว</label>
+                                                @elseif(order_detail[0].Order_Status=='0')
+                                                <label for=""  class="label label-danger"> กรุณากดรับสินค้าก่อนดำเนินการ</label>
+                                               @else                                                           
+                                               <a class="btn btn-success" data-toggle="modal" data-target="#track">ส่งสินค้า</a>
+                                               @endif
+                                               
+                                        </div>
+                                                        <!-- Modal -->
+                                    <div class="modal fade" id="track" tabindex="-1" role="dialog" aria-labelledby="formintro" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="formintro">แบบฟอร์มกรอกเลขแทรคที่จัดส่งให้กับลูกค้า</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                </div>
+                                               <form action="/dealer/add_track" method="POST">
+                                                {{ csrfField() }}
+                                               <input type="hidden" name="Order_ID" value="{{order_detail[0].Order_ID}}">
+                                                    <div class="modal-body">                                                          
+                                                          
+                                                            @if(order_detail[0].Order_Track && order_detail[0].Order_Status=='paid')
+                                                             <input type="text" name="Order_Track" id="" class="form-control" value="{{order_detail[0].Order_Track}}">
+                                                            @elseif(order_detail[0].Order_Status=='success')
+                                                            ออเดอร์เสร็จสิ้นแล้ว :  <label for="" class="label label-success" style="font-size: 15px">{{order_detail[0].Order_Track}}</label>
+                                                            @else                                                           
+                                                            <input type="text" name="Order_Track" id="" class="form-control" placeholder="ES 123456789 TH">
+                                                            @endif
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            @if(order_detail[0].Order_Track && order_detail[0].Order_Status=='paid')
+                                                            <button type="submit" class="btn btn-danger">บันทึกข้อมูล</button>
+                                                            @elseif(order_detail[0].Order_Status=='success')
+                                                          
+                                                            @else                                                           
+                                                            <button type="submit" class="btn btn-danger">บันทึกข้อมูล</button>
+                                                            @endif
+                                                            
+                                                    </div>
+                                               </form>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="panel panel-body table-responsive">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <img src="../assets/fileuploads/events/{{order_detail[0].Event_CoverImage}}"
+                                                style="width: 80px;height: 80px" alt="">
+                                        </div>
+                                        <div class="col-md-8">
+                                            
+                                            @each(detail in order_detail)
+                                               
+                                                <div class="form-group">
+                                                        <h5>{{detail.Product_Name}}</h5>
+                                                        <p>จำนวนสินค้า {{detail.qty}} ชิ้น</p>
+                                                        <p>สินค้าราคา {{detail.Product_Price}} ฿</p>
+                                                    </div>
+                                                    <hr>
+                                              
+                                            @endeach                                                                                     
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                                <div class="panel panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="">
+                                                <span>วันที่ทำสั่งซื้อ {{order_detail[0].Order_Date}}</span>       
+                                                @if(order_detail[0].Order_Track)
+                                                <h4>เลขแทรค : {{order_detail[0].Order_Track}}</h4>                                               
+                                                @endif
+                                            <h4> ค่าจัดส่งที่เรียกเก็บ : <span
+                                                        class="text-danger">{{order_detail[0].Order_SumTransport}} ฿</span></h4>
+                                            <h4> ค่าฝากหิ้วที่เรียกเก็บ : <span
+                                                            class="text-danger">{{order_detail[0].Order_SumEvent}} ฿</span></h4>                                     
+                                            <h3> ยอดคำสั่งซื้อทั้งหมด : <span
+                                                    class="text-danger">{{order_detail[0].Order_Total}} ฿</span></h3>
+                                            </p>
+                                        </div>
+                                     
+                                      <div class="col-md-6 text-right">
+                                           @if(order_detail[0].Order_Status=='success')
+                                           <h3>  <label class="label label-success">การฝากหิ้วสำเร็จ</label></h3>   
+                                           @elseif(order_detail[0].Order_Status=='reject')
+                                           <h3>  <label class="label label-danger">ผู้รับหิ้วทำการปฏิเสธ</label></h3>
+                                           @elseif(order_detail[0].Order_Status=='accept' && order_detail[0].Order_Payment && payment[0].Payment_Status=='0')
+                                           <h3>  <label class="label label-warning">ผู้ฝากหิ้วชำระเงินแล้ว รอแอดมินตรวจสอบ</label></h3>   
+                                           @elseif(order_detail[0].Order_Status=='accept')
+                                           <h3>  <label class="label label-warning">รอผู้ฝากหิ้ว ดำเนินการชำระเงิน</label></h3>  
+                                           @elseif(order_detail[0].Order_Status=='paid' && order_detail[0].Order_Track  && order_detail[0].Order_Payment && payment[0].Payment_Status=='accept')
+                                           <h3>  <label class="label label-warning">รอผู้ฝากหิ้วกดได้รับสินค้า</label></h3> 
+                                           @elseif(order_detail[0].Order_Status=='paid' && order_detail[0].Order_Payment!=null && payment[0].Payment_Status=='accept')
+                                           <h3>  <label class="label label-warning">ผู้ฝากหิ้วชำระเงินแล้ว ดำเนินการหิ้วสินค้า</label></h3> 
+                                           @elseif(order_detail[0].Order_Status=='cancel')
+                                           <h3>  <label class="label label-danger">แอดมินปฏิเสธการยืนยันการชำระเงิน</label></h3> 
+                                           @endif      
+                                        </div>         
+                                                                                                
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+                <!-- /store products -->
+
+
+            </div>
+            <!-- /STORE -->
+        </div>
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+
+
+
+@endsection

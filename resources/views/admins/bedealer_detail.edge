@@ -79,13 +79,35 @@
                                     <div class="panel panel-body">
                                         <div class="products-tabs">
                                             <div id="detail_normal" class="tab-pane active">
-                                                1
+                                                    <div class="col-md-12 form-group">
+                                                            ชื่อ - นามสกุล :{{users_detail[0].User_FirstName}} {{users_detail[0].User_LastName}} 
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            เพศ : {{users_detail[0].User_Sex}}
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            อีเมล : {{users_detail[0].User_Email}}
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            หมายเลขโทรศัพท์ : {{users_detail[0].User_Tel}}
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            วันเกิด : {{users_detail[0].User_BirthDay}}
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            ที่อยู่ : {{users_detail[0].User_Address}}
+                                                        </div>
                                             </div>
                                             <div id="detail_card" class="tab-pane ">
-                                                    2
+                                                    <label for="">บัตรประจำตัวประชาชน :  {{users_detail[0].Verify_CardID}} </label> <br>
+                                 
+                                                    <img src="../assets/fileuploads/verify/{{users_detail[0].User_ID}}/{{users_detail[0].Verify_CardImage}}" style="width: 250px" alt="">
                                             </div>
                                             <div id="detail_bank" class="tab-pane ">
-                                                    3
+                                                    <label for=""> เลขบัญชีธนาคาร :  {{users_detail[0].Verify_BankNumber}} </label> <br>
+                                                    <label for=""> ธนาคาร : {{users_detail[0].Verify_BankName}} </label> <br>
+                                                 
+                                            <img src="../assets/fileuploads/verify/{{users_detail[0].User_ID}}/{{users_detail[0].Verify_BankImage}}" style="width: 250px" alt="">
                                             </div>
                                         </div>
                                     </div>
