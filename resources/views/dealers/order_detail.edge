@@ -102,6 +102,10 @@
                                                 <label for=""  style="color: green"> ออเดอร์เสร็จสิ้นแล้ว</label>
                                                 @elseif(order_detail[0].Order_Status=='0')
                                                 <label for=""  class="label label-danger"> กรุณากดรับสินค้าก่อนดำเนินการ</label>
+                                                @elseif(order_detail[0].Order_Status=='accept')
+
+                                                @elseif(order_detail[0].Order_Status=='reject_recive')
+
                                                @else                                                           
                                                <a class="btn btn-success" data-toggle="modal" data-target="#track">ส่งสินค้า</a>
                                                @endif
@@ -179,6 +183,14 @@
                                                 @if(order_detail[0].Order_Track)
                                                 <h4>เลขแทรค : {{order_detail[0].Order_Track}}</h4>                                               
                                                 @endif
+                                             @if(payment.length>0)
+                                             @if(payment[0].Payment_Message)
+                                             <h4> ที่อยู่ในการจัดส่ง : <span class="text-danger">{{payment[0].Payment_Message}}</span></h4>
+                                             @else
+                                             <h4> ที่อยู่ในการจัดส่ง : <span class="text-danger">{{payment[0].User_Address}}</span></h4>
+                                             @endif
+                                             @endif
+                                           
                                             <h4> ค่าจัดส่งที่เรียกเก็บ : <span
                                                         class="text-danger">{{order_detail[0].Order_SumTransport}} ฿</span></h4>
                                             <h4> ค่าฝากหิ้วที่เรียกเก็บ : <span
@@ -203,6 +215,9 @@
                                            <h3>  <label class="label label-warning">ผู้ฝากหิ้วชำระเงินแล้ว ดำเนินการหิ้วสินค้า</label></h3> 
                                            @elseif(order_detail[0].Order_Status=='cancel')
                                            <h3>  <label class="label label-danger">แอดมินปฏิเสธการยืนยันการชำระเงิน</label></h3> 
+                                           @elseif(order_detail[0].Order_Status=='reject_recive')
+                                            <h4>  <label class="label label-danger">กรุณาติดต่อคุณ {{payment[0].User_FirstName}} {{payment[0].User_LastName}}</label></h4> 
+                                            <h4>  <label class="label label-danger">เบอร์โทร {{payment[0].User_Tel}}</label></h4> 
                                            @endif      
                                         </div>         
                                                                                                 

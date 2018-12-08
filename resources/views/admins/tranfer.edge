@@ -23,6 +23,24 @@
     <!-- /BREADCRUMB -->
 
     <div class="container">
+            @if(flashMessage('success'))
+            <div class="row">
+                 <div class="col-md-12">
+                     <div class="alert alert-success">
+                         <strong>แจ้งเตือน !</strong> {{flashMessage('success')}}
+                     </div> 
+                  </div> 
+             </div>  
+            @endif
+               @if(flashMessage('error'))
+               <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            <strong>แจ้งเตือน !</strong> {{flashMessage('error')}}
+                        </div> 
+                     </div> 
+                </div>  
+               @endif
         <div class="row">
             <div class="col-md-12">
                     <table class="table table-bordered display" id="example"  style="width:100%">
@@ -47,7 +65,7 @@
                                                 <i class="fa fa-upload"></i> อัพโหลดหลักฐาน
                                                 </a>
                                               
-                                            <a class="btn btn-success" href="/admin/accept_tranfer_{{tranfer.User_ID}}"><span class="fa fa-check"></span> จ่ายเงินแล้ว</a> 
+                                                <a class="btn btn-success" href="/admin/accept_tranfer_{{tranfer.User_ID}}"><span class="fa fa-check"></span> จ่ายเงินแล้ว</a> 
                                                                                              
                                             </td>
                                         </tr> 

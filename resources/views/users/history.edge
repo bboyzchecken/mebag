@@ -318,7 +318,8 @@
                                                                      
                                                                       <div class="col-md-6 text-right">
                                                                             @if( event.Order_Track)
-                                                                            <a class="btn btn-success" >ได้รับของแล้ว</a> <a class="btn btn-danger" >ไม่ได้รับของ</a> 
+                                                                      <a class="btn btn-success" href="/accept_recive_{{event.Order_ID}}">ได้รับของแล้ว</a> 
+                                                                      <a class="btn btn-danger" href="/reject_recive_{{event.Order_ID}}">ไม่ได้รับของ</a> 
                                                                             @else
                                                                                 <h3>  <label class="label label-warning">กำลังจัดส่งสินค้า</label></h3>
                                                                             @endif             

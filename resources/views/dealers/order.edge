@@ -96,6 +96,7 @@
                                             <li class="active"><a data-toggle="tab" href="#new_order">ออเดอร์มาใหม่</a></li>
                                             <li><a data-toggle="tab" href="#process_order">ออเดอร์ดำเนินการอยู่</a></li>
                                             <li><a data-toggle="tab" href="#success_order">ออเดอร์เสร็จสิ้น</a></li>
+                                            <li><a data-toggle="tab" href="#reject_recive">ออเดอร์ไม่ได้รับของ</a></li>
                                         </ul>
                                     </div>
                         </div>
@@ -194,7 +195,37 @@
                                                         </table>
                                                </div>
                                             </div>
-                                          
+                                            <div id="reject_recive" class="tab-pane">
+                                                    <div class="col-md-12 table-responsive">
+                                                          
+                                                         <table class="table table-bordered display" id="rejectrecive"  style="width:100%">
+                                                                 <thead>
+                                                                     <tr>
+                                                                             <th>#ออเดอร์</th>
+                                                                             <th>ชื่อ Event</th>
+                                                                             <th>ยอดรวม</th>
+                                                                             <th>ตัวเลือก</th>
+                                                                     </tr>
+                                                                 </thead>
+                                                                 <tbody>
+                                                                      @if(reject_recive.length>0)
+                                                                             @each(order in reject_recive)
+                                                                             <tr>
+                                                                                     <td>{{order.Order_ID}}</td>
+                                                                                     <td>{{order.Event_Name}}</td>
+                                                                                     <td> {{order.Order_Total}} บาท</td>
+                                                                                     <td>
+                                                                                             <a class="btn btn-info" href="/dealer/order_detail_{{order.Order_ID}}"><span class="fa fa-search-plus"></span></a>
+                                                                                            
+                                                                                             </td>
+                                                                             </tr> 
+                                                                             @endeach                                                          
+                                                                      @endif                      
+                                                                     </tbody>
+                                                             </table>
+                                                             
+                                                    </div>
+                                                 </div>
                                         </div>
                    
                            

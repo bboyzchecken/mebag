@@ -459,11 +459,16 @@ class DealerController {
                 'Order_Status': 'success',
                 'Order_ToWho': session.get('Dealer_ID')
             });
+            const reject_recive = await Database.from('orders').where({
+                'Order_Status': 'reject_recive',
+                'Order_ToWho': session.get('Dealer_ID')
+            });
             return view.render('dealers/order', {
                 users: users,
                 orders_wait: orders_wait,
                 orders_accept: orders_accept,
-                orders_success: orders_success
+                orders_success: orders_success,
+                reject_recive: reject_recive
             })
         } else {
             return view.render('dealers/login', { error: "  กรุณาล็อกอินเข้าสู่ระบบ " })
@@ -482,7 +487,7 @@ class DealerController {
             const orders_detail = await Database.from('orders').innerJoin('order_details', 'orders.Order_ID', 'order_details.Order_ID').innerJoin('events', 'orders.Event_ID', 'events.Event_ID').where({
                 'orders.Order_ID ': order_id
             });
-            const payment = await Database.from('payments').where({
+            const payment = await Database.from('payments').innerJoin('users', 'payments.Payment_Whose', 'users.User_ID').where({
                 'Order_ID': order_id
             });
 
@@ -498,7 +503,7 @@ class DealerController {
 
     }
     async bank({ view, params, response, session }) {
-    
+
         if (session.get('dealername')) {
             const users = await Database.from('users').innerJoin('verifies', 'users.User_ID', 'verifies.User_ID').where({
                 'users.User_ID': session.get('Dealer_ID')
@@ -517,7 +522,7 @@ class DealerController {
 
     }
     async card({ view, params, response, session }) {
-   
+
         if (session.get('dealername')) {
             const users = await Database.from('users').innerJoin('verifies', 'users.User_ID', 'verifies.User_ID').where({
                 'users.User_ID': session.get('Dealer_ID')
@@ -556,7 +561,23 @@ class DealerController {
 
 
     }
+    async wallet({ view, request, response, session }) {
 
+        if (session.get('dealername')) {
+            const users = await Database.from('users').innerJoin('verifies', 'users.User_ID', 'verifies.User_ID').where({
+                'users.User_ID': session.get('Dealer_ID')
+            });
+            
+            return view.render('dealers/wallet', {
+                users: users
+            })
+
+        } else {
+            return view.render('dealers/login', { error: "  กรุณาล็อกอินเข้าสู่ระบบ " })
+        }
+
+
+    }
 
 
 }

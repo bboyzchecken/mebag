@@ -1,4 +1,78 @@
 @layout('template/admin')
 @section('content')
-<a href="/admin/managedealer">ไปที่หน้าจัดการบัญชีผู้รับหิ้ว</a>
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section " style="background-color: #dc3545">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+    
+                    <h3 class="breadcrumb-header text-light"><span class="fa fa-dollar text-light"></span>
+                        บัญชีของระบบ</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/admin/dashboard" style="color: black">Dashboard</a></li>
+                        <li class="active">บัญชีของระบบ</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+    <div class="container">
+        <div class="row">
+                <div class="col-lg-4 col-6">
+                       
+                </div>
+            <div class="col-lg-4 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>{{balance_sum}} บาท</h3>
+        
+                                <p>รายได้ของระบบ</p>
+        
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+        
+                        </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-lg-12">
+                        <table class="table table-bordered display" id="example"  style="width:100%">
+                                <thead>
+                                    <tr>
+                                            <th>#รหัสเงินเข้า</th>
+                                            <th>#รหัสออเดอร์</th>
+                                            <th>ยอด (บาท)</th>
+                                            <th>วันที่เข้า</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                     @if(balances.length>0)
+                                            @each(balance in balances)
+                                            <tr>
+                                                    <td>{{balance.Balance_ID}}</td>
+                                                    <td>{{balance.Order_ID}}</td>
+                                                    <td class="text-center"><label class="label label-danger" style="font-size: 15px">{{balance.Balance_Get}}</label></td>
+                                                    <td> {{balance.created_at}}</td>
+                                            </tr> 
+                                            @endeach                                                          
+                                     @endif                      
+                                    </tbody>
+                            </table>
+                </div>
+           
+        </div>
+    </div>
+        
+    </div>
 @endsection

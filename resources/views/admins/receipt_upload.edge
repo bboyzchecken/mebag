@@ -1,0 +1,246 @@
+@layout('template/admin')
+@section('content')
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section " style="background-color: #dc3545">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+    
+                    <h3 class="breadcrumb-header text-light"><span class="fa fa-bullhorn text-light"></span>
+                        จัดการแจ้งโอนเงิน</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/admin/dashboard" style="color: black">Dashboard</a></li>
+                        <li class="active">จัดการแจ้งโอนเงิน</li>
+                        <li class="active">จัดการหลักฐานการแจ้งโอน</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="container">
+            @if(flashMessage('success'))
+            <div class="row">
+                 <div class="col-md-12">
+                     <div class="alert alert-success">
+                         <strong>แจ้งเตือน !</strong> {{flashMessage('success')}}
+                     </div> 
+                  </div> 
+             </div>  
+            @endif
+               @if(flashMessage('error'))
+               <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            <strong>แจ้งเตือน !</strong> {{flashMessage('error')}}
+                        </div> 
+                     </div> 
+                </div>  
+               @endif
+                      <!-- row -->
+       <div class="row">
+        <!-- ASIDE -->
+        <div id="aside" class="col-md-3">
+            <div menuItemName="Support" class="panel panel-danger ">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-light">
+                        <i class="fa fa-cog"></i>&nbsp; จัดการหลักฐานการแจ้งโอน
+
+                    </h3>
+                </div>
+                <div class="list-group">  
+                        <a  href="/admin/tranfer" class="list-group-item"
+                        >
+                          <i class="fa fa-sign-out fa-fw"></i>&nbsp; กลับหน้าจัดการแจ้งโอนเงิน
+                      </a>                
+                  <a  href="/admin/dashboard" class="list-group-item"
+                  >
+                    <i class="fa fa-sign-out fa-fw"></i>&nbsp; ระบบดูแลเว็บไซต์
+                </a>
+                  
+                    
+                </div>
+            </div>
+        </div>
+        <!-- /ASIDE -->
+
+        <!-- STORE -->
+        <div id="store" class="col-md-9 ">           
+
+            <!-- store products -->
+            <div class="row">
+                    <div class="panel ">
+                        <div class="panel panel-heading">
+                            <div class="row">
+                                <div class="col-md-12">
+                                   <h3>แบบฟอร์ม แจ้งโอนเงิน ผู้รับหิ้ว  #123</h3>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="panel panel-body">
+                            <div class="col-md-12">
+                                <div class="row">
+                                       @if(tranfer.length >0)
+                                       <form method="post" action="/admin/edit_tranfer" enctype="multipart/form-data" role="form">
+                                        {{ csrfField() }}
+                                        <div class="row">
+                                            <input type="hidden" name="User_ID" value="{{users[0].User_ID}}">
+                                            <div class="form-group col-sm-4">
+                                                <label for="inputName">ลูกค้า</label>
+                                                <input type="text" id="inputName"
+                                                       value="{{users[0].User_FirstName}} {{users[0].User_LastName}}" class="form-control disabled"
+                                                       disabled="disabled"/>
+                                            </div>     
+                                            <div class="form-group col-sm-8">
+                                                    <label for="inputSubject">เรื่อง</label>
+                                                    <input type="text" id="inputSubject" value="แจ้งข้อมูลการโอนเงิน"
+                                                           disabled class="form-control"/>
+                                            </div>                                              
+                                        </div>                                               
+                            
+                                        
+                                        <div class="row form-group">
+                                            <div class="col-sm-12">
+                                                <label for="inputAttachments">ไฟล์แนบ (หมายเหตุ: ตั้งชื่อไฟล์ เป็นภาษาอังกฤษ
+                                                    นะคะ)</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <input type="file" name="Tranfer_Receipt[]" id="inputAttachments" class="form-control" required/>
+                                            </div>
+        
+                                            <div class="col-xs-12 ticket-attachments-message text-muted">
+                                                อนุญาตให้อัพโหลดเฉพาะ: .jpg, .gif, .jpeg, .png
+                                            </div>
+                                        </div>                                         
+        
+                                        <div id="customFieldsContainer">
+                                            <div class="form-group">
+                                                <label for="customfield67">โอนเข้าเลขบัญชี</label>
+                                            <input type="text" name="Tranfer_BankNumber" id="customfield2" value="{{tranfer[0].Tranfer_BankNumber}}" size="30"
+                                                class="form-control" required/>                                                    
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="customfield1">เวลาที่ชำระเงิน</label>
+                                                <input type="text" name="Tranfer_Time" id="customfield1" value="{{tranfer[0].Tranfer_Time}}" size="30"
+                                                       class="form-control" required/>
+                                                <p class="help-block">เช่น 24.59 น.</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="customfield2">วันที่ชำระเงิน</label>
+                                                <input type="text" name="Tranfer_Date" id="customfield2" value="{{tranfer[0].Tranfer_Date}}" size="30"
+                                                       class="form-control" required/>
+                                                <p class="help-block">เช่น วันที่/เดือน/ปี</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="customfield3">จำนวนเงินที่โอน</label>
+                                                <input type="text" name="Tranfer_Amount" id="customfield3" value="{{tranfer[0].Tranfer_Amount}}" size="30"
+                                                       class="form-control" required/>
+                                            
+                                            </div>                                                  
+                                        </div>
+        
+                                        <div id="autoAnswerSuggestions" class="well hidden"></div>
+        
+                                        <div class="text-center margin-bottom">
+        
+                                        </div>
+        
+                                        <p class="text-center">
+                                            <button type="submit" class="btn btn-danger">แจ้งโอนเงิน</button>
+                                            <a href="/admin/tranfer" class="btn btn-default">ยกเลิก</a>
+                                        </p>
+        
+                                    </form>
+                                         @else
+                                         <form method="post" action="/admin/add_tranfer" enctype="multipart/form-data" role="form">
+                                            {{ csrfField() }}
+                                            <div class="row">
+                                                <input type="hidden" name="User_ID" value="{{users[0].User_ID}}">
+                                                <div class="form-group col-sm-4">
+                                                    <label for="inputName">ลูกค้า</label>
+                                                    <input type="text" id="inputName"
+                                                           value="{{users[0].User_FirstName}} {{users[0].User_LastName}}" class="form-control disabled"
+                                                           disabled="disabled"/>
+                                                </div>     
+                                                <div class="form-group col-sm-8">
+                                                        <label for="inputSubject">เรื่อง</label>
+                                                        <input type="text" id="inputSubject" value="แจ้งข้อมูลการโอนเงิน"
+                                                               disabled class="form-control"/>
+                                                </div>                                              
+                                            </div>                                               
+                                
+                                            
+                                            <div class="row form-group">
+                                                <div class="col-sm-12">
+                                                    <label for="inputAttachments">ไฟล์แนบ (หมายเหตุ: ตั้งชื่อไฟล์ เป็นภาษาอังกฤษ
+                                                        นะคะ)</label>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <input type="file" name="Tranfer_Receipt[]" id="inputAttachments" class="form-control" required/>
+                                                </div>
+            
+                                                <div class="col-xs-12 ticket-attachments-message text-muted">
+                                                    อนุญาตให้อัพโหลดเฉพาะ: .jpg, .gif, .jpeg, .png
+                                                </div>
+                                            </div>                                         
+            
+                                            <div id="customFieldsContainer">
+                                                <div class="form-group">
+                                                    <label for="customfield67">โอนเข้าเลขบัญชี</label>
+                                                    <input type="text" name="Tranfer_BankNumber" id="customfield2" value="" size="30"
+                                                    class="form-control" required/>                                                    
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="customfield1">เวลาที่ชำระเงิน</label>
+                                                    <input type="text" name="Tranfer_Time" id="customfield1" value="" size="30"
+                                                           class="form-control" required/>
+                                                    <p class="help-block">เช่น 24.59 น.</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="customfield2">วันที่ชำระเงิน</label>
+                                                    <input type="text" name="Tranfer_Date" id="customfield2" value="" size="30"
+                                                           class="form-control" required/>
+                                                    <p class="help-block">เช่น วันที่/เดือน/ปี</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="customfield3">จำนวนเงินที่โอน</label>
+                                                    <input type="text" name="Tranfer_Amount" id="customfield3" value="" size="30"
+                                                           class="form-control" required/>
+                                                
+                                                </div>                                                  
+                                            </div>
+            
+                                            <div id="autoAnswerSuggestions" class="well hidden"></div>
+            
+                                            <div class="text-center margin-bottom">
+            
+                                            </div>
+            
+                                            <p class="text-center">
+                                                <button type="submit" class="btn btn-danger">แจ้งโอนเงิน</button>
+                                                <a href="/admin/tranfer" class="btn btn-default">ยกเลิก</a>
+                                            </p>
+            
+                                        </form>
+                                       @endif
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            <!-- /store products -->
+
+
+        </div>
+       
+    </div>
+@endsection

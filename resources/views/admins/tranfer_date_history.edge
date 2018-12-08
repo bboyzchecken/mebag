@@ -1,7 +1,7 @@
 @layout('template/admin')
 @section('content')
 <!-- BREADCRUMB -->
-<div id="breadcrumb" class="section " style="background-color: #dc3545">
+    <div id="breadcrumb" class="section " style="background-color: #dc3545">
         <!-- container -->
         <div class="container">
             <!-- row -->
@@ -79,35 +79,27 @@
             <!-- store products -->
             <div class="row">
                 <div class="col-md-12">
-                     <div class="panel panel-danger">
-                            <div class="panel panel-heading text-center ">
-                                <label class="text-light">วันที่โอนเงินล่าสุด :</label> 
-                                @if(date.length>0)
-                                <label class="label label-default" style="font-size: 15px"> {{date[0].Tranfer_Date}}</label>
-                                @else
-                                <label class="label label-default" style="font-size: 15px"> 0/0/000</label>
-                                @endif 
-                            </div>    
-                            <div class="panel panel-body">
-                                    <form action="/admin/tranfer_date" method="POST">
-                                           
-                                            <div class="form-group col-sm-3">
-                                                    {{ csrfField() }}
-                                            </div>
-                                            <div class="form-group col-sm-6">
-                                                    <label for="Event_Name"><span class="fa fa-calendar"></span> รอบการโอนเงิน</label>
-                                                    <input type="date" name="Tranfer_Date" id="Event_Name" value=""
-                                                           class="form-control " required="required"/>
-                                            </div>
-                                            <div class="form-group col-sm-3">
-                                                  
-                                            </div>
-                                            <div class="form-group col-sm-12 text-center">
-                                                  <button type="submit" class="btn btn-success">ยืนยัน</button>  <a href="/admin/dashboard" class="btn btn-default">ยกเลิก</a>
-                                            </div>
-                                    </form>
-                            </div>    
-                    </div>    
+                    <table class="table table-bordered display" id="example"  style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>รอบโอน</th>
+                                <th>สร้างวันที่</th>                              
+                            </tr>
+                        </thead>
+                        <tbody>
+                             @if(date.length>0)
+                                    @each(row in date)
+                                    <tr>
+                                    <td>#{{row.Date_ID}}</td>
+                                            <td>{{row.Tranfer_Date}}</td>
+                                            <td>{{row.created_at}}</td>
+                                    </tr> 
+                                    @endeach                                                          
+                             @endif                      
+                            </tbody>
+                    </table>
+       
                 </div>
             </div>
             <!-- /store products -->

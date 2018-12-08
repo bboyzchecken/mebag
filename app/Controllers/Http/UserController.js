@@ -620,10 +620,13 @@ class UserController {
                 .where({
                     'Order_Whose': session.get('User_ID'),
                     'Order_Status': 'reject'
-                   
+
                 }).orWhere({
                     'Order_Whose': session.get('User_ID'),
                     'Order_Status': 'cancel'
+                }).orWhere({
+                    'Order_Whose': session.get('User_ID'),
+                    'Order_Status': 'reject_recive'
                 });
             let events_cancel = lodash.uniqBy(order_cancel, 'Order_ID');
 
@@ -684,7 +687,7 @@ class UserController {
                 }
 
             } else {
-                session.flash({ error: profilePic.error() })
+                session.flash({ error: profilePic.errors() })
                 return response.redirect('back');
             }
         } else {
@@ -899,6 +902,97 @@ class UserController {
                 return response.redirect('/history');
             }
 
+        } else {
+            return view.render('users/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+            })
+        }
+
+    }
+    async accept_recive({ params, view, session, request, response }) {
+
+        let order_id = params.order_id;
+     
+        if (session.get('username')) {
+            let orders = await Database.from('orders').where({
+                Order_ID :order_id
+            })
+            let dealer = await Database.from('users').where({
+                User_ID:orders[0].Order_ToWho
+            })
+            //return parseInt(orders[0].Order_Total)-(parseInt(orders[0].Order_SumEvent)*parseInt(10)/parseFloat(100));
+
+            let update = await Database.table('orders').update({
+                Order_Status: 'success'
+            }).where({
+                Order_ID: order_id
+            });
+
+            if(update){
+                let balance = await Database.table('balances').insert({
+                    Balance_Get:parseInt(orders[0].Order_SumEvent)*parseInt(10)/parseFloat(100),
+                    Order_ID:order_id
+                });
+                if(balance){
+                    let wallet = await Database.table('users').update({
+                        User_Wallet:parseInt(dealer[0].User_Wallet)+parseInt(orders[0].Order_Total)-(parseInt(orders[0].Order_SumEvent)*parseInt(10)/parseFloat(100))
+                    }).where({
+                        User_ID:orders[0].Order_ToWho
+                    });
+                    if(wallet){
+                        session.flash({ success: 'แจ้งได้รับของเรียบร้อยแล้ว ขอบคุณที่ใช้บริการค่ะ' })
+                        return response.redirect('back');
+                    }else{
+                        session.flash({ error: 'ไม่สามารถกดรับของได้ กรุณาติดต่อเจ้าหน้าที่' })
+                    return response.redirect('back');
+                    }
+                }else{
+                    session.flash({ error: 'กรุณาแจ้งเจ้าหน้าที่ รหัสความผิดพลาด #101' })
+                    return response.redirect('back');
+                }
+            }else{
+                session.flash({ error: 'ไม่สามารถกดรับของได้ กรุณาติดต่อเจ้าหน้าที่เพื่อหาสาเหตุ' })
+                return response.redirect('back');
+            }
+
+            
+        } else {
+            return view.render('users/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+            })
+        }
+
+    }
+    async reject_recive({ params, view, session, request, response }) {
+
+        let order_id = params.order_id;
+     
+        if (session.get('username')) {
+            let orders = await Database.from('orders').where({
+                Order_ID :order_id
+            })     
+
+            let update = await Database.table('orders').update({
+                Order_Status: 'reject_recive'
+            }).where({
+                Order_ID: order_id
+            });
+
+            if(update){
+                session.flash({ success: 'ดำเนินรายการสำเร็จ กรุณารอการติดต่อจากผู้รับหิ้วสินค้า' })
+                return response.redirect('back');
+            }else{
+                session.flash({ error: 'ไม่สามารถทำรายการได้' })
+                return response.redirect('back');
+            }
+
+            
         } else {
             return view.render('users/login', {
                 error: "  กรุณาล็อกอินเข้าสู่ระบบ ",

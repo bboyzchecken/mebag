@@ -28,6 +28,8 @@ Route.post("/bedealer_register", 'UserController.bedealer_register');
 Route.get("/logout", 'UserController.logout');
 Route.get("/allevent", 'UserController.all_events');
 Route.get("/history", 'UserController.history');
+Route.get("/accept_recive_:order_id", 'UserController.accept_recive');
+Route.get("/reject_recive_:order_id", 'UserController.reject_recive');
 Route.get("/payment_:order_id", 'UserController.payment_page');
 Route.post("/payment", 'UserController.payment');
 Route.get("/change_password", 'UserController.change_password_page');
@@ -67,6 +69,7 @@ Route.get("/dealer/order_detail_:order_id", 'DealerController.order_detail');
 Route.post("/dealer/add_track", 'DealerController.add_track');
 Route.get("/dealer/bank", 'DealerController.bank');
 Route.get("/dealer/card", 'DealerController.card');
+Route.get("/dealer/wallet", 'DealerController.wallet');
 ////
 Route.get("/dealer/product_event_:event_id", 'DealerController.product_select');
 Route.get("/dealer/product_create_event_:event_id", 'DealerController.product_create');
@@ -95,3 +98,8 @@ Route.get("/admin/reject_dealer_:user_id", 'AdminController.reject_dealer');
 Route.get("/admin/receipt_upload_:user_id", 'AdminController.receipt_upload');
 Route.get("/admin/tranfer_date", 'AdminController.tranfer_date');
 Route.post("/admin/tranfer_date", 'AdminController.tranfer_date_post');
+Route.get("/admin/tranfer_date_history", 'AdminController.tranfer_date_history');
+/* Route.get("/admin/add_admin", 'AdminController.add_admin'); */
+Route.post("/admin/add_tranfer", 'AdminController.add_tranfer');
+Route.post("/admin/edit_tranfer", 'AdminController.edit_tranfer');
+Route.get("/admin/accept_tranfer_:user_id", 'AdminController.accept_tranfer');
