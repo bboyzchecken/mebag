@@ -630,6 +630,8 @@ class UserController {
                 });
             let events_cancel = lodash.uniqBy(order_cancel, 'Order_ID');
 
+           
+
             return view.render('users/history', {
                 users: users,
                 carts: session.get('cart'),

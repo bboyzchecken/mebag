@@ -69,6 +69,7 @@ Route.get("/dealer/order_detail_:order_id", 'DealerController.order_detail');
 Route.post("/dealer/add_track", 'DealerController.add_track');
 Route.get("/dealer/bank", 'DealerController.bank');
 Route.get("/dealer/card", 'DealerController.card');
+Route.get("/dealer/wallet_history", 'DealerController.wallet_history');
 Route.get("/dealer/wallet", 'DealerController.wallet');
 ////
 Route.get("/dealer/product_event_:event_id", 'DealerController.product_select');

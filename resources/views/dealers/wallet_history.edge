@@ -71,44 +71,43 @@
                        </div>
 
                     </div>
-                    <div class="panel panel-body">
+                    <div class="panel panel-body">                       
                         <div class="row">
-                                                         <!-- ./col -->
-                        <div class="col-md-4">
-                              
-                            </div>
-                            <!-- ./col -->
-                                        <!-- ./col -->
-                        <div class="col-md-4">
-                            <!-- small box -->
-                            <div class="small-box bg-warning">
-                                <div class="inner text-center">
-                                    <h3>฿ {{users[0].User_Wallet}}</h3>
-
-                                    <p>ยอดเงินของคุณ</p>
-
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-person-add"></i>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- ./col -->
-                                                     <!-- ./col -->
-                                                     <div class="col-md-4">
-                                                          
-                                                        </div>
-                                                        <!-- ./col -->
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 text-center">
-                            <h3><label for="">ระบบจะตัดรอบเงินค่าจ้างในวันอาทิตย์ที่ <label class="label label-danger">{{tranfer_date[0].Tranfer_Date}}</label> </label></h3>
-                                <p>
-                                        
-                                        * ท่านจะได้รับเงินภายใน 3 วันทำการหลังจากที่ สถานะ การโอนเงินเปลี่ยนเป็น "โอนเงินแล้ว"
-                                </p>
-                            </div>
+                            <div class="col-md-12 table-responsive">
+                                    <table class="table table-bordered display" id="datareject"  style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                        <th>#รหัสการโอนเงิน</th>
+                                                        <th>บัญชีที่รับโอน</th>
+                                                        <th>วันที่โอน</th>
+                                                        <th>เวลาที่โอน</th>                                                        
+                                                        <th>ยอดที่โอน</th>
+                                                        <th>ใบเสร็จโอนเงิน</th>
+                                                        <th>สถานะ</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                 @if(history.length>0)
+                                                        @each(row in history)
+                                                        <tr>
+                                                                <td>#{{row.Tranfer_ID}}</td>
+                                                                <td>{{row.Tranfer_BankNumber}}</td>
+                                                                <td> {{row.Tranfer_Date}}</td>
+                                                                <td> {{row.Tranfer_Time}}</td>
+                                                                <td> {{row.Tranfer_Amount}}</td>      
+                                                        <td class="text-center"> <a href="../assets/fileuploads/tranfers/{{row.Tranfer_Receipt}}" target="_blank"><span class="fa fa-file"></span></a></td>      
+                                                                <td class="text-center">
+                                                                    @if(row.Tranfer_Status==1)
+                                                                    <label class="label label-success">โอนเงินแล้ว</label>
+                                                                    @else
+                                                                    <label class="label label-warning">รอแอดมินยืนยัน</label>
+                                                                    @endif
+                                                                </td>                                                               
+                                                        </tr> 
+                                                        @endeach                                                          
+                                                 @endif                      
+                                                </tbody>
+                                        </table>
                         </div>
                 </div>
             </div>

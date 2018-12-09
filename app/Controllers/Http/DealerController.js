@@ -567,9 +567,10 @@ class DealerController {
             const users = await Database.from('users').innerJoin('verifies', 'users.User_ID', 'verifies.User_ID').where({
                 'users.User_ID': session.get('Dealer_ID')
             });
-            
+            let tranfer_date = await Database.from('tranfer_date');
             return view.render('dealers/wallet', {
-                users: users
+                users: users,
+                tranfer_date:tranfer_date
             })
 
         } else {
@@ -578,6 +579,27 @@ class DealerController {
 
 
     }
+    async wallet_history({ view, request, response, session }) {
+
+        if (session.get('dealername')) {
+            const users = await Database.from('users').innerJoin('verifies', 'users.User_ID', 'verifies.User_ID').where({
+                'users.User_ID': session.get('Dealer_ID')
+            });
+            let wallet_history = await Database.from('tranfers').where({
+                User_ID:session.get('Dealer_ID')
+            });
+            return view.render('dealers/wallet_history', {
+                users: users,
+                history:wallet_history
+            })
+
+        } else {
+            return view.render('dealers/login', { error: "  กรุณาล็อกอินเข้าสู่ระบบ " })
+        }
+
+
+    }
+
 
 
 }
