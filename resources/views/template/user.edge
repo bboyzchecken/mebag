@@ -44,8 +44,8 @@
     <div id="top-header">
         <div class="container">
             <ul class="header-links pull-left">
-                <li><a href="/dealer"><i class="fa fa-shopping-bag"></i>คนรับหิ้ว</a></li>
-                <li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
+                <li><a href="/dealer"><i class="fa fa-shopping-bag"></i>ผู้รับหิ้ว</a></li>
+                <li><a href="#"><i class="fa fa-envelope-o"></i> contact@mebag.com</a></li>
                 <li><span class="text-light">ติมตามเราบน</span> <a href="#"><i class="fa fa-facebook"></i> </a> <a
                         href="#"><i class="fa fa-youtube"></i> </a> <a href="#"><i class="fa fa-twitter"></i> </a></li>
             </ul>
@@ -95,14 +95,15 @@
                 <!-- SEARCH BAR -->
                 <div class="col-md-6">
                     <div class="header-search">
-                        <form>
-                            <select class="input-select">
+                        <form action="/search" method="POST">
+                            {{ csrfField() }}
+                            <select class="input-select" name="type">
                                 <option value="keyword">ค้นหาทั้งหมด</option>
                                 <option value="product">ค้นหาสินค้า</option>
                                 <option value="place">ค้นหาสถานที่</option>
 
                             </select>
-                            <input class="input" placeholder="Search here">
+                            <input class="input" placeholder="Search here" name="keyword">
                             <button class="search-btn">ค้นหา</button>
                         </form>
                     </div>
@@ -188,14 +189,14 @@
             <!-- NAV -->
             <ul class="main-nav nav navbar-nav">
                 <li class=""><a href="/">หน้าแรก</a></li>
-                <li><a href="/allevent"> Event ทั้งหมด</a></li>
-                <li><a href="/allevent"> อุปกรณ์เสริม อิเล็กทรอนิกส์</a></li>
-                <li><a href="/allevent"> สุขภาพและความงาม</a></li>
-                <li><a href="/allevent"> เด็กอ่อน และของเล่น</a></li>
-                <li><a href="/allevent"> แฟชั่นผู้หญิง</a></li>
-                <li><a href="/allevent"> แฟชั่นผู้ชาย</a></li>
-                <li><a href="/allevent"> เครื่องประดับ</a></li>
-                <li><a href="/allevent"> อื่นๆ</a></li>
+                <li><a href="/allevent/1"> Event ทั้งหมด</a></li>
+                <li><a href="/allevent/1"> อุปกรณ์เสริม อิเล็กทรอนิกส์</a></li>
+                <li><a href="/allevent/1"> สุขภาพและความงาม</a></li>
+                <li><a href="/allevent/1"> เด็กอ่อน และของเล่น</a></li>
+                <li><a href="/allevent/1"> แฟชั่นผู้หญิง</a></li>
+                <li><a href="/allevent/1"> แฟชั่นผู้ชาย</a></li>
+                <li><a href="/allevent/1"> เครื่องประดับ</a></li>
+                <li><a href="/allevent/1"> อื่นๆ</a></li>
             </ul>
             <!-- /NAV -->
         </div>

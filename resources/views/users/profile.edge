@@ -1,0 +1,238 @@
+@layout('template/user')
+@section('content')
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="breadcrumb-header">โปรไฟล์ผู้รับหิ้ว</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/">MEBAG</a></li>
+                      
+                        <li class="active">โปรไฟล์ผู้รับหิ้ว</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+    
+<div class="section bg-gray">
+            <!-- /SECTION -->
+        <!-- container -->
+        <div class="container">               
+                <!-- row -->
+                <div class="row">
+                    <!-- ASIDE -->
+                    <div id="aside" class="col-md-3">
+                        <!-- aside Widget -->
+                        <div class="aside">
+                           
+                          
+                            <div menuItemName="Support" class="panel panel-danger ">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title text-light">
+                                        <i class="fa fa-user-o"></i>&nbsp; ข้อมูลผู้รับหิ้ว
+        
+                                    </h3>
+                                </div>
+                                <div class="list-group">                                 
+                                    <a   class="list-group-item"
+                                    >
+                                        <i class="fa fa-lock fa-fw"></i>&nbsp; เป็นสมาชิกเมื่อ 18/2/2555
+                                    </a>
+                                    <a   class="list-group-item"
+                                      >
+                                        <i class="fa fa-list fa-fw"></i>&nbsp; การรับหิ้วทั้งหมด 24 ครั้ง
+                                    </a>                                  
+                                    
+                                </div>
+                            </div>
+                            <div menuItemName="Support" class="panel panel-danger ">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title text-light">
+                                            <i class="fa fa-user-o"></i>&nbsp; การยืนยันตัวตน
+            
+                                        </h3>
+                                    </div>
+                                    <div class="list-group">
+                                     
+                                        <a   class="list-group-item"
+                                        >
+                                            <i class="fa fa-lock fa-fw"></i>&nbsp; บัตรประชาชน  ยืนยันเรียบร้อย
+                                        </a>
+                                        <a   class="list-group-item"
+                                          >
+                                            <i class="fa fa-list fa-fw"></i>&nbsp; บัญชีธนาคาร ยืนยันเรียบร้อย
+                                        </a>
+                                      
+                                        
+                                    </div>
+                                </div>
+                       
+                        </div>
+                        <!-- /aside Widget -->
+                    </div>
+                    <!-- /ASIDE -->
+        
+                    <!-- STORE -->
+                    <div id="store" class="col-md-9 ">
+        
+        
+                        <!-- store products -->
+                        <div class="row">
+                            <div class="panel ">
+                                <div class="panel panel-heading">
+                                   <div class="row">
+                                       <div class="col-md-12 text-center">
+                                       <img src="../assets/fileuploads/profilepicture/{{profile[0].User_ID}}/{{profile[0].User_Image}}" class="avatar-10x" alt=""><br><br>
+                                          <h3>{{profile[0].User_FirstName}} {{profile[0].User_LastName}}</h3>
+                                          <p>{{profile[0].User_Intro}}</p>
+                                       </div>
+                                      
+                                   </div>
+        
+                                </div>
+                                <div class="panel panel-body">
+                                    <div class="col-md-12">
+                                        <h3>EVENT ล่าสุด</h3>
+                                        <div class="row">
+                                                @each(event in events)
+                                                <!-- product -->
+                                                <div class="col-md-4">
+                                                      <!-- product -->
+                                                         <div class="product">
+                                                                 <div class="product-img">
+                                                                     <img src="../assets/fileuploads/events/{{event.Event_CoverImage}}" style="width: 100%;height: 174px" alt="">
+                                                                     <div class="product-label">
+                                                                         <span class="new">มาใหม่</span>
+                                                                     </div>
+                                                                 </div>
+                                                                 <div class="product-body">
+                                                                     <p class="product-category">หมวดหมู่</p>
+                                                                     <h3 class="product-name"><a href="#">{{event.Event_Name}}</a></h3>
+                                                                     <h4 class="product-price">{{event.Event_Price}} ฿.-</h4>
+                                                                     <p class="product-category">ระยะเวลา</p>
+                                                                     <h4 class="product-price">{{event.Event_Start}} - {{event.Event_End}}</h4>
+                                     
+                                                                     <div class="product-rating">
+                                                                         <i class="fa fa-star"></i>
+                                                                         <i class="fa fa-star"></i>
+                                                                         <i class="fa fa-star"></i>
+                                                                         <i class="fa fa-star"></i>
+                                                                         <i class="fa fa-star"></i>
+                                                                     </div>
+                                                                     <div class="product-btns">
+                                                                         <button onclick="window.location.href='/event_detail_{{event.Event_ID}}'" class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">ดูเพิ่มเติม</span>
+                                                                         </button>
+                                                                     </div>
+                                                                 </div>
+                                                                 <div class="add-to-cart">
+                                                                     <button onclick="window.location.href='/event_detail_{{event.Event_ID}}'" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> ดูเพิ่มเติม
+                                                                     </button>
+                                                             
+                                                                 </div>
+                                                             </div>
+                                                             <!-- /product -->
+                                                     </div>
+                                                     <!-- /product -->
+                                        @endeach
+                                          
+        
+                                        </div>
+                                    </div>
+                          
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /store products -->
+        
+        
+                    </div>
+                    <!-- /STORE -->
+                </div>
+                <!-- /row -->
+                <div class="row">
+                        <div class="col-md-12">
+                           <!-- Modal -->
+                           <div class="modal fade" id="editaccount" tabindex="-1" role="dialog" aria-labelledby="formintro" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="formintro">แก้ไขข้อมูลส่วนตัว</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                   <form action="/account/edit_profile" method="POST">
+                                    {{ csrfField() }}
+                                        <div class="modal-body">
+                                                <div class="row">
+                                                        <div class="form-group col-sm-6">
+                                                            <label for="User_FirstName">ชื่อ</label>
+                                                            <input type="text" name="User_FirstName" id="User_FirstName" value="{{users[0].User_FirstName}}"
+                                                                   class="form-control " required="required"/>
+                                                        </div>
+                                                        <div class="form-group col-sm-6">
+                                                            <label for="User_LastName">นามสกุล</label>
+                                                            <input type="text" name="User_LastName" id="User_LastName"
+                                                                   value="{{users[0].User_LastName}}" class="form-control "
+                                                                   required="required"/>
+                                                        </div>                                                      
+                                                    </div>
+                                                <div class="row">
+                                                        <div class="form-group col-sm-4">
+                                                                <label for="User_Sex">เพศ</label>
+                                                                <select name="User_Sex" id="User_Sex" class="form-control">
+                                                                    <option value="Male">
+                                                                        เพศชาย
+                                                                    </option>
+                                                                    <option value="Female">
+                                                                        เพศหญิง
+                                                                    </option>
+                                                                    <option value="Other">
+                                                                        อื่นๆ
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group col-sm-4">
+                                                                <label for="User_BirthDay">วันเกิด</label>
+                                                                <input type="date" name="User_BirthDay" id="User_BirthDay"
+                                                                       class="form-control" value="{{users[0].User_BirthDay}}" required="required"/>
+                                                            </div>    
+                                                            <div class="form-group col-sm-4">
+                                                                    <label for="User_Tel">เบอร์โทรศัพท์</label>
+                                                                    <input type="text" name="User_Tel" id="User_Tel"
+                                                                           class="form-control" value="{{users[0].User_Tel}}" required="required"/>
+                                                                </div>                                                  
+                                                        <div class="form-group col-sm-12">
+                                                            <label for="User_Address">ที่อยู่ </label>
+                                                            <textarea name="User_Address" id="User_Address" rows="12"
+                                                                      class="form-control markdown-editor"
+                                                            >{{users[0].User_Address}}</textarea>
+                                                        </div>
+                                                        <div class="form-group col-sm-12  text-muted">
+                                                            *ใช้ในการจัดส่งสินค้า
+                                                        </div>                                                     
+                                                    </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-warning">บันทึกข้อมูล</button>
+                                        </div>
+                                   </form>
+                                </div>
+                                </div>
+                            </div>
+                        </div>                    
+                </div>
+            </div>
+            <!-- /container -->
+
+    </div>
+@endsection

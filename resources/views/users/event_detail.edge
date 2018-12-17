@@ -158,7 +158,7 @@
                                                             <br> {{profiles[0].User_FirstName}} {{profiles[0].User_LastName}}</a>
                                                    </div>
                                                    <div class="form-group">
-                                                        <a  href="/profile_{{profiles[0].User_ID}}" class="btn btn-danger">
+                                                        <a  href="/profile/{{profiles[0].User_ID}}" class="btn btn-danger">
                                                             <i class="fa fa-user fa-fw"></i>&nbsp; ดูเพิ่มเติม
                                                         </a>    
                                                    </div>
@@ -168,10 +168,10 @@
                                                         </div>
                                                         <div class="col-md-4">
                                                                 <div class="list-group">
-                                                                        <a  href="/account" class="list-group-item">
+                                                                        <a  href="/profile/{{profiles[0].User_ID}}" class="list-group-item">
                                                                             <i class="fa fa-shopping-bag fa-fw"></i>&nbsp; รับหิ้วไปแล้ว 3 ครั้ง
                                                                         </a>    
-                                                                        <a  href="/account" class="list-group-item">
+                                                                        <a  href="/profile/{{profiles[0].User_ID}}" class="list-group-item">
                                                                             <i class="fa fa-tag fa-fw"></i>&nbsp; Event ทั้งหมด 3 Evnet
                                                                         </a>    
                                                                     </div>

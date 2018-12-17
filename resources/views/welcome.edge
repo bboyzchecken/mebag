@@ -189,9 +189,10 @@
                 <div class="col-md-12">
                     <div class="newsletter">
                         <p>รับข่าวสาร <strong>โปรโมชั่น</strong></p>
-                        <form>
-                            <input class="input" type="email" placeholder="กรอกอีเมล">
-                            <button class="newsletter-btn"><i class="fa fa-envelope"></i> ติดตาม</button>
+                        <form action="/subscribe" method="POST">
+                            {{ csrfField() }}
+                            <input class="input" type="email" placeholder="กรอกอีเมล" name="email">
+                            <button type="submit" class="newsletter-btn"><i class="fa fa-envelope"></i> ติดตาม</button>
                         </form>
                         <ul class="newsletter-follow">
                             <li>
@@ -215,4 +216,19 @@
         <!-- /container -->
     </div>
     <!-- /NEWSLETTER -->
+  @if(flashMessage('success'))
+  <script >
+        alert('ติดตามข่าวสารสำเร็จ ขอบคุณที่ใช้บริการ')
+    </script>
+  @endif
+  @if(flashMessage('error'))
+  <script >
+        alert('ไม่สารมารถทำรายการได้ กรุณาตรวจสอบ')
+    </script>
+  @endif
+  @if(flashMessage('exit'))
+  <script >
+        alert('ท่านเคยทำการติดตามไว้เรียบร้อยแล้ว')
+    </script>
+  @endif
 @endsection

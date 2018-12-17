@@ -7,8 +7,112 @@ const lodash = require('lodash');
 const Helpers = use('Helpers')
 const Encryption = use('Encryption');
 const format = use('date-format');
-class UserController {
+const Mail = use('Mail')
+const Chance = require('chance');
 
+class UserController {
+    async reset_password({ request, session, response, faker }) {
+        //  const data = request.only(['email', 'username', 'password'])
+        // const user = await User.create(data)
+        let data = request.post();
+
+        let users = await Database.from('users').where('User_Email', '=', data.email);
+        if (users.length > 0) {
+            let faker = new Chance();
+            let temp_password = faker.string({ length: 8 });
+            //return faker.string({length:8});
+            let update = await Database.table('Users').update({
+                User_Password: await Hash.make(temp_password),
+            })
+            let status = await Mail.send('users/reset_password', {
+                password: temp_password,
+                fullname: users[0].User_FirstName + ' ' + users[0].User_LastName,
+                username: users[0].User_Email
+            }, (message) => {
+                message
+                    .to(data.email)
+                    .from('jiraphatsintuwong@outlook.com')
+                    .subject('Reset Password [MEBAG.COM]')
+            })
+            session.flash({ success: 'ทำการตั้งค่ารหัสผ่านใหม่สำเร็จ กรุณาตรวจสอบในอีเมลของท่าน' })
+            return response.redirect('back')
+        } else {
+            session.flash({ error: 'ไม่พบบัญชีผู้ใช้นี้ในระบบ กรุณาตรวจสอบ' })
+            return response.redirect('back');
+        }
+
+
+
+
+    }
+    async subscribe({ request, session, response, faker }) {
+
+        let data = request.post();
+
+
+        let check = await Database.from('subscribes').where('Sub_Email', '=', data.email);
+
+        if (check) {
+            session.flash({
+                exit: '1'
+            })
+            return response.redirect('back')
+        } else {
+            let subscribe = await Database.table('subscribes').insert({
+                Sub_Email: data.email
+            });
+            if (subscribe) {
+                session.flash({
+                    success: 'ติดตามข่าวสารสำเร็จ ขอบคุณที่ใช้บริการ'
+                })
+                return response.redirect('back')
+            } else {
+                session.flash({
+                    error: 'ไม่สารมารถทำรายการได้ กรุณาตรวจสอบ'
+                })
+                return response.redirect('back')
+            }
+        }
+
+
+
+    }
+    async forget_password({ view, response, session }) {
+        const users = await Database.from('users').where({
+            'User_ID': session.get('User_ID')
+        });
+
+
+
+        return view.render('users/forget_password', {
+            users: users,
+
+            carts: session.get('cart'),
+            sum_product: session.get('sum_product'),
+            sum_event: session.get('sum_event'),
+        })
+    }
+    async profile({ view, response, session ,params}) {
+        let profile_id = params.user_id;
+        const users = await Database.from('users').where({
+            'User_ID': session.get('User_ID')
+        });
+        let profile = await Database.from('users').where({
+            User_ID : profile_id
+        })
+        let event_recent = await Database.from('events').where('Event_Whose','=',profile_id).orderBy('Event_ID','desc').limit(3);
+
+
+
+        return view.render('users/profile', {
+            users: users,
+            profile:profile,
+            carts: session.get('cart'),
+            events:event_recent,
+            sum_product: session.get('sum_product'),
+            sum_event: session.get('sum_event'),
+        })
+    }
     async index({ view, response, session }) {
         const users = await Database.from('users').where({
             'User_ID': session.get('User_ID')
@@ -24,7 +128,38 @@ class UserController {
             sum_event: session.get('sum_event'),
         })
     }
+    async search({ view, response, session, params, request }) {
+        let search = request.post();
+        const users = await Database.from('users').where({
+            'User_ID': session.get('User_ID')
+        });
 
+
+        const events = await Database.from('events').where('events.Event_Detail', 'LIKE', '%' + search.keyword + '%').orWhere('events.Event_Name', 'LIKE', '%' + search.keyword + '%').orWhere('events.Event_Place', 'LIKE', '%' + search.keyword + '%').orderBy('events.Event_ID', 'desc');
+
+        if (events.length > 0) {
+            return view.render('users/search', {
+                users: users,
+                events: events,
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+            })
+        } else {
+            return view.render('users/search', {
+                users: users,
+                events: events,
+                error: "ไม่เจอผลลัพธ์",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+            })
+        }
+
+    }
+    async search_get({ response }) {
+        return response.redirect('/')
+    }
     //ระบบสมาชิก
     async register_page({ view, response, session }) {
         const users = await Database.from('users').where({
@@ -565,12 +700,29 @@ class UserController {
     }
 
     async all_events({ params, view, session, request, response }) {
+        let page = params.page;
+
         const users = await Database.from('users').where({
             'User_ID': session.get('User_ID')
         });
+        let events; let event_cheap; let event_expensive; let event_end;
 
-        const events = await Database.from('events').orderBy('Event_ID', 'desc');
+        if (page) {
+            events = await Database.from('events').orderBy('Event_ID', 'desc').paginate(page, 9);
+            event_cheap = await Database.from('events').orderBy('Event_Price', 'asc').paginate(page, 9);
+            event_expensive = await Database.from('events').orderBy('Event_Price', 'desc').paginate(page, 9);
+
+
+        } else {
+            events = await Database.from('events').orderBy('Event_ID', 'desc').paginate(1, 9);
+            event_cheap = await Database.from('events').orderBy('Event_Price', 'asc').paginate(1, 9);
+            event_expensive = await Database.from('events').orderBy('Event_Price', 'desc').paginate(1, 9);
+        }
+
+
+
         const event_widget = await Database.from('events').orderBy('Event_ID', 'desc').limit(4).orderBy('Event_ID', 'desc');
+        let totalPage = Math.ceil(parseInt(events.total) / parseInt(events.perPage));
 
         return view.render('users/all_events', {
             users: users,
@@ -578,7 +730,10 @@ class UserController {
             carts: session.get('cart'),
             sum_product: session.get('sum_product'),
             sum_event: session.get('sum_event'),
-            event_widget: event_widget
+            event_widget: event_widget,
+            totalPage: totalPage,
+            event_cheap: event_cheap,
+            event_expensive: event_expensive
         })
 
     }
@@ -630,7 +785,7 @@ class UserController {
                 });
             let events_cancel = lodash.uniqBy(order_cancel, 'Order_ID');
 
-           
+
 
             return view.render('users/history', {
                 users: users,
@@ -917,13 +1072,13 @@ class UserController {
     async accept_recive({ params, view, session, request, response }) {
 
         let order_id = params.order_id;
-     
+
         if (session.get('username')) {
             let orders = await Database.from('orders').where({
-                Order_ID :order_id
+                Order_ID: order_id
             })
             let dealer = await Database.from('users').where({
-                User_ID:orders[0].Order_ToWho
+                User_ID: orders[0].Order_ToWho
             })
             //return parseInt(orders[0].Order_Total)-(parseInt(orders[0].Order_SumEvent)*parseInt(10)/parseFloat(100));
 
@@ -933,34 +1088,34 @@ class UserController {
                 Order_ID: order_id
             });
 
-            if(update){
+            if (update) {
                 let balance = await Database.table('balances').insert({
-                    Balance_Get:parseInt(orders[0].Order_SumEvent)*parseInt(10)/parseFloat(100),
-                    Order_ID:order_id
+                    Balance_Get: parseInt(orders[0].Order_SumEvent) * parseInt(10) / parseFloat(100),
+                    Order_ID: order_id
                 });
-                if(balance){
+                if (balance) {
                     let wallet = await Database.table('users').update({
-                        User_Wallet:parseInt(dealer[0].User_Wallet)+parseInt(orders[0].Order_Total)-(parseInt(orders[0].Order_SumEvent)*parseInt(10)/parseFloat(100))
+                        User_Wallet: parseInt(dealer[0].User_Wallet) + parseInt(orders[0].Order_Total) - (parseInt(orders[0].Order_SumEvent) * parseInt(10) / parseFloat(100))
                     }).where({
-                        User_ID:orders[0].Order_ToWho
+                        User_ID: orders[0].Order_ToWho
                     });
-                    if(wallet){
+                    if (wallet) {
                         session.flash({ success: 'แจ้งได้รับของเรียบร้อยแล้ว ขอบคุณที่ใช้บริการค่ะ' })
                         return response.redirect('back');
-                    }else{
+                    } else {
                         session.flash({ error: 'ไม่สามารถกดรับของได้ กรุณาติดต่อเจ้าหน้าที่' })
-                    return response.redirect('back');
+                        return response.redirect('back');
                     }
-                }else{
+                } else {
                     session.flash({ error: 'กรุณาแจ้งเจ้าหน้าที่ รหัสความผิดพลาด #101' })
                     return response.redirect('back');
                 }
-            }else{
+            } else {
                 session.flash({ error: 'ไม่สามารถกดรับของได้ กรุณาติดต่อเจ้าหน้าที่เพื่อหาสาเหตุ' })
                 return response.redirect('back');
             }
 
-            
+
         } else {
             return view.render('users/login', {
                 error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
@@ -974,11 +1129,11 @@ class UserController {
     async reject_recive({ params, view, session, request, response }) {
 
         let order_id = params.order_id;
-     
+
         if (session.get('username')) {
             let orders = await Database.from('orders').where({
-                Order_ID :order_id
-            })     
+                Order_ID: order_id
+            })
 
             let update = await Database.table('orders').update({
                 Order_Status: 'reject_recive'
@@ -986,15 +1141,15 @@ class UserController {
                 Order_ID: order_id
             });
 
-            if(update){
+            if (update) {
                 session.flash({ success: 'ดำเนินรายการสำเร็จ กรุณารอการติดต่อจากผู้รับหิ้วสินค้า' })
                 return response.redirect('back');
-            }else{
+            } else {
                 session.flash({ error: 'ไม่สามารถทำรายการได้' })
                 return response.redirect('back');
             }
 
-            
+
         } else {
             return view.render('users/login', {
                 error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
