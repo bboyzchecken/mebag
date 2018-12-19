@@ -9,7 +9,25 @@
                 <div class="col-md-12">
                     <ul class="breadcrumb-tree">
                         <li><a href="/">Home</a></li>
-                        <li><a href="/allevent">All Categories</a></li>
+                        <li><a href="/{{type}}/1">
+                        @if(type_number=='0')
+                        Event ทั้งหมด
+                        @elseif(type_number=='1')
+                        อุปกรณ์เสริม อิเล็กทรอนิกส์
+                        @elseif(type_number=='2')
+                        สุขภาพและความงาม
+                        @elseif(type_number=='3')
+                        เด็กอ่อน และของเล่น
+                        @elseif(type_number=='4')
+                        แฟชั่นผู้หญิง
+                        @elseif(type_number=='5')
+                        แฟชั่นผู้ชาย
+                        @elseif(type_number=='6')
+                        เครื่องประดับ
+                        @elseif(type_number=='7')
+                        อื่นๆ
+                        @endif
+                        </a></li>
                     </ul>
                 </div>
             </div>
@@ -232,13 +250,13 @@
                         <div class="store-filter clearfix">
                             <ul class="store-pagination">
                                 @if(events.page>1)
-                                <li><a href="/allevent/{{events.page -1}}"><i class="fa fa-angle-left"></i></a></li>
+                                <li><a href="/{{type}}/{{events.page -1}}"><i class="fa fa-angle-left"></i></a></li>
                                 @endif
                                 @each(item in range(totalPage))
-                                <li><a href="/allevent/{{$loop.index+1}}">{{$loop.index+1}}</a></li>
+                                <li><a href="/{{type}}/{{$loop.index+1}}">{{$loop.index+1}}</a></li>
                                 @endeach                           
                                 @if(totalPage > events.page)
-                                <li><a href="/allevent/{{events.page +1}}"><i class="fa fa-angle-right"></i></a></li>
+                                <li><a href="/{{type}}/{{events.page +1}}"><i class="fa fa-angle-right"></i></a></li>
                                 @endif
                                 
                             </ul>

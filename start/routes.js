@@ -21,6 +21,11 @@ const Database = use("Database");
 Route.get("/", 'UserController.index');
 Route.post("/search", 'UserController.search');
 Route.get("/search", 'UserController.search_get');
+Route.get("/about", 'UserController.about');
+Route.get("/contact", 'UserController.contact');
+Route.get("/terms", 'UserController.term');
+Route.get("/manual", 'UserController.manual');
+
 Route.get("/forget_password", 'UserController.forget_password');
 Route.post("/reset_password", 'UserController.reset_password');
 Route.post("/subscribe", 'UserController.subscribe');
@@ -32,11 +37,15 @@ Route.get("/account", 'UserController.account');
 Route.get("/bedealer", 'UserController.bedealer_page');
 Route.post("/bedealer_register", 'UserController.bedealer_register');
 Route.get("/logout", 'UserController.logout');
+//
 Route.get("/allevent/:page?", 'UserController.all_events');
+Route.get("/event_:type/:page?", 'UserController.events');
+//
 Route.get("/history", 'UserController.history');
 Route.get("/accept_recive_:order_id?", 'UserController.accept_recive');
 Route.get("/reject_recive_:order_id?", 'UserController.reject_recive');
 Route.get("/payment_:order_id?", 'UserController.payment_page');
+Route.get("/detail_payment_:payment_id?", 'UserController.payment_detail_page');
 Route.post("/payment", 'UserController.payment');
 Route.get("/change_password", 'UserController.change_password_page');
 Route.post("/login/check", 'UserController.login');
@@ -95,6 +104,7 @@ Route.get("/admin/managedealer", 'AdminController.managedealer_page');
 Route.get("/admin/bedealer_detail_:id", 'AdminController.bedealer_detail');
 Route.get("/admin/tranfer", 'AdminController.tranfer');
 Route.get("/admin/balance", 'AdminController.balance');
+Route.get("/admin/problem", 'AdminController.problem_page');
 Route.get("/admin/payment", 'AdminController.payment');
 Route.get("/admin/payment_detail_:payment_id", 'AdminController.payment_detail');
 Route.get("/admin/order_detail_:order_id", 'AdminController.order_detail');
@@ -110,3 +120,5 @@ Route.get("/admin/tranfer_date_history", 'AdminController.tranfer_date_history')
 Route.post("/admin/add_tranfer", 'AdminController.add_tranfer');
 Route.post("/admin/edit_tranfer", 'AdminController.edit_tranfer');
 Route.get("/admin/accept_tranfer_:user_id", 'AdminController.accept_tranfer');
+Route.get("/admin/accept_problem_recive/:order_id?", 'AdminController.accept_problem_recive');
+Route.get("/admin/accept_problem_payment/:payment_id?", 'AdminController.accept_problem_payment');

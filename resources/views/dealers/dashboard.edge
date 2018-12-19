@@ -152,8 +152,8 @@
                                 <td> {{order.Order_Total}} บาท</td>
                                 <td>
                                 <a class="btn btn-info" href="/dealer/order_detail_{{order.Order_ID}}"><span class="fa fa-search-plus"></span></a>
-                                <a class="btn btn-success" href="/dealer/accept/{{order.Order_ID}}"><span class="fa fa-check"></span></a>
-                                    <a class="btn btn-danger" href="/dealer/reject/{{order.Order_ID}}"><span class="fa fa-times"></span></a>
+                                <a class="btn btn-success" href="/dealer/accept/{{order.Order_ID}}" onclick="return confirm('ยืนยันการรับหิ้วใช่หรือไม่');"><span class="fa fa-check"></span></a>
+                                    <a class="btn btn-danger" href="/dealer/reject/{{order.Order_ID}}" onclick="return confirm('ยืนยันการปฏิเสธการรับหิ้วใช่หรือไม่');"><span class="fa fa-times"></span></a>
                                 </td>
                             </tr>
                         @endeach

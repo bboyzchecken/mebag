@@ -36,6 +36,17 @@
             </div>
               
             @endif
+            @if(flashMessage('success'))
+           
+            <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-success">
+                            <strong>แจ้งเตือน !</strong> {{flashMessage('success')}}
+                        </div>
+                    </div>
+            </div>
+              
+            @endif
             <!-- row -->
             <div class="row">
                 <div class="col-md-3"></div>
@@ -79,8 +90,8 @@
                                     <div class=" text-center" style="margin-top:20px">
                                             <ul>
                                                 <li><a href="/forget_password"><i class="fa fa-unlock"></i> ลืมรหัสผ่าน</a></li>
-                                                <li><a href="term.html">ข้อตกลงการใช้งาน</a></li>
-                                                <li><a href="contact.html">ติดต่อเรา</a></li>
+                                                <li><a href="/terms">ข้อตกลงการใช้งาน</a></li>
+                                                <li><a href="/contact">ติดต่อเรา</a></li>
                                             </ul>
                                         </div>
                             </div>

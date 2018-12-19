@@ -35,7 +35,7 @@ class UserController {
                     .subject('Reset Password [MEBAG.COM]')
             })
             session.flash({ success: 'ทำการตั้งค่ารหัสผ่านใหม่สำเร็จ กรุณาตรวจสอบในอีเมลของท่าน' })
-            return response.redirect('back')
+            return response.redirect('/login')
         } else {
             session.flash({ error: 'ไม่พบบัญชีผู้ใช้นี้ในระบบ กรุณาตรวจสอบ' })
             return response.redirect('back');
@@ -92,25 +92,33 @@ class UserController {
             sum_event: session.get('sum_event'),
         })
     }
-    async profile({ view, response, session ,params}) {
+    async profile({ view, response, session, params }) {
         let profile_id = params.user_id;
         const users = await Database.from('users').where({
             'User_ID': session.get('User_ID')
         });
         let profile = await Database.from('users').where({
-            User_ID : profile_id
+            User_ID: profile_id
         })
-        let event_recent = await Database.from('events').where('Event_Whose','=',profile_id).orderBy('Event_ID','desc').limit(3);
-
+        let event_recent = await Database.from('events').where('Event_Whose', '=', profile_id).orderBy('Event_ID', 'desc').limit(3);
+        let count_order = await Database.from('orders').where({
+            'Order_ToWho': profile_id
+        });
+        let count_event = await Database.from('events').where({
+            'Event_Whose': profile_id
+        });
 
 
         return view.render('users/profile', {
             users: users,
-            profile:profile,
+            profile: profile,
             carts: session.get('cart'),
-            events:event_recent,
+            events: event_recent,
             sum_product: session.get('sum_product'),
             sum_event: session.get('sum_event'),
+            count_event: count_event.length,
+            count_order: count_order.length,
+            date_regis: format.asString('dd-MM-yyyy', profile[0].created_at)
         })
     }
     async index({ view, response, session }) {
@@ -121,6 +129,66 @@ class UserController {
         const events = await Database.from('events').limit(4).orderBy('Event_ID', 'desc');
 
         return view.render('welcome', {
+            users: users,
+            events: events,
+            carts: session.get('cart'),
+            sum_product: session.get('sum_product'),
+            sum_event: session.get('sum_event'),
+        })
+    }
+    async about({ view, response, session }) {
+        const users = await Database.from('users').where({
+            'User_ID': session.get('User_ID')
+        });
+
+        const events = await Database.from('events').limit(4).orderBy('Event_ID', 'desc');
+
+        return view.render('users/about', {
+            users: users,
+            events: events,
+            carts: session.get('cart'),
+            sum_product: session.get('sum_product'),
+            sum_event: session.get('sum_event'),
+        })
+    }
+    async contact({ view, response, session }) {
+        const users = await Database.from('users').where({
+            'User_ID': session.get('User_ID')
+        });
+
+        const events = await Database.from('events').limit(4).orderBy('Event_ID', 'desc');
+
+        return view.render('users/contact', {
+            users: users,
+            events: events,
+            carts: session.get('cart'),
+            sum_product: session.get('sum_product'),
+            sum_event: session.get('sum_event'),
+        })
+    }
+    async term({ view, response, session }) {
+        const users = await Database.from('users').where({
+            'User_ID': session.get('User_ID')
+        });
+
+        const events = await Database.from('events').limit(4).orderBy('Event_ID', 'desc');
+
+        return view.render('users/term', {
+            users: users,
+            events: events,
+            carts: session.get('cart'),
+            sum_product: session.get('sum_product'),
+            sum_event: session.get('sum_event'),
+        })
+    }
+    async manual({ view, response, session }) {
+        const users = await Database.from('users').where({
+            'User_ID': session.get('User_ID')
+        });
+
+        const events = await Database.from('events').limit(4).orderBy('Event_ID', 'desc');
+
+        return view.render('users/manual', {
             users: users,
             events: events,
             carts: session.get('cart'),
@@ -196,13 +264,10 @@ class UserController {
                     await Database.table("verifies").insert({
                         User_ID: postId,
                     });
-                    return view.render('users/register', {
-                        error: "สมัครสมาชิกสำเร็จ",
-                        alert: "alert-success",
-                        sum_product: session.get('sum_product'),
-                        sum_event: session.get('sum_event'),
-                        carts: session.get('cart'),
+                    session.flash({
+                        success: 'สมัครสมาชิกสำเร็จ กรุณาเข้าสู้ระบบ'
                     })
+                    return response.redirect('/login')
                 } else {
                     return view.render('users/register', {
                         error: "รหัสผ่านไม่ตรงกัน กรุณาตรวจสอบ",
@@ -668,6 +733,14 @@ class UserController {
             'User_ID': event_detail[0].Event_Whose
         });
 
+        let count_order = await Database.from('orders').where({
+            'Order_ToWho': event_detail[0].Event_Whose
+        });
+        let count_event = await Database.from('events').where({
+            'Event_Whose': event_detail[0].Event_Whose
+        });
+
+
         if (event_detail != 0) {
 
             const event_image = await Database.from('event_images').where({
@@ -691,6 +764,8 @@ class UserController {
                 carts: session.get('cart'),
                 sum_product: session.get('sum_product'),
                 sum_event: session.get('sum_event'),
+                count_event: count_event.length,
+                count_order: count_order.length
             })
         } else {
             return response.redirect("back");
@@ -733,7 +808,49 @@ class UserController {
             event_widget: event_widget,
             totalPage: totalPage,
             event_cheap: event_cheap,
-            event_expensive: event_expensive
+            event_expensive: event_expensive,
+            type:'allevent',
+            type_number:'0'
+        })
+
+    }
+    async events({ params, view, session, request, response }) {
+        let page = params.page;
+        let type = params.type;
+        const users = await Database.from('users').where({
+            'User_ID': session.get('User_ID')
+        });
+        let events; let event_cheap; let event_expensive; let event_end;
+
+        if (page) {
+            events = await Database.from('events').orderBy('Event_ID', 'desc').where('Event_Type',type).paginate(page, 9);
+            event_cheap = await Database.from('events').orderBy('Event_Price', 'asc').where('Event_Type',type).paginate(page, 9);
+            event_expensive = await Database.from('events').orderBy('Event_Price', 'desc').where('Event_Type',type).paginate(page, 9);
+
+
+        } else {
+            events = await Database.from('events').orderBy('Event_ID', 'desc').where('Event_Type',type).paginate(1, 9);
+            event_cheap = await Database.from('events').orderBy('Event_Price', 'asc').where('Event_Type',type).paginate(1, 9);
+            event_expensive = await Database.from('events').orderBy('Event_Price', 'desc').where('Event_Type',type).paginate(1, 9);
+        }
+
+
+
+        const event_widget = await Database.from('events').orderBy('Event_ID', 'desc').where('Event_Type',type).limit(4).orderBy('Event_ID', 'desc');
+        let totalPage = Math.ceil(parseInt(events.total) / parseInt(events.perPage));
+
+        return view.render('users/all_events', {
+            users: users,
+            events: events,
+            carts: session.get('cart'),
+            sum_product: session.get('sum_product'),
+            sum_event: session.get('sum_event'),
+            event_widget: event_widget,
+            totalPage: totalPage,
+            event_cheap: event_cheap,
+            event_expensive: event_expensive,
+            type:'event_'+type,
+            type_number:type
         })
 
     }
@@ -993,6 +1110,9 @@ class UserController {
         }
 
     }
+
+
+
     async payment({ params, view, session, request, response }) {
         const DATA = request.post();
         if (session.get('username')) {
@@ -1160,6 +1280,44 @@ class UserController {
         }
 
     }
+
+    async payment_detail_page({ params, view, session, request, response }) {
+        let payment_id = params.payment_id;
+        if (session.get('username')) {
+            const users = await Database.from('users').where({
+                'User_ID': session.get('User_ID')
+            });
+
+            let payment = await Database.from('payments').where({
+                'Payment_ID': payment_id,
+                'Payment_Whose': session.get('User_ID')
+            });
+            if (payment.length < 1) {
+                session.flash({ error: 'ไม่มีการชำระนี้อยู่ กรุณาตรวจสอบ' })
+                return response.redirect('/history');
+            } else {
+                return view.render('users/payment_detail', {
+                    users: users,
+                    carts: session.get('cart'),
+                    sum_product: session.get('sum_product'),
+                    sum_event: session.get('sum_event'),
+                    payments: payment
+                })
+            }
+
+
+        } else {
+            return view.render('users/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+                carts: session.get('cart'),
+                sum_product: session.get('sum_product'),
+                sum_event: session.get('sum_event'),
+
+            })
+        }
+
+    }
+
 }
 
 

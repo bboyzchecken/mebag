@@ -1,0 +1,92 @@
+@layout('template/admin')
+@section('content')
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section " style="background-color: #dc3545">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+    
+                    <h3 class="breadcrumb-header text-light"><span class="fa fa-exclamation text-light"></span>
+                        จัดการออเดอร์มีปัญหา</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/admin/dashboard" style="color: black">Dashboard</a></li>
+                        <li class="active">จัดการออเดอร์มีปัญหา</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="container">
+            @if(flashMessage('success'))
+            <div class="row">
+                 <div class="col-md-12">
+                     <div class="alert alert-success">
+                         <strong>แจ้งเตือน !</strong> {{flashMessage('success')}}
+                     </div> 
+                  </div> 
+             </div>  
+            @endif
+               @if(flashMessage('error'))
+               <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            <strong>แจ้งเตือน !</strong> {{flashMessage('error')}}
+                        </div> 
+                     </div> 
+                </div>  
+               @endif
+        <div class="row">
+            <div class="col-md-12">
+                    <table class="table table-bordered display" id="example"  style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Order#</th>
+                                    <th>ชื่อ - นามสกุล ลูกค้า</th>
+                                    <th>สถานะ</th>
+                                    <th>ตัวเลือก</th>
+                                </tr>
+                            </thead>
+                            <tbody>     
+                            
+                                      @if(problems.length>0)
+                                      @each(problem in problems)
+                                      <tr>
+                                            <td> #{{problem.Order_ID}} </td>
+                                            <td>{{problem.User_FirstName}} {{problem.User_LastName}} </td>
+                                            <td class="text-center"> 
+                                                @if(problem.Order_Status=='reject_recive')
+                                                <Label class="label label-danger" style="font-size: 15px"> ไม่ได้รับของ </Label>
+                                                @else
+                                                <Label class="label label-danger" style="font-size: 15px"> การชำระเงินไม่ถูกต้อง </Label>
+                                                @endif
+                                            </td>
+                                            <td>                                                      
+                                                    @if(problem.Order_Status=='reject_recive')
+                                                    <a class="btn btn-success" href="/admin/accept_problem_recive/{{problem.Order_ID}}" onclick="return confirm('ยืนยันการแก้ไขปัญหา');"><span class="fa fa-check"></span> แก้ไขปัญหาเรียบร้อยแล้ว</a> 
+                                                    @else
+                                                    <a class="btn btn-success" href="/admin/accept_problem_payment/{{problem.Order_Payment}}" onclick="return confirm('ยืนยันการแก้ไขปัญหา');"><span class="fa fa-check"></span> แก้ไขปัญหาเรียบร้อยแล้ว</a> 
+                                                    @endif
+                                              
+                                                
+                                                                                             
+                                            </td>
+                                        </tr> 
+                                      @endeach
+                                     
+                                      @endif
+                                       
+                                       
+                                   
+                                                     
+                                </tbody>
+                        </table>    
+            </div>
+        </div>
+    </div>
+@endsection

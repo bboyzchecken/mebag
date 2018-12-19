@@ -83,8 +83,8 @@
                                                                          <a class="btn btn-info" href="/admin/bedealer_detail_{{user.User_ID}}">
                                                                                 <span class="fa fa-user-o"></span>
                                                                             </a>
-                                                                        <a class="btn btn-success" href="/admin/accept_dealer_{{user.User_ID}}"><span class="fa fa-check"></span></a>
-                                                                            <a class="btn btn-danger"  href="/admin/reject_dealer_{{user.User_ID}}"><span class="fa fa-times"></span></a>
+                                                                        <a class="btn btn-success" href="/admin/accept_dealer_{{user.User_ID}}" onclick="return confirm('ยืนยันการอนุมัติคนรับหิ้วใช่หรือไม่');"><span class="fa fa-check"></span></a>
+                                                                            <a class="btn btn-danger"  href="/admin/reject_dealer_{{user.User_ID}}" onclick="return confirm('ยืนยันการไม่อนุมัติคนรับหิ้วใช่หรือไม่');"><span class="fa fa-times"></span></a>
                                                                         </td>
                                                                     </tr> 
                                                                 @endeach  

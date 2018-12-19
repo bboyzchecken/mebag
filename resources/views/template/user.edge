@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -61,7 +61,7 @@
                 @elseif(users[0].User_Image==0 && users[0].User_Sex=="Other")
                 <img src="assets/img/other_avatar.png" class="avatar" alt="">
                 @else
-              <img src="assets/fileuploads/profilepicture/{{users[0].User_ID}}/{{users[0].User_Image}}" class="avatar" alt="">
+              <img src="../assets/fileuploads/profilepicture/{{users[0].User_ID}}/{{users[0].User_Image}}" class="avatar" alt="">
                 @endif
                  {{users[0].User_Email}}</a></li>
               <li><a href="/history"><i class="fa fa-list-ol"></i> การซื้อของฉัน</a></li>
@@ -190,13 +190,13 @@
             <ul class="main-nav nav navbar-nav">
                 <li class=""><a href="/">หน้าแรก</a></li>
                 <li><a href="/allevent/1"> Event ทั้งหมด</a></li>
-                <li><a href="/allevent/1"> อุปกรณ์เสริม อิเล็กทรอนิกส์</a></li>
-                <li><a href="/allevent/1"> สุขภาพและความงาม</a></li>
-                <li><a href="/allevent/1"> เด็กอ่อน และของเล่น</a></li>
-                <li><a href="/allevent/1"> แฟชั่นผู้หญิง</a></li>
-                <li><a href="/allevent/1"> แฟชั่นผู้ชาย</a></li>
-                <li><a href="/allevent/1"> เครื่องประดับ</a></li>
-                <li><a href="/allevent/1"> อื่นๆ</a></li>
+                <li><a href="/event_1/1"> อุปกรณ์เสริม อิเล็กทรอนิกส์</a></li>
+                <li><a href="/event_2/1"> สุขภาพและความงาม</a></li>
+                <li><a href="/event_3/1"> เด็กอ่อน และของเล่น</a></li>
+                <li><a href="/event_4/1"> แฟชั่นผู้หญิง</a></li>
+                <li><a href="/event_5/1"> แฟชั่นผู้ชาย</a></li>
+                <li><a href="/event_6/1"> เครื่องประดับ</a></li>
+                <li><a href="/event_7/1"> อื่นๆ</a></li>
             </ul>
             <!-- /NAV -->
         </div>
@@ -256,9 +256,9 @@
                     <div class="footer">
                         <h3 class="footer-title">ข้อมูล</h3>
                         <ul class="footer-links">
-                            <li><a href="aboutus.html">เกี่ยวกับเรา</a></li>
-                            <li><a href="contact.html">ติดต่อเรา</a></li>
-                            <li><a href="terms.html">ข้อตกลง</a></li>
+                            <li><a href="/about">เกี่ยวกับเรา</a></li>
+                            <li><a href="/contact">ติดต่อเรา</a></li>
+                            <li><a href="/terms">ข้อตกลง</a></li>
                         </ul>
                     </div>
                 </div>
@@ -314,6 +314,6 @@
 <script src="../../assets/js/nouislider.min.js"></script>
 <script src="../../assets/js/jquery.zoom.min.js"></script>
 <script src="../../assets/js/main.js"></script>
-
+<script src="//cdn.ckeditor.com/4.11.1/basic/ckeditor.js"></script>
 </body>
 </html>

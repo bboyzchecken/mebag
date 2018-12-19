@@ -13,8 +13,8 @@
                             <img src="assets/img/shop01.png" alt="">
                         </div>
                         <div class="shop-body">
-                            <h3>แบรนเนอร์</h3>
-                            <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                            <h3>อุปกรณ์เสริม อิเล็กทรอนิกส์</h3>
+                            <a href="/event_1" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -24,11 +24,11 @@
                 <div class="col-md-4 col-xs-6">
                     <div class="shop">
                         <div class="shop-img">
-                            <img src="assets/img/shop03.png" alt="">
+                            <img src="assets/img/girl.jpg" alt="">
                         </div>
                         <div class="shop-body">
-                            <h3>แบรนเนอร์</h3>
-                            <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                            <h3>แฟชั่นผู้หญิง</h3>
+                            <a href="/event_4" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -38,11 +38,11 @@
                 <div class="col-md-4 col-xs-6">
                     <div class="shop">
                         <div class="shop-img">
-                            <img src="assets/img/shop02.png" alt="">
+                            <img src="assets/img/boy.jpeg" alt="">
                         </div>
                         <div class="shop-body">
-                            <h3>แบรนเนอร์</h3>
-                            <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                            <h3>แฟชั่นผู้ชาย</h3>
+                            <a href="event_5" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -67,31 +67,67 @@
                         <ul class="hot-deal-countdown">
                             <li>
                                 <div>
-                                    <h3>02</h3>
+                                    <h3 id="day">02</h3>
                                     <span>Days</span>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <h3>10</h3>
+                                    <h3 id="hour">10</h3>
                                     <span>Hours</span>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <h3>34</h3>
+                                    <h3 id="min">34</h3>
                                     <span>Mins</span>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <h3>60</h3>
+                                    <h3 id="sec">60</h3>
                                     <span>Secs</span>
                                 </div>
                             </li>
                         </ul>
+                        <script>
+                                // Set the date we're counting down to
+                                var countDownDate = new Date("Jan 5, 2019 15:37:25").getTime();
+                                
+                                // Update the count down every 1 second
+                                var x = setInterval(function() {
+                                
+                                  // Get todays date and time
+                                  var now = new Date().getTime();
+                                    
+                                  // Find the distance between now and the count down date
+                                  var distance = countDownDate - now;
+                                    
+                                  // Time calculations for days, hours, minutes and seconds
+                                  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                    
+                                  // Output the result in an element with id="demo"
+                                  document.getElementById("day").innerHTML = days;
+                                  document.getElementById("hour").innerHTML =  hours;
+                                  document.getElementById("min").innerHTML = minutes ;
+                                  document.getElementById("sec").innerHTML =  seconds;
+                                    
+                                  // If the count down is over, write some text 
+                                  if (distance < 0) {
+                                    clearInterval(x);
+                                    document.getElementById("day").innerHTML = "EXPIRED";
+                                  document.getElementById("hour").innerHTML =  "EXPIRED";
+                                  document.getElementById("min").innerHTML = "EXPIRED" ;
+                                  document.getElementById("sec").innerHTML =  "EXPIRED";
+                                   
+                                  }
+                                }, 1000);
+                                </script>
                         <h2 class="text-uppercase">โปรโมชั่น</h2>
-                        <p>รายละเอียดโปรโมชั่น</p>
+                        <p>ลดค่าหิ้วลง 10% จากราคาต้น</p>
                         <a class="primary-btn cta-btn" href="/allevent">Shop now</a>
                     </div>
                 </div>

@@ -1,0 +1,98 @@
+@layout('template.user')
+@section('content')
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">เกี่ยวกับรับ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+    
+    <!-- SECTION -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+               @if(error)
+               <div class="row">                          
+                    <div class="col-md-12">             
+                    <div class="alert alert-danger"><strong> แจ้งเตือน !</strong> {{error}}</div>
+                    </div>
+                </div>
+               @endif
+            <!-- row -->
+            <div class="row">
+                <!-- STORE -->
+                <div  class="col-md-4">                
+                    
+                      <img src="assets/img/logo.png" class="img-responsive" alt="">
+                        
+                    </div>
+                    <!-- /STORE -->
+    
+                <!-- STORE -->
+                <div id="store" class="col-md-8">                
+    
+                   <p style="font-size: 20px">
+                        1. ต้องเป็นสมาชิกก่อน จึงจะทำการฝากหิ้วสินค้าได้  <br>
+                        2. หากมีการตกลงกันนอกเหนือจากการทำการซื้อขายตามระบบของเว็บไซต์ หากเกิดปัญหาขึ้น ทางเว็บไซต์จะไม่รับผิดชอบ<br>
+                        3. Me Bag ขอสงวนสิทธิ์ในการเปลี่ยนแปลงเงื่อนไขการใช้งาน โดยไม่ต้องแจ้งล่วงหน้า<br>
+                        4. สินค้าที่นำมาทำการซื้อขายบนเว็บไซต์ จะต้องไม่ผิดกฎหมายทุกประเภท หากตรวจสอบเจอ จะถูกพักการโชว์สินค้าทันที<br>
+
+                   </p>
+                    
+                </div>
+                <!-- /STORE -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+    
+    <!-- NEWSLETTER -->
+    <div id="newsletter" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="newsletter">
+                        <p>รับข่าวสาร <strong>โปรโมชั่น</strong></p>
+                        <form>
+                            <input class="input" type="email" placeholder="กรอกอีเมล">
+                            <button class="newsletter-btn"><i class="fa fa-envelope"></i> ติดตาม</button>
+                        </form>
+                        <ul class="newsletter-follow">
+                            <li>
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /NEWSLETTER -->
+    @endsection

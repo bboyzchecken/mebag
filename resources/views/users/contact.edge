@@ -1,0 +1,154 @@
+@layout('template.user')
+@section('content')
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">เกี่ยวกับรับ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+    
+    <!-- SECTION -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+               @if(error)
+               <div class="row">                          
+                    <div class="col-md-12">             
+                    <div class="alert alert-danger"><strong> แจ้งเตือน !</strong> {{error}}</div>
+                    </div>
+                </div>
+               @endif
+            <!-- row -->
+            <div class="row">
+                <!-- STORE -->
+                <div  class="col-md-6">                
+                    
+                        <div class="row">
+                                <div class="col-md-12 form-group">
+                                   เบอร์โทร : 088 - 232 - 8949
+                                </div>                               
+                                <div class="col-md-12 form-group">
+                                    อีเมล : contact@mebag.com
+                                </div>
+                                <div class="col-md-12 form-group">
+                                 ที่อยู่ : University of Phayao 19 หมู่ 2 เมือง ตำบลแม่กา Chang Wat Phayao 56000, Thailand
+                                </div>
+                                
+                              
+
+                            </div>
+                        
+                    </div>
+                    <!-- /STORE -->
+    
+                <!-- STORE -->
+                <div id="store" class="col-md-6">                
+    
+                        <div class="panel panel-danger">
+                                <div class="panel-heading text-center">
+                                    <h3 class="text-light">ติดต่อเรา</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                            <form method="post" action="/contactus" enctype="multipart/form-data" role="form">
+                                                {{ csrfField() }}
+                                                <div class="row">
+                    
+                                                  <div class="col-md-12">
+                                                      <div class="form-group col-sm-6">
+                                                          <label for="name">ชื่อ - นามสกุล</label>
+                                                          <input type="text" name="name" id="name"
+                                                                 class="form-control" required />
+                                                      </div>
+                                                      <div class="form-group col-sm-6">
+                                                            <label for="tel">เบอร์โทรติดต่อ</label>
+                                                            <input type="text" name="tel" id="tel"
+                                                                   class="form-control" required />
+                                                        </div>
+                                                        <div class="form-group col-sm-12">
+                                                                <label for="email">Email</label>
+                                                                <input type="email" name="email" id="email"
+                                                                       class="form-control" required />
+                                                            </div>
+                                                        <div class="form-group col-sm-12">
+                                                                <label for="message">ข้อความ</label>
+                                                                <textarea name="message" id="" class="form-control" rows="10" required></textarea>
+                                                        </div>
+                    
+                                                   
+                                                      <div class="text-center">
+                                                          <button type="submit" class="btn btn-danger">ส่งข้อความ</button>
+                                                          <a href="/" class="btn btn-default">กลับหน้าหลัก</a>
+                                                      </div>
+                                                  </div>
+                                                   
+                                                </div>
+                    
+                    
+                    
+                    
+                                            </form>
+                                    </div>                                 
+                                </div>
+                            </div>
+                    
+                </div>
+                <!-- /STORE -->
+                <div class="col-md-12 form-group">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30173.68275365813!2d99.89709242661131!3d19.032481225211704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30d83369b9fd7285%3A0x48422f267bc2c6ec!2sUniversity+of+Phayao!5e0!3m2!1sen!2s!4v1545237316261" style="width: 100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+    
+    <!-- NEWSLETTER -->
+    <div id="newsletter" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="newsletter">
+                        <p>รับข่าวสาร <strong>โปรโมชั่น</strong></p>
+                        <form>
+                            <input class="input" type="email" placeholder="กรอกอีเมล">
+                            <button class="newsletter-btn"><i class="fa fa-envelope"></i> ติดตาม</button>
+                        </form>
+                        <ul class="newsletter-follow">
+                            <li>
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /NEWSLETTER -->
+    @endsection

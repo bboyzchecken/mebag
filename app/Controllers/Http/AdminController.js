@@ -57,18 +57,18 @@ class AdminController {
             const admins = await Database.from('admins').where({
                 'Admin_Email': session.get('Admin_Email')
             });
-            const balance_sum= await Database.from('balances').getSum('Balance_Get');
-            const dealer_sum= await Database.from('users').where({
-                User_Permission:1
+            const balance_sum = await Database.from('balances').getSum('Balance_Get');
+            const dealer_sum = await Database.from('users').where({
+                User_Permission: 1
             });
-            const payment_sum= await Database.from('payments');
-            const event_sum= await Database.from('events');
+            const payment_sum = await Database.from('payments');
+            const event_sum = await Database.from('events');
             return view.render('admins/dashboard', {
                 admins: admins,
-                balance_sum:balance_sum,
-                dealer_sum:dealer_sum,
-                payment_sum:payment_sum,
-                event_sum:event_sum
+                balance_sum: balance_sum,
+                dealer_sum: dealer_sum,
+                payment_sum: payment_sum,
+                event_sum: event_sum
             });
 
         } else {
@@ -104,13 +104,13 @@ class AdminController {
             const admins = await Database.from('admins').where({
                 'Admin_Email': session.get('Admin_Email')
             });
-            const balances= await Database.from('balances');
-            const balance_sum= await Database.from('balances').getSum('Balance_Get');
-            
+            const balances = await Database.from('balances');
+            const balance_sum = await Database.from('balances').getSum('Balance_Get');
+
             return view.render('admins/balance', {
                 admins: admins,
-                balances:balances,
-                balance_sum:balance_sum
+                balances: balances,
+                balance_sum: balance_sum
             });
 
         } else {
@@ -389,7 +389,7 @@ class AdminController {
 
     }
     async tranfer_date({ view, response, session, params }) {
-        let user_id = params.user_id;
+
         if (session.get('Admin_ID') && session.get('Admin_Email')) {
             const admins = await Database.from('admins').where({
                 'Admin_Email': session.get('Admin_Email')
@@ -552,12 +552,139 @@ class AdminController {
                 User_ID: user_id
             });
             if (update) {
-                session.flash({ success: 'ยืนยันการแจ้งโอนเงินสำเร็จ' })
-                return response.redirect('/admin/tranfer');
+                let update_wallet = await Database.table('users').update({
+                    User_Wallet: 0
+                }).where({
+                    User_ID: user_id
+                })
+                if (update_wallet) {
+                    session.flash({ success: 'ยืนยันการแจ้งโอนเงินสำเร็จ' })
+                    return response.redirect('/admin/tranfer');
+                } else {
+                    session.flash({ error: 'ไม่สามารถอัพเดตกระเป๋าเงิน กรุณาตรวจสอบ' })
+                    return response.redirect('/admin/tranfer');
+                }
             } else {
                 session.flash({ error: 'ไม่สามารถยืนยันแจ้งโอนได้ กรุณาตรวจสอบ' })
                 return response.redirect('/admin/tranfer');
             }
+
+
+        } else {
+            return view.render('admins/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+            })
+        }
+
+
+    }
+    async accept_problem_recive({ view, response, session, request, params }) {
+        let order_id = params.order_id;
+        if (session.get('Admin_ID') && session.get('Admin_Email')) {
+
+            let orders = await Database.from('orders').where({
+                Order_ID: order_id
+            })
+            let dealer = await Database.from('users').where({
+                User_ID: orders[0].Order_ToWho
+            })
+            //return parseInt(orders[0].Order_Total)-(parseInt(orders[0].Order_SumEvent)*parseInt(10)/parseFloat(100));
+
+            let update = await Database.table('orders').update({
+                Order_Status: 'success'
+            }).where({
+                Order_ID: order_id
+            });
+
+            if (update) {
+                let balance = await Database.table('balances').insert({
+                    Balance_Get: parseInt(orders[0].Order_SumEvent) * parseInt(10) / parseFloat(100),
+                    Order_ID: order_id
+                });
+                if (balance) {
+                    let wallet = await Database.table('users').update({
+                        User_Wallet: parseInt(dealer[0].User_Wallet) + parseInt(orders[0].Order_Total) - (parseInt(orders[0].Order_SumEvent) * parseInt(10) / parseFloat(100))
+                    }).where({
+                        User_ID: orders[0].Order_ToWho
+                    });
+                    if (wallet) {
+                        session.flash({ success: 'แจ้งได้รับของเรียบร้อยแล้ว ' })
+                        return response.redirect('back');
+                    } else {
+                        session.flash({ error: 'ไม่สามารถแจ้งรับของได้ ' })
+                        return response.redirect('back');
+                    }
+                } else {
+                    session.flash({ error: ' รหัสความผิดพลาด #101' })
+                    return response.redirect('back');
+                }
+            } else {
+                session.flash({ error: 'ไม่สามารถกดรับของได้ #102' })
+                return response.redirect('back');
+            }
+
+
+        } else {
+            return view.render('admins/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+            })
+        }
+
+
+    }
+    async accept_problem_payment({ view, response, session, request, params }) {
+        let payment_id = params.payment_id;
+        if (session.get('Admin_ID') && session.get('Admin_Email')) {
+
+            //code here
+            let payment_update = await Database.table('payments').where('Payment_ID', payment_id).update({
+                Payment_Status: 'accept'
+            });
+            if (payment_update) {
+                let order_update = await Database.table('orders').where('Order_Payment', payment_id).update({
+                    Order_Status: 'paid'
+                });
+                if (order_update) {
+                    session.flash({ success: ' ยืนยันรายการชำระเงิน สำเร็จ ' })
+                    return response.redirect('back');
+                } else {
+                    session.flash({ error: ' ไม่สามารถทำรายการได้ โปรดตรวจสอบ ' })
+                    return response.redirect('back');
+                }
+            } else {
+                session.flash({ error: ' ไม่สามารถทำรายการได้ โปรดตรวจสอบ ' })
+                return response.redirect('back');
+            }
+
+        } else {
+            return view.render('admins/login', {
+                error: "  กรุณาล็อกอินเข้าสู่ระบบ ",
+            })
+        }
+
+
+
+    }
+    async problem_page({ view, response, session, request, params }) {
+
+        if (session.get('Admin_ID') && session.get('Admin_Email')) {
+            const admins = await Database.from('admins').where({
+                'Admin_Email': session.get('Admin_Email')
+            });
+            const problems = await Database.from('orders').innerJoin('order_details', 'orders.Order_ID', 'order_details.Order_ID').innerJoin('users', 'orders.Order_Whose', 'users.User_ID')
+                .where({
+
+                    'Order_Status': 'cancel'
+
+                }).orWhere({
+
+                    'Order_Status': 'reject_recive'
+                });
+
+            return view.render('admins/order_problem', {
+                problems: problems,
+                admins: admins
+            })
 
 
         } else {

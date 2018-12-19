@@ -89,8 +89,8 @@
                                                                          <a class="btn btn-info" href="/admin/payment_detail_{{payment.Payment_ID}}">
                                                                                 <span class="fa fa-search-plus"></span>
                                                                             </a>
-                                                                            <a class="btn btn-success" href="/admin/accept_payment_{{payment.Payment_ID}}"><span class="fa fa-check"></span></a>
-                                                                            <a class="btn btn-danger" href="/admin/reject_payment_{{payment.Payment_ID}}"><span class="fa fa-times"></span></a>
+                                                                            <a class="btn btn-success" href="/admin/accept_payment_{{payment.Payment_ID}}" onclick="return confirm('ยืนยันการชำระเงินใช่หรือไม่ ?');"><span class="fa fa-check"></span></a>
+                                                                            <a class="btn btn-danger" href="/admin/reject_payment_{{payment.Payment_ID}}" onclick="return confirm('ยืนยันการปฏิเสธใช่หรือไม่ ?');"><span class="fa fa-times"></span></a>
                                                                         </td>
                                                                 </tr> 
                                                                 @endeach                                                          

@@ -134,12 +134,10 @@
                                                                 <div class="panel panel-default">
                                                                     <div class="panel panel-heading ">
                                                                         <div class="row">
-                                                                            <div class="col-md-10 ">
+                                                                            <div class="col-md-12 ">
                                                                                 <h3 class="text-danger"> <a href="/event_detail_{{event.Event_ID}}">{{event.Event_Name}}</a> </h3>
                                                                             </div>
-                                                                            <div class="col-md-2 text-center">
-                                                                            <a class="btn btn-default" >ดูรายละเอียด</a>
-                                                                            </div>
+                                                                           
                                                                         </div>
 
                                                                     </div>
@@ -203,7 +201,10 @@
                                                                             <h3 class="text-danger"> <a href="/event_detail_{{event.Event_ID}}">{{event.Event_Name}}</a> </h3>
                                                                         </div>
                                                                         <div class="col-md-2 text-center">
-                                                                        <a class="btn btn-default" >ดูรายละเอียด</a>
+                                                                                @if(event.Order_Payment)
+                                                                             <a class="btn btn-default" href="/detail_payment_{{event.Order_Payment}}">ดูการชำระเงิน</a>                                                                             
+                                                                                @endif        
+                                                                      
                                                                         </div>
                                                                     </div>
 
@@ -276,7 +277,9 @@
                                                                             <h3 class="text-danger"> <a href="/event_detail_{{event.Event_ID}}">{{event.Event_Name}}</a> </h3>
                                                                         </div>
                                                                         <div class="col-md-2 text-center">
-                                                                        <a class="btn btn-default" >ดูรายละเอียด</a>
+                                                                                @if(event.Order_Payment)
+                                                                                <a class="btn btn-default" href="/detail_payment_{{event.Order_Payment}}">ดูการชำระเงิน</a>                                                                             
+                                                                                   @endif      
                                                                         </div>
                                                                     </div>
 
@@ -318,8 +321,8 @@
                                                                      
                                                                       <div class="col-md-6 text-right">
                                                                             @if( event.Order_Track)
-                                                                      <a class="btn btn-success" href="/accept_recive_{{event.Order_ID}}">ได้รับของแล้ว</a> 
-                                                                      <a class="btn btn-danger" href="/reject_recive_{{event.Order_ID}}">ไม่ได้รับของ</a> 
+                                                                      <a class="btn btn-success" href="/accept_recive_{{event.Order_ID}}" onclick="return confirm('อนุมัติการได้รับของและโอนเงินให้กับผู้รับหิ้วสินค้า ?')">ได้รับของแล้ว</a> 
+                                                                      <a class="btn btn-danger" href="/reject_recive_{{event.Order_ID}}" onclick="return confirm('แจ้งออเดอร์มีปัญหา ?')">ไม่ได้รับของ</a> 
                                                                             @else
                                                                                 <h3>  <label class="label label-warning">กำลังจัดส่งสินค้า</label></h3>
                                                                             @endif             
@@ -353,7 +356,9 @@
                                                                             <h3 class="text-danger"> <a href="/event_detail_{{event.Event_ID}}">{{event.Event_Name}}</a> </h3>
                                                                         </div>
                                                                         <div class="col-md-2 text-center">
-                                                                        <a class="btn btn-default" >ดูรายละเอียด</a>
+                                                                                @if(event.Order_Payment)
+                                                                                <a class="btn btn-default" href="/detail_payment_{{event.Order_Payment}}">ดูการชำระเงิน</a>                                                                             
+                                                                                   @endif      
                                                                         </div>
                                                                     </div>
 
@@ -426,7 +431,9 @@
                                                                             <h3 class="text-danger"> <a href="/event_detail_{{event.Event_ID}}">{{event.Event_Name}}</a> </h3>
                                                                         </div>
                                                                         <div class="col-md-2 text-center">
-                                                                        <a class="btn btn-default" >ดูรายละเอียด</a>
+                                                                                @if(event.Order_Payment)
+                                                                                <a class="btn btn-default" href="/detail_payment_{{event.Order_Payment}}">ดูการชำระเงิน</a>                                                                             
+                                                                                   @endif      
                                                                         </div>
                                                                     </div>
 
@@ -439,7 +446,7 @@
                                                                         </div>
                                                                         <div class="col-md-8">
                                                                             
-                                                                            @each(detail in orders_cancel)
+                                                                            @each(detail in order_cancel)
                                                                                 @if(detail.Order_ID == $parent.event.Order_ID)
                                                                                 <div class="form-group">
                                                                                         <h5>{{detail.Product_Name}}</h5>
@@ -467,7 +474,19 @@
                                                                         </div>
                                                                      
                                                                       <div class="col-md-6 text-right">
-                                                                            <h3>  <label class="label label-danger">กรุณาติดต่อเจ้าหน้าที่</label></h3>   
+                                                                            @each(detail in order_cancel)
+                                                                            @if(detail.Order_ID == $parent.event.Order_ID)
+                                                                            @if(detail.Order_Status=='reject_recive')
+                                                                            <h3>  <label class="label label-danger">ไม่ได้รับของ กรุณาติดต่อเจ้าหน้าที่</label></h3>   
+                                                                            @elseif(detail.Order_Status=='reject')
+                                                                            <h3>  <label class="label label-danger">ผู้รับหิ้วปฏิเสธการรับออเดอร์</label></h3>   
+                                                                            @elseif(detail.Order_Status=='cancel')
+                                                                            <h3>  <label class="label label-danger">การชำระเงินถูกยกเลิก</label></h3>   
+                                                                            @endif
+                                                                               
+                                                                            @endif
+                                                                        @endeach     
+                                                                         
                                                                         </div>         
                                                                                                                                 
                                                                     </div>

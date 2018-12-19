@@ -145,15 +145,15 @@
                                                     <!-- Review Form -->
                                                     <div class="col-md-12 text-center">
                                                    <div class="form-group">
-                                                        <a href="/profile_{{profiles[0].User_ID}}">
+                                                        <a href="/profile/{{profiles[0].User_ID}}">
                                                             @if(profiles[0].User_Image==0 && profiles[0].User_Sex=="Male")
-                                                            <img src="assets/img/men_avatar.png" class="avatar-10x" alt="">
+                                                            <img src="../../assets/img/men_avatar.png" class="avatar-10x" alt="">
                                                             @elseif(profiles[0].User_Image==0 && profiles[0].User_Sex=="Female")
-                                                            <img src="assets/img/women_avatar.png" class="avatar-10x" alt="">
+                                                            <img src="../../assets/img/women_avatar.png" class="avatar-10x" alt="">
                                                             @elseif(profiles[0].User_Image==0 && profiles[0].User_Sex=="Other")
-                                                            <img src="assets/img/other_avatar.png" class="avatar-10x" alt="">
+                                                            <img src="../../assets/img/other_avatar.png" class="avatar-10x" alt="">
                                                             @else
-                                                          <img src="assets/fileuploads/profilepicture/{{users[0].User_ID}}/{{users[0].User_Image}}" class="avatar-10x" alt="">
+                                                          <img src="../../assets/fileuploads/profilepicture/{{profiles[0].User_ID}}/{{profiles[0].User_Image}}" class="avatar-10x" alt="">
                                                             @endif                                                         
                                                             <br> {{profiles[0].User_FirstName}} {{profiles[0].User_LastName}}</a>
                                                    </div>
@@ -169,10 +169,16 @@
                                                         <div class="col-md-4">
                                                                 <div class="list-group">
                                                                         <a  href="/profile/{{profiles[0].User_ID}}" class="list-group-item">
-                                                                            <i class="fa fa-shopping-bag fa-fw"></i>&nbsp; รับหิ้วไปแล้ว 3 ครั้ง
+                                                                            <i class="fa fa-shopping-bag fa-fw"></i>&nbsp; รับหิ้วไปแล้ว 
+                                                                            @if(count_order)
+                                                                            {{count_order}}
+                                                                            @else
+                                                                              0
+                                                                            @endif 
+                                                                            ครั้ง
                                                                         </a>    
                                                                         <a  href="/profile/{{profiles[0].User_ID}}" class="list-group-item">
-                                                                            <i class="fa fa-tag fa-fw"></i>&nbsp; Event ทั้งหมด 3 Evnet
+                                                                            <i class="fa fa-tag fa-fw"></i>&nbsp; Event ทั้งหมด {{count_event}} Evnet
                                                                         </a>    
                                                                     </div>
                                                         </div>
