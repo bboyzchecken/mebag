@@ -567,7 +567,7 @@ class DealerController {
             const users = await Database.from('users').innerJoin('verifies', 'users.User_ID', 'verifies.User_ID').where({
                 'users.User_ID': session.get('Dealer_ID')
             });
-            let tranfer_date = await Database.from('tranfer_date');
+            let tranfer_date = await Database.from('tranfer_date').orderBy('Date_ID','desc');
             return view.render('dealers/wallet', {
                 users: users,
                 tranfer_date:tranfer_date
