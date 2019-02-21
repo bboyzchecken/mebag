@@ -5,7 +5,9 @@ const { validate } = use('Validator');
 const Hash = use('Hash');
 const Helpers = use('Helpers')
 const Encryption = use('Encryption');
+
 class AdminController {
+    
     async login_page({ view, response, session }) {
         if (session.get('Admin_Email')) {
             return response.redirect("/admin/dashboard");
