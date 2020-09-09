@@ -31,7 +31,7 @@
     "chance": "^1.0.18",
     "ckeditor": "^4.11.1",
     "date-format": "^2.0.0",
-    "googleapis": "^27.0.0",
+    "googleapis": "^59.0.0",
     "lodash": "^4.17.11",
     "md5": "^2.2.1",
     "mysql2": "^1.6.1",
